@@ -50,8 +50,8 @@ A collaborative project using the MERN stack and the FatSecret API to create a w
 
   ## Questions
   ### For Lothy:
-  - [My Github!](https://github.com/JonGrom)
-  - [Email Me](mailto:grommeshjonathan@gmail.com?subject=Hello!)
+  - [My Github!](https://github.com/lothylg)
+  - [Email Me](mailto:lothygresser@gmail.com?subject=Hello!)
   ### For Jonathan:
   - [My Github!](https://github.com/JonGrom)
   - [Email Me](mailto:grommeshjonathan@gmail.com?subject=Hello!)
