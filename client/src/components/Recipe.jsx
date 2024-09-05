@@ -7,12 +7,14 @@ import {
   Col
 } from 'react-bootstrap';
 
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-
+import recipe_list from '../../../server/seeds/recipeData.json'
 
 export default function Recipe (props){
     
+    const history = useNavigate();
+
     const [comment, setComment] = useState('');
     const [rating, setRating] = useState(0);
     
@@ -59,10 +61,10 @@ export default function Recipe (props){
                     <Card key={props.recipe_id} border='dark'>
                     {props.recipe_image ? <Card.Img src={props.recipe_image} alt={`The recipe image for... ${props.recipe_image}`} variant='top' /> : null}
 
-                    <Button className='btn-block btn-danger' onClick={() => handleEatIt(recipe.recipe_id)}>
+                    <Button className='btn-block btn-danger' onClick={() => handleEatIt(props.recipe_id)}>
                     Eat It!
                     </Button>
-                    <Button className='btn-block btn-danger' onClick={() => handleBeatIt(recipe.recipe_id)}>
+                    <Button className='btn-block btn-danger' onClick={() => handleBeatIt(props.recipe_id)}>
                     Beat It!
                     </Button>
 
@@ -95,7 +97,7 @@ export default function Recipe (props){
                             ))}
                         </Card.Ratings>
 
-                        <Button className='btn-block btn-danger' onClick={() => submitComment(recipe.recipe_id)}>
+                        <Button className='btn-block btn-danger' onClick={() => submitComment(props.recipe_id)}>
                         Submit
                         </Button>
                     </Card.Body>

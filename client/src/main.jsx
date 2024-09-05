@@ -1,30 +1,17 @@
-import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import App from './App.jsx';
 import Home from './pages/Home';
+import RecipePage from './pages/RecipePage.jsx';
 
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    errorElement: <NotFound />,
-    children: [
-      {
-        index: true,
-        element: <User />
-      }, {
-        path: '/matchup',
-        element: <Recipe />
-      }, {
-        path: '/matchup/:id',
-        element: <Ouch />
-      },
-    ],
-  },
-]);
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
+createRoot(document.getElementById('root')).render(
+  <Router>
+    <App>
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route path="/recipe" element={<RecipePage />} />
+      </Routes>
+    </App>
+  </Router>
 );
