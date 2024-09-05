@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 
-const Home = () => {
+const Home = (props) => {
 
 
   return (
