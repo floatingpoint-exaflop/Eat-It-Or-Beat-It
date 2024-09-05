@@ -1,11 +1,15 @@
 const { Schema, model } = require('mongoose');
 
 const recipeSchema = new Schema({
-  name: {
+  ingredientSearched: {
     type: String,
     required: true,
     unique: true,
   },
+  apiRecipeId: {
+    type: String, 
+    unique: true
+  }
 });
 
 const Recipe = model('Recipe', recipeSchema);
