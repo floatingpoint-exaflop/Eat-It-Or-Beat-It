@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
+import SignupForm from '../components/SignupForm'
+import LoginForm from '../components/LoginForm';
+
 
 export default function Home() {
 
@@ -10,7 +13,9 @@ export default function Home() {
   return (
     <>
       <h1>This is a test for the homepage</h1>
-    
+      <LoginForm />
+      <SignupForm />
+      
     </>
   );
 };
