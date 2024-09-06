@@ -6,10 +6,6 @@ const typeDefs = `
 
   type Recipe {
     _id: ID!
-    fsd: String!
-    asdf: String!
-    asdf: Int
-    afsd: Int
   }
 
   type Query {
@@ -19,7 +15,7 @@ const typeDefs = `
 
   type Mutation {
     createMatchup(sadf: String!, afsd: String!): Recipe
-    createUser(asdf: String!, asdf: Int!): Recipe
+    createUser(asdf: String!, asdff: Int!): Recipe
   }
 `;
 
