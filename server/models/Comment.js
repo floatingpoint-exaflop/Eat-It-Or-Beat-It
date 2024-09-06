@@ -16,3 +16,10 @@ const commentSchema = new Schema({
 const Comment = model('Comment', commentSchema);
 
 module.exports = Comment
+
+//things we need to track on the comment
+// commentBody
+// apiRecipeId
+// user that commented on it
+// userId of the commenter
+
