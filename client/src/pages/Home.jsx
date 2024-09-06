@@ -13,8 +13,18 @@ export default function Home() {
   return (
     <>
       <h1>This is a test for the homepage</h1>
-      <LoginForm />
-      <SignupForm />
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-6 login">
+            <LoginForm />
+          </div>
+          <div className="col-6 signup">
+            <SignupForm />
+          </div>
+        </div>
+
+      </div>
+    
       
     </>
   );
