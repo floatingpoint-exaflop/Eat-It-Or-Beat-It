@@ -1,10 +1,13 @@
 import './App.css';
-import { Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { Container, Row, Col } from 'react-bootstrap'
 
-import RecipePage from './pages/RecipePage';
+import RecipePage from './pages/Result';
 import Header from './components/Header'
 import Footer from './components/Footer'
+import Home from './pages/Home'
+import Profile from './pages/Profile'
 
 const client = new ApolloClient({
   uri: '/graphql',
@@ -16,19 +19,33 @@ const sitename = "Everyone Eats";
 function App() {
   return (
     <ApolloProvider client={client}>
-      {/* <div className="flex-column justify-center align-center min-100-vh bg-primary">
-        <Outlet />
-      </div> */}
+      <BrowserRouter>
+        <Header sitename={sitename} />
 
-    <Header sitename={sitename} />
-      
-    <RecipePage  />
+        <Container>
+          <Row>
+            <Col md="10">
+
+              <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/profile/:userId?' element={<Profile />} />
+                {/* Need to add the element for the page below */}
+                <Route path='/recipe/:recipeId' element={<></>} /> 
+              </Routes>
+
+            </Col>
+          </Row>
+        </Container>
+
+        <Footer/>
 
 
-      <Footer />
+      </BrowserRouter>
     </ApolloProvider>
   );
 }
+{/* <RecipePage  />
+<Footer /> */}
 
 export default App;
 //Nothing else needed here aside from css updates/file imports.
