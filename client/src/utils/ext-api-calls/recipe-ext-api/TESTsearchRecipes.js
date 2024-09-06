@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 import OAuth from 'oauth-1.0a';
 import crypto from 'crypto';
 
+
 // Our API keys
 const consumer_key = 'd63563bb75c641f783ada0171b5eb024';
 const consumer_secret = '322b9d574ed14573b656c85bf1234c32';
@@ -22,7 +23,7 @@ const request_data = {
     data: {
         method: 'recipes.search.v3',
         format: 'json',
-        max_results: 50,
+        max_results: 1,
         search_expression: 'chicken',
         recipe_types: 'lunch',
         recipe_types_matchall: 'true',
@@ -62,6 +63,9 @@ fetch(request_data.url, {
 })
 .then(response => response.json())
 .then(data => {
-    console.log(JSON.stringify(data, null, 2)); // Pretty-print string with indentation (2 spaces). If we get a pretty-print error, it will be because we aren't handling the object correctly.
+    const searchResultArray = data.recipes.recipe;
+    searchResultArray.forEach(recipe => {
+        console.log(JSON.stringify(recipe, null, 2)); // Pretty-print each recipe object
+    });
 })
 .catch(error => console.error('Error:', error));
