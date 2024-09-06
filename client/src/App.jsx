@@ -17,6 +17,7 @@ const client = new ApolloClient({
 const sitename = "Everyone Eats";
 
 function App() {
+  const [loggedInUser, setLoggedInUser] = useState("")
   return (
     <ApolloProvider client={client}>
       <BrowserRouter>
@@ -28,7 +29,7 @@ function App() {
 
               <Routes>
                 <Route path='/' element={<Home />} />
-                <Route path='/profile/:userId?' element={<Profile />} />
+                <Route path='/profile/:userId?' element={<Profile loggedInUser={loggedInUser}/>} />
                 {/* Need to add the element for the page below */}
                 <Route path='/recipe/:recipeId' element={<></>} /> 
               </Routes>

@@ -9,9 +9,17 @@ const recipeSchema = new Schema({
   apiRecipeId: {
     type: String, 
     unique: true
+  },
+  username: {
+    type: String,
+    required: true
   }
 });
 
 const Recipe = model('Recipe', recipeSchema);
 
 module.exports = Recipe;
+
+//fields that we need for this project
+// swiped right recipes id (array)
+//userId 
