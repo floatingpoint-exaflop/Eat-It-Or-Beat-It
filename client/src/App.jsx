@@ -1,13 +1,14 @@
+import React, { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap';
 
 import RecipePage from './pages/Result';
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Home from './pages/Home'
-import Profile from './pages/Profile'
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import Profile from './pages/Profile';
 
 const client = new ApolloClient({
   uri: '/graphql',
@@ -17,7 +18,7 @@ const client = new ApolloClient({
 const sitename = "Everyone Eats";
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState("")
+  const [loggedInUser, setLoggedInUser] = useState("");
   return (
     <ApolloProvider client={client}>
       <BrowserRouter>
@@ -39,7 +40,6 @@ function App() {
         </Container>
 
         <Footer/>
-
 
       </BrowserRouter>
     </ApolloProvider>
