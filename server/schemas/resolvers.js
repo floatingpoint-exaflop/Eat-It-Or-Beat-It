@@ -13,9 +13,9 @@ const resolvers = {
     createUser: async (parent, args) => {
 
     },
-    createRecipe: async (parent, { _id, recipe }) => {
+    // createRecipe: async (parent, { _id, recipe }) => {
 
-    },
+    // },
   },
 };
 
