@@ -32,15 +32,10 @@ export default function SignupForm() {
 
   return (
     <>
-      <h3>Signup</h3>
       <Form onSubmit={handleFormSubmit} className="col-6">
-        {/* show alert if server response is bad */}
-        <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
-          Something went wrong with your signup!
-        </Alert>
-
-        <Form.Group className='mb-3'>
-          <Form.Label htmlFor='username' />
+        <h3>Signup</h3>
+        <Form.Group className="mb-3">
+          {/* <Form.Label htmlFor='username' /> */}
           <Form.Control
             type='text'
             placeholder='Username'
@@ -51,8 +46,8 @@ export default function SignupForm() {
           />
         </Form.Group>
 
-        <Form.Group className='mb-3'>
-          <Form.Label htmlFor='email' />
+        <Form.Group className="mb-3">
+          {/* <Form.Label htmlFor='email' /> */}
           <Form.Control
             type='email'
             placeholder='Email'
@@ -63,8 +58,8 @@ export default function SignupForm() {
           />
         </Form.Group>
 
-        <Form.Group className='mb-3'>
-          <Form.Label htmlFor='password' />
+        <Form.Group className="mb-3">
+          {/* <Form.Label htmlFor='password' /> */}
           <Form.Control
             type='password'
             placeholder='Password'
@@ -80,6 +75,10 @@ export default function SignupForm() {
           variant='primary'>
           Submit
         </Button>
+         {/* show alert if server response is bad */}
+         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
+          Something went wrong with your signup!
+        </Alert>
       </Form>
     </>
   );
