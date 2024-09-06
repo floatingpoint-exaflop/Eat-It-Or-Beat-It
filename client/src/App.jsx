@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { Container, Row, Col } from 'react-bootstrap'
+import { useState } from 'react'
 
 import RecipePage from './pages/Result';
 import Header from './components/Header'
