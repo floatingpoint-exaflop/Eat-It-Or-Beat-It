@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Row, Col, Card, Modal } from "react-bootstrap";
-// import RecipeSearchSwipe from "../utils/ext-api-calls/recipe-ext-api/searchRecipesReact";
+import { fetchSearchResults } from "../utils/ext-api-calls/recipe-ext-api/omgplzwork.js";
 
 export default function SearchForm() {
   const [formSearchSpecs, setformSearchSpecs] = useState({
@@ -22,11 +22,11 @@ export default function SearchForm() {
     "prep_time.from": "",
     "prep_time.to": "",
   });
+  const [recipeSearchResults, setRecipeSearchResults] = useState([]);
   const [searchFormErrors, setSearchFormErrors] = useState({});
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  //checking specs for all inputs as they change
   const handleSearchInputChange = (event) => {
     const { name, value } = event.target;
     setformSearchSpecs({
@@ -35,8 +35,7 @@ export default function SearchForm() {
     });
   };
 
-  //yuge verification block for edit/alert messages
-  const handleSearchSubmit = (event) => {
+  const handleSearchSubmit = async (event) => {
     event.preventDefault();
     const errors = {};
     let isValid = true;
@@ -141,18 +140,23 @@ export default function SearchForm() {
     }
 
     // Set errors if any need to be set
-    if (!isValid) {
+    if (isValid) {
+      try {
+        const results = await fetchSearchResults(formSearchSpecs); // Fetch search results
+        setRecipeSearchResults(results); // Update state with search results
+      } catch (error) {
+        setErrorMessage(error.message);
+        setShowErrorModal(true);
+      }
+    } else {
       setSearchFormErrors(errors);
       setErrorMessage(Array.from(errorMessagesSet).join("\n"));
       setShowErrorModal(true);
-      return;
     }
-
-    // -------Actually calling the fabled external API-------
-    fetchSearchResults(formSearchSpecs);
   };
 
   const handleCloseModal = () => setShowErrorModal(false);
+
 
   //------begin actual UI rendering----------------
   return (
@@ -161,6 +165,7 @@ export default function SearchForm() {
         <Card.Body>
           <Card.Title>Recipe Search</Card.Title>
           <Form onSubmit={handleSearchSubmit}>
+            {/* onSubmit={console.log(formSearchSpecs)}> */}
             <Form.Group controlId="searchExpression" className="mb-3">
               <Form.Label>
                 Enter any keywords for desired ingredients, separated by commas.
@@ -174,10 +179,10 @@ export default function SearchForm() {
               />
             </Form.Group>
 
-            <Form.Group controlId="recipeType" className="mb-3">
+            <Form.Group controlId="recipeTypes" className="mb-3">
               <Form.Label>Choose a recipe type:</Form.Label>
               <Form.Select
-                name="recipe_type"
+                name="recipe_types"
                 value={formSearchSpecs.recipe_types}
                 onChange={handleSearchInputChange}
               >
@@ -341,7 +346,7 @@ export default function SearchForm() {
             </Row>
 
             <Button variant="primary" type="submit" className="mt-3">
-              I'm hungry!
+              I'm Hungry!
             </Button>
           </Form>
         </Card.Body>
@@ -356,7 +361,7 @@ export default function SearchForm() {
           <div style={{ whiteSpace: "pre-wrap" }}>{errorMessage}</div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleCloseModal}>
+          <Button variant="warning" onClick={handleCloseModal}>
             Close
           </Button>
         </Modal.Footer>
