@@ -24,16 +24,15 @@ const getOAuthParams = (request_data) => {
   };
 };
 
-// const API_BASE_URL =
-//   process.env.NODE_ENV === "production"
-//     ? "https://platform.fatsecret.com" // Production URL
-//     : "http://localhost:3001/api"; // Development URL (with proxy)
+const API_BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://platform.fatsecret.com" // Production URL
+    : "http://localhost:3001/api"; // Development URL (with proxy in server.js)
 
 export const fetchSearchResults = async (searchParams) => {
   const request_data = {
-    // url: `${API_BASE_URL}/rest/server.api`, // Use the dynamic base URL
-    // url: 'https://cors-anywhere.herokuapp.com/https://platform.fatsecret.com/rest/server.api',
-    url: 'https://platform.fatsecret.com/rest/server.api',
+    url: `${API_BASE_URL}/rest/server.api`, // Use the dynamic base URL
+    // url: 'https://platform.fatsecret.com/rest/server.api', //Reference: actual full api URL endpoint
     method: "POST",
     data: {
       method: "recipes.search.v3",
@@ -72,14 +71,14 @@ export const fetchSearchResults = async (searchParams) => {
   });
 
   // Log the response
-  console.log('Response status:', response.status, response.statusText);
+  console.log("Response status:", response.status, response.statusText);
 
   if (!response.ok) {
-    throw new Error('Failed to fetch recipes');
+    throw new Error("Failed to fetch recipes");
   }
 
   const data = await response.json();
-  console.log('Data received:', data);
+  console.log("Data received:", data);
 
   return data.recipes || [];
 };
