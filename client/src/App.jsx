@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 import { Container, Row, Col } from 'react-bootstrap'
@@ -18,8 +18,15 @@ const client = new ApolloClient({
 
 const sitename = "Everyone Eats";
 
+function ProtectedRoute({ loggedInUser, children }) {
+  if (!loggedInUser) {
+    return <Navigate to="/profile" />;
+  }
+  return children;
+}
+
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState("");
+  const [loggedInUser, setLoggedInUser] = useState(false);
   return (
     <ApolloProvider client={client}>
       <BrowserRouter>
@@ -31,6 +38,14 @@ function App() {
 
               <Routes>
                 <Route path='/' element={<Home />} />
+                <Route
+                    path="/profile/:userId"
+                    element={
+                      <ProtectedRoute loggedInUser={loggedInUser}>
+                        <Profile />
+                      </ProtectedRoute>
+                    }
+                  /> 
                 <Route path='/profile/:userId?' element={<Profile loggedInUser={loggedInUser}/>} />
                 {/* Need to add the element for the page below */}
                 <Route path='/recipe/:recipeId' element={<></>} /> 
