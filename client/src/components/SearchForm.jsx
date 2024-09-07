@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Row, Col, Card, Modal } from "react-bootstrap";
-// import RecipeSearchSwipe from "../utils/ext-api-calls/recipe-ext-api/searchRecipesReact";
+// import RecipeSearchSwipe from "../utils/ext-api-calls/recipe-ext-api/saturdayReactAPI.js"
 
 export default function SearchForm() {
   const [formSearchSpecs, setformSearchSpecs] = useState({
@@ -141,15 +141,13 @@ export default function SearchForm() {
     }
 
     // Set errors if any need to be set
-    if (!isValid) {
+    if (isValid) {
+      fetchSearchResults(formSearchSpecs); // Pass form specs to API call
+    } else {
       setSearchFormErrors(errors);
       setErrorMessage(Array.from(errorMessagesSet).join("\n"));
       setShowErrorModal(true);
-      return;
     }
-
-    // -------Actually calling the fabled external API-------
-    fetchSearchResults(formSearchSpecs);
   };
 
   const handleCloseModal = () => setShowErrorModal(false);
@@ -160,7 +158,9 @@ export default function SearchForm() {
       <Card className="p-4 my-3">
         <Card.Body>
           <Card.Title>Recipe Search</Card.Title>
-          <Form onSubmit={handleSearchSubmit}>
+          <Form 
+          onSubmit={handleSearchSubmit}>
+          {/* onSubmit={console.log(formSearchSpecs)}> */}
             <Form.Group controlId="searchExpression" className="mb-3">
               <Form.Label>
                 Enter any keywords for desired ingredients, separated by commas.
