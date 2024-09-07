@@ -51,7 +51,7 @@ request_data.data = {
 //----------------------------------------------------------------------
 
 export default function RecipeSearchSwipe() {
-    const [formSearchSpecs, setformSearchSpecs] = useState([]);
+    const [formSearchSpecs, setformSearchSpecs] = useState(null);
     const [recipeSearchResults, setRecipeSearchResults] = useState([]);
     const [currentEatOrBeat, setcurrentEatOrBeat] = useState(null);
     const [error, setError] = useState(null);
