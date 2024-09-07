@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import { Form, Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-export default function LoginForm(props) {
+export default function LoginForm({ validateUsernameAndPassword }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
@@ -14,13 +14,22 @@ export default function LoginForm(props) {
   }
 
   function handleLogin() {
+    // Validate the username and password
+    const validationError = validateUsernameAndPassword(username, password);
 
-    setIsAuthenticated(true);
-    navigate('/profile/:userId'); // Replace with your desired route
-  
-    console.log("Username:", username);
-    console.log("Password:", password);
-    // Add logic to handle login with username and password
+    if (validationError) {
+      console.log("Validation Error:", validationError);
+      return;
+    }
+
+    // Proceed with authentication if validation passes
+    if (username === "validUsername" && password === "validPassword") {
+      setIsAuthenticated(true);
+      navigate('/profile/:userId'); // Replace with your desired route
+      console.log("Login successful!");
+    } else {
+      console.log("Invalid username or password. Please try again.");
+    }
   }
 
   return (
@@ -43,12 +52,12 @@ export default function LoginForm(props) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-        {!isAuthenticated ? (
             <Button variant="primary" onClick={handleLogin}>Login</Button>
-        ) : (
-            <p>You are logged in!</p> 
-      )}
       </Form>
     </div>
   );
 }
+
+LoginForm.propTypes = {
+    validateUsernameAndPassword: PropTypes.func,
+  };

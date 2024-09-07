@@ -1,16 +1,48 @@
 import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert, FloatingLabel } from 'react-bootstrap';
+import LoginForm from './LoginForm';
 
 export default function SignupForm() {
   // set initial form state
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
+  const [validationErrors, setValidationErrors] = useState({
+    username: false,
+    email: false,
+    password: false
+});
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    
+    if (name === 'email' && !emailPattern.test(value)) {
+        setValidationErrors({
+            ...validationErrors,
+            email: true
+        });
+    } else if (value.trim() === '') {
+        setValidationErrors({
+            ...validationErrors,
+            [name]: true
+        });
+    } else {
+        setValidationErrors({
+            ...validationErrors,
+            [name]: false
+        });
+    }
+};
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
+
+  const [showLoginForm, setShowLoginForm] = useState(false);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -24,10 +56,40 @@ export default function SignupForm() {
         email: '',
         password: '',
       });
+
+      // Clear validation errors
+      setValidationErrors({
+        name: false,
+        email: false,
+        message: false
+    });
+
+      // Show the modal on successful signup
+      setShowModal(true);
+
+      // Validation function to check username and password
+    const validateUsernameAndPassword = (username, password) => {
+      if (username.length < 5) {
+        return "Username must be at least 5 characters long.";
+      }
+      if (password.length < 8) {
+        return "Password must be at least 8 characters long.";
+      }
+      return ""; // Return empty string if validation passes
+    };
+
+    // Pass the validation function to the LoginForm component
+    return (
+      <LoginForm validateUsernameAndPassword={validateUsernameAndPassword} />
+    );
     } catch (err) {
       console.error(err);
       setShowAlert(true);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -35,40 +97,43 @@ export default function SignupForm() {
       <Form onSubmit={handleFormSubmit} className="col-6">
         <h3>Signup</h3>
         <Form.Group className="mb-3">
-          {/* <Form.Label htmlFor='username' /> */}
-          <Form.Control
-            type='text'
-            placeholder='Username'
-            name='username'
-            onChange={handleInputChange}
-            value={userFormData.username}
-            required
-          />
+            <Form.Control 
+                type="text" 
+                name="username" 
+                placeholder="Username"
+                className={`form-control ${validationErrors.username ? 'is-invalid' : ''}`} 
+                value={userFormData.username} 
+                onChange={handleInputChange} 
+                onBlur={handleBlur} 
+                aria-describedby="username" 
+            />
+            {validationErrors.username && <Form.Control.Feedback type="invalid" id="valid-username">Username is required</Form.Control.Feedback>}
         </Form.Group>
-
         <Form.Group className="mb-3">
-          {/* <Form.Label htmlFor='email' /> */}
-          <Form.Control
-            type='email'
-            placeholder='Email'
-            name='email'
-            onChange={handleInputChange}
-            value={userFormData.email}
-            required
-          />
+            <Form.Control 
+                type="text" 
+                name="email" 
+                placeholder="Email"
+                className={`form-control ${validationErrors.email ? 'is-invalid' : ''}`} 
+                value={userFormData.email} 
+                onChange={handleInputChange} 
+                onBlur={handleBlur} 
+                aria-describedby="email" 
+            />
+            {validationErrors.email && <Form.Control.Feedback type="invalid" id="valid-email">Email is required</Form.Control.Feedback>}
         </Form.Group>
-
         <Form.Group className="mb-3">
-          {/* <Form.Label htmlFor='password' /> */}
-          <Form.Control
-            type='password'
-            placeholder='Password'
-            name='password'
-            onChange={handleInputChange}
-            value={userFormData.password}
-            required
-          />
-        </Form.Group>
+            <Form.Control 
+                type="password" 
+                name="password"
+                placeholder="Password"
+                className={`form-control ${validationErrors.password ? 'is-invalid' : ''}`} 
+                value={userFormData.password} 
+                onChange={handleInputChange} 
+                onBlur={handleBlur} 
+            />
+            {validationErrors.password && <Form.Control.Feedback type="invalid" id="valid-password">Password is required</Form.Control.Feedback>}
+    </Form.Group>
         <Button
           disabled={!(userFormData.username && userFormData.email && userFormData.password)}
           type='submit'
@@ -80,6 +145,21 @@ export default function SignupForm() {
           Something went wrong with your signup!
         </Alert>
       </Form>
+      {showLoginForm && <LoginForm validateUsernameAndPassword={validateUsernameAndPassword} />}
+      {showModal && (
+        <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-body">
+                <p>Your signup was successful!</p>
+              </div>
+                <button type="button" className="close" onClick={handleCloseModal}>
+                  <span>&times;</span>
+                </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
