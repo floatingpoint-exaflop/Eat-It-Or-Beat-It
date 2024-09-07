@@ -2,6 +2,7 @@ const express = require("express");
 const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
 const path = require("path");
+const cors = require('cors');
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 const { typeDefs, resolvers } = require("./schemas");
@@ -17,13 +18,15 @@ const server = new ApolloServer({
 const startApolloServer = async () => {
   await server.start();
 
+  app.use(cors());
   // Proxy configuration
   app.use(
     '/api',
     createProxyMiddleware({
       target: 'https://platform.fatsecret.com',
       changeOrigin: true,
-      pathRewrite: { '^/api': '/rest/server.api' },
+      // pathRewrite: { '^/api': '/rest/server.api' }, //this is an old one, keeping just in case
+      pathRewrite: { '^/api': '' },
       logLevel: 'debug', 
     })
   );

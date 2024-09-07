@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Row, Col, Card, Modal } from "react-bootstrap";
-import { fetchSearchResults } from "../utils/ext-api-calls/recipe-ext-api/omgplzwork.js";
+import { fetchSearchResults } from "../utils/recipe-ext-api/fatsecret.js";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function SearchForm() {
   const [formSearchSpecs, setformSearchSpecs] = useState({
