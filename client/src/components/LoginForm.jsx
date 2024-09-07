@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import { Form, Button } from 'react-bootstrap';
 
 export default function LoginForm(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+
+  if (isAuthenticated) {
+    navigate('/profile/:userId'); 
+  }
+
   function handleLogin() {
+
+    setIsAuthenticated(true);
+    navigate('/profile/:userId'); // Replace with your desired route
+  
     console.log("Username:", username);
     console.log("Password:", password);
     // Add logic to handle login with username and password
@@ -31,7 +43,11 @@ export default function LoginForm(props) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-        <Button variant="primary" onClick={handleLogin}>Login</Button>
+        {!isAuthenticated ? (
+            <Button variant="primary" onClick={handleLogin}>Login</Button>
+        ) : (
+            <p>You are logged in!</p> 
+      )}
       </Form>
     </div>
   );
