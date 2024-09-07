@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import foodLogo from '../icons/food.svg';
+import foodLogo from '../icons/logo.png';
 
 export default function Header(props) {
     const menu = [
