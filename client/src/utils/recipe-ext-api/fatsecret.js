@@ -17,12 +17,14 @@ const consumer_secret = "322b9d574ed14573b656c85bf1234c32";
 // });
 
 const hash_function = (base_string, key) => {
-  console.log("Base String: ", base_string);
-  console.log("Key: ", key);
+  console.log("Base String Before Encoding: ", base_string);
+  console.log("Key Before Encoding: ", key);
   const shaObj = new jsSHA("SHA-1", "TEXT");
   shaObj.setHMACKey(key, "TEXT");
   shaObj.update(base_string);
-  return shaObj.getHMAC("B64");
+  const signature = shaObj.getHMAC("B64");
+  console.log("Computed Signature (Base64): ", signature);
+  return signature;
 };
 // Initialize OAuth 1.0a
 const oauth = new OAuth({
@@ -36,14 +38,20 @@ const getOAuthParams = (request_data) => {
   // Generate OAuth parameters
   const oauth_params = oauth.authorize(request_data);
 
-  // Include all required parameters
+  // URL-encode the OAuth signature
+  const encodedSignature = encodeURIComponent(oauth_params.oauth_signature);
+
+  // Log for debugging
+  console.log("OAuth Signature (Raw): ", oauth_params.oauth_signature);
+  console.log("URL-encoded OAuth Signature: ", encodedSignature);
+
   return {
     oauth_consumer_key: consumer_key,
     oauth_nonce: oauth_params.oauth_nonce,
     oauth_signature_method: "HMAC-SHA1",
     oauth_timestamp: oauth_params.oauth_timestamp,
     oauth_version: "1.0",
-    oauth_signature: encodeURIComponent(oauth_params.oauth_signature), // Make sure to encode the signature
+    oauth_signature: encodedSignature, // Ensure the signature is URL-encoded
   };
 };
 
@@ -55,15 +63,11 @@ const API_BASE_URL =
 
 // Function to fetch search results
 export const fetchSearchResults = async (searchParams) => {
-  // Set up request data
-  // const request_data = {
-  //   url: `${API_BASE_URL}/rest/server.api`,
   const actualFatSecretURL = "https://platform.fatsecret.com/rest/server.api";
 
   // Set up request data for OAuth (using actualFatSecretURL for signature)
   const request_data = {
     url: actualFatSecretURL,
-    // url: "https://platform.fatsecret.com/rest/server.api",
     method: "POST",
     data: {
       method: "recipes.search.v3",
@@ -98,21 +102,16 @@ export const fetchSearchResults = async (searchParams) => {
   // Convert parameters to URL-encoded form
   const formBody = new URLSearchParams(fullParams);
 
-  // Perform the fetch request
-  // const response = await fetch(request_data.url, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/x-www-form-urlencoded",
-  //   },
-  //   body: formBody.toString(),
-  // });
+  // Log for debugging
+  console.log("Request Body: ", formBody.toString());
+
   const API_BASE_URL = "http://localhost:3001/api";
   const response = await fetch(`${API_BASE_URL}/rest/server.api`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: formBody.toString()  // body includes the OAuth signature and other data
+    body: formBody.toString(), // body includes the OAuth signature and other data
   });
 
   if (!response.ok) {

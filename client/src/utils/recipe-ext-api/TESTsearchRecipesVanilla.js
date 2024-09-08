@@ -68,6 +68,7 @@ fetch(request_data.url, {
     const searchResultArray = data.recipes.recipe;
     searchResultArray.forEach(recipe => {
         console.log(JSON.stringify(recipe, null, 2)); // Pretty-print each recipe object
+        
     });
 })
 .catch(error => console.error('Error:', error));
