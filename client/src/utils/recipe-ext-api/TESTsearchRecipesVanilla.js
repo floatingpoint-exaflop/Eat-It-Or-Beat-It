@@ -12,6 +12,8 @@ const oauth = OAuth({
     consumer: { key: consumer_key, secret: consumer_secret },
     signature_method: 'HMAC-SHA1',
     hash_function(base_string, key) {
+        console.log("Base String: ", base_string);
+        console.log("Key: ", key);
         return crypto.createHmac('sha1', key).update(base_string).digest('base64');
     }
 });
@@ -26,9 +28,9 @@ const request_data = {
         max_results: 1,
         search_expression: 'chicken',
         recipe_types: 'lunch',
-        recipe_types_matchall: 'true',
-        must_have_images: 'false',
-        'calories.from': 0,
+        recipe_types_matchall: 'false',
+        must_have_images: 'true',
+        'calories.from': '',
         'calories.to': 900,
         'carb_percentage.from': 0,
         'carb_percentage.to': 100,
