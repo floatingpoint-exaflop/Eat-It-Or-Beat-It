@@ -20,32 +20,11 @@ const userSchema = new Schema(
     },
     recipes: [
       {
-        type: String,
-        trim: true,
-      },
-    ],
-    // fName: {
-    //   type: String,
-    //   required: true,
-    // },
-    // lName: {
-    //   type: String,
-    //   required: true,
-    // },
-    // goal: {
-    //   type: String,
-    //   required: false
-    // },
-    // nutrients: {
-    //   type: String,
-    //   required: false
-    // },
-    // allergies: {
-    //   type: String,
-    //   required: false
-    // }
-  }
-);
+        type: Schema.Types.ObjectId,
+        ref: 'Recipe' // References the Recipe model
+      }
+    ]
+  });
 
 
 // set up pre-save middleware to create password
