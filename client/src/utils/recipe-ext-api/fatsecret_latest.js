@@ -1,10 +1,10 @@
-import OAuth from "oauth-1.0a";
-import CryptoJS from "crypto-js";
-import jsSHA from "jssha";
+import OAuth from 'oauth-1.0a';
+import CryptoJS from 'crypto-js';
+import jsSHA from 'jssha';
 
 // Define keys
-const consumer_key = "d63563bb75c641f783ada0171b5eb024";
-const consumer_secret = "322b9d574ed14573b656c85bf1234c32";
+const consumer_key = 'd63563bb75c641f783ada0171b5eb024';
+const consumer_secret = '322b9d574ed14573b656c85bf1234c32';
 
 // Set up OAuth instance
 // const oauth = OAuth({
@@ -27,7 +27,7 @@ const hash_function = (base_string, key) => {
 // Initialize OAuth 1.0a
 const oauth = new OAuth({
   consumer: { key: consumer_key, secret: consumer_secret },
-  signature_method: "HMAC-SHA1",
+  signature_method: 'HMAC-SHA1',
   hash_function, // Pass the custom hash function
 });
 
@@ -40,10 +40,10 @@ const getOAuthParams = (request_data) => {
   return {
     oauth_consumer_key: consumer_key,
     oauth_nonce: oauth_params.oauth_nonce,
-    oauth_signature_method: "HMAC-SHA1",
+    oauth_signature_method: 'HMAC-SHA1',
     oauth_timestamp: oauth_params.oauth_timestamp,
-    oauth_version: "1.0",
-    oauth_signature: encodeURIComponent(oauth_params.oauth_signature), // Make sure to encode the signature
+    oauth_version: '1.0',
+    oauth_signature: encodeURIComponent(oauth_params.oauth_signature) // Make sure to encode the signature
   };
 };
 
@@ -55,14 +55,10 @@ const API_BASE_URL =
 
 // Function to fetch search results
 export const fetchSearchResults = async (searchParams) => {
+  
   // Set up request data
-  // const request_data = {
-  //   url: `${API_BASE_URL}/rest/server.api`,
-  const actualFatSecretURL = "https://platform.fatsecret.com/rest/server.api";
-
-  // Set up request data for OAuth (using actualFatSecretURL for signature)
   const request_data = {
-    url: actualFatSecretURL,
+    url: `${API_BASE_URL}/rest/server.api`,
     // url: "https://platform.fatsecret.com/rest/server.api",
     method: "POST",
     data: {
@@ -92,31 +88,23 @@ export const fetchSearchResults = async (searchParams) => {
   // Combine OAuth parameters with request data
   const fullParams = {
     ...request_data.data,
-    ...oauthParams,
+    ...oauthParams
   };
 
   // Convert parameters to URL-encoded form
   const formBody = new URLSearchParams(fullParams);
 
   // Perform the fetch request
-  // const response = await fetch(request_data.url, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/x-www-form-urlencoded",
-  //   },
-  //   body: formBody.toString(),
-  // });
-  const API_BASE_URL = "http://localhost:3001/api";
-  const response = await fetch(`${API_BASE_URL}/rest/server.api`, {
+  const response = await fetch(request_data.url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: formBody.toString()  // body includes the OAuth signature and other data
+    body: formBody.toString()
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch recipes");
+    throw new Error('Failed to fetch recipes');
   }
 
   const data = await response.json();

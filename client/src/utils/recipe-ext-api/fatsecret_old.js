@@ -27,7 +27,7 @@ const getOAuthParams = (request_data) => {
 const API_BASE_URL =
   process.env.NODE_ENV === "production"
     ? "https://platform.fatsecret.com" // Production URL
-    : "http://localhost:3001/api"; // Development URL (with proxy in server.js)
+    : "https://localhost:3001/api"; // Development URL (with proxy in server.js)
 
 export const fetchSearchResults = async (searchParams) => {
   const request_data = {

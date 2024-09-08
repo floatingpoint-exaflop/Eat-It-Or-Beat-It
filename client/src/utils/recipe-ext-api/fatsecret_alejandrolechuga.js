@@ -17,7 +17,7 @@ function oAuthHeader(url, method, session, token) {
       secret: token
     },
     signature_method: 'HMAC-SHA1',
-    nonce_length: 6,
+    // nonce_length: 6,
     version: '1.0',
     hash_function: function(base_string, key) {
       return CryptoJS.HmacSHA1(base_string, key).toString(CryptoJS.enc.Base64);
@@ -36,7 +36,7 @@ function oAuthHeader(url, method, session, token) {
 const API_BASE_URL =
   process.env.NODE_ENV === 'production'
     ? 'https://platform.fatsecret.com'
-    : 'http://localhost:3001/api';
+    : 'https://localhost:3001/api';
 
 // Function to fetch search results
 export const fetchSearchResults = async (searchParams) => {
