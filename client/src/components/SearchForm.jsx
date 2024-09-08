@@ -141,6 +141,7 @@ export default function SearchForm() {
 
     // Set errors if any need to be set
     if (isValid) {
+      async function fetchRecipeSearch(searchParams) {
       try {
         const response = await fetch('/api/recipe/search', {
             method: 'POST',
@@ -152,7 +153,7 @@ export default function SearchForm() {
       } catch (error) {
         setErrorMessage(error.message);
         setShowErrorModal(true);
-      }
+      }}
     } else {
       setSearchFormErrors(errors);
       setErrorMessage(Array.from(errorMessagesSet).join("\n"));
