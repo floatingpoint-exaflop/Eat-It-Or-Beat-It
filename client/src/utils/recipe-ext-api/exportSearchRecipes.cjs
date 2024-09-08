@@ -1,6 +1,9 @@
-import fetch from 'node-fetch';
-import OAuth from 'oauth-1.0a';
-import crypto from 'crypto';
+// import fetch from 'node-fetch';
+// import OAuth from 'oauth-1.0a';
+// import crypto from 'crypto';
+const fetch = require('node-fetch');
+const OAuth = require('oauth-1.0a');
+const crypto = require('crypto');
 
 // Our API keys
 const consumer_key = 'd63563bb75c641f783ada0171b5eb024';
@@ -19,6 +22,7 @@ const oauth = OAuth({
 
 // Export this function to be used in the server route
 async function searchRecipes(searchParams) {
+    console.log('Executing searchRecipes with:', searchParams);
     // Create the request_data object dynamically based on searchParams
     const request_data = {
         url: 'https://platform.fatsecret.com/rest/server.api',
@@ -66,6 +70,7 @@ async function searchRecipes(searchParams) {
             body: new URLSearchParams(request_data.data).toString()
         });
         const data = await response.json();
+        console.log(data)
         return data.recipes.recipe; // Return the recipe search result array
     } catch (error) {
         console.error('Error:', error);
