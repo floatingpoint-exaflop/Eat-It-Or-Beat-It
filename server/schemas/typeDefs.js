@@ -29,6 +29,7 @@ type Recipe {
   rating: String
   serving_sizes: ServingSizes
   recipe_types: [String]
+  comments: [Comment]
 }
   type RecipeIngredients {
     ingredient: [String] # List of ingredient names
@@ -110,17 +111,15 @@ input AddCommentInput {
 }
 
 type Query {
-  getUsers: [User]
   getUser(id: ID!): User
-  getRecipes: [Recipe]
+  getRecipes(userId: ID!): [Recipe] # Add userId argument here
   getSingleRecipe(id: ID!): Recipe
   getComments: [Comment]
   getSingleComment(id: ID!): Comment
 }
-
 type Mutation {
   addUser(input: CreateUserInput): User
-  addRecipe(input: AddRecipeInput): Recipe
+  addRecipe(userId: ID!, input: AddRecipeInput): Recipe
   addComment(input: AddCommentInput): Comment
 }
 `;
