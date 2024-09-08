@@ -4,7 +4,12 @@ const { expressMiddleware } = require("@apollo/server/express4");
 const path = require("path");
 const cors = require('cors');
 const { createProxyMiddleware } = require("http-proxy-middleware");
-const { searchRecipes } = require('../client/src/utils/recipe-ext-api/exportSearchRecipesVanilla.js');
+
+let searchRecipes;
+import('../client/src/utils/recipe-ext-api/exportSearchRecipesVanilla.js').then(module => {
+  searchRecipes = module.searchRecipes;
+});
+
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 
