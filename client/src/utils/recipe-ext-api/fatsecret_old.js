@@ -1,47 +1,38 @@
-import OAuth from 'oauth-1.0a';
-import CryptoJS from 'crypto-js';
+import OAuth from "oauth-1.0a";
+import CryptoJS from "crypto-js";
 
-// Define keys
-const consumer_key = 'd63563bb75c641f783ada0171b5eb024';
-const consumer_secret = '322b9d574ed14573b656c85bf1234c32';
+const consumer_key = "d63563bb75c641f783ada0171b5eb024";
+const consumer_secret = "322b9d574ed14573b656c85bf1234c32";
 
-// Set up OAuth instance
 const oauth = OAuth({
   consumer: { key: consumer_key, secret: consumer_secret },
-  signature_method: 'HMAC-SHA1',
+  signature_method: "HMAC-SHA1",
   hash_function(base_string, key) {
-    // Use CryptoJS for HMAC-SHA1 hashing and Base64 encoding
     return CryptoJS.HmacSHA1(base_string, key).toString(CryptoJS.enc.Base64);
-  }
+  },
 });
 
-// Helper function to get OAuth params and signature
 const getOAuthParams = (request_data) => {
-  // Generate OAuth parameters
   const oauth_params = oauth.authorize(request_data);
-
-  // Include all required parameters
   return {
     oauth_consumer_key: consumer_key,
-    oauth_signature_method: 'HMAC-SHA1',
+    oauth_signature_method: "HMAC-SHA1",
     oauth_timestamp: oauth_params.oauth_timestamp,
     oauth_nonce: oauth_params.oauth_nonce,
-    oauth_version: '1.0',
-    oauth_signature: encodeURIComponent(oauth_params.oauth_signature) // Make sure to encode the signature
+    oauth_version: "1.0",
+    oauth_signature: oauth_params.oauth_signature,
   };
 };
 
-// Set API Base URL
 const API_BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "https://platform.fatsecret.com"
-    : "http://localhost:3001/api";
+    ? "https://platform.fatsecret.com" // Production URL
+    : "http://localhost:3001/api"; // Development URL (with proxy in server.js)
 
-// Function to fetch search results
 export const fetchSearchResults = async (searchParams) => {
-  // Set up request data
   const request_data = {
-    url: `${API_BASE_URL}/rest/server.api`,
+    url: `${API_BASE_URL}/rest/server.api`, // Use the dynamic base URL
+    // url: 'https://platform.fatsecret.com/rest/server.api', //Reference: actual full api URL endpoint
     method: "POST",
     data: {
       method: "recipes.search.v3",
@@ -64,32 +55,29 @@ export const fetchSearchResults = async (searchParams) => {
     },
   };
 
-  // Generate OAuth parameters
   const oauthParams = getOAuthParams(request_data);
 
-  // Combine OAuth parameters with request data
-  const fullParams = {
+  const formBody = new URLSearchParams({
     ...request_data.data,
-    ...oauthParams
-  };
-
-  // Convert parameters to URL-encoded form
-  const formBody = new URLSearchParams(fullParams);
-
-  // Perform the fetch request
-  const response = await fetch(request_data.url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: formBody.toString()
+    ...oauthParams,
   });
 
+  const response = await fetch(request_data.url, {
+    method: "POST",
+    body: formBody,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  });
+
+  console.log("Response status:", response.status, response.statusText);
+
   if (!response.ok) {
-    throw new Error('Failed to fetch recipes');
+    throw new Error("Failed to fetch recipes");
   }
 
   const data = await response.json();
-  console.log(data);
+  console.log("Data received:", data);
+
   return data.recipes || [];
 };

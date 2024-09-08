@@ -11,6 +11,6 @@ import RecipePage from './pages/Result.jsx';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
-    {/* <SearchForm /> */}
+    <SearchForm />
   </StrictMode>
 );
