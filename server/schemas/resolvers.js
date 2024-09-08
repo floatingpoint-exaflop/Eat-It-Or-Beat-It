@@ -28,21 +28,26 @@ const resolvers = {
     },
 
     // Fetch a single user by ID
-    getSingleUser: async (parent, { userId }) => {
+    getUser: async (parent, { userId }) => {
       return User.findById(userId).populate('recipes');
     },
   },
 
   Mutation: {
-    // Add a recipe for a user
-    addRecipe: async (parent, { userId, recipeData }) => {
-      const recipe = await Recipe.create(recipeData);
+    addUser: async (parent, { input }) => {
+      const { username, email, password } = input;
+      const user = await User.create({ username, email, password });
+      return user;
+    },
+    
+    addRecipe: async (parent, { userId, input }) => {
+      const recipe = await Recipe.create(input);
       await User.findByIdAndUpdate(userId, { $push: { recipes: recipe._id } });
       return recipe;
     },
-
-    // Add a comment to a recipe by a user
-    addComment: async (parent, { recipeId, userId, commentBody, rating }) => {
+  
+    addComment: async (parent, { input }) => {
+      const { recipeId, userId, commentBody, rating } = input;
       const comment = await Comment.create({
         commentBody,
         rating,
@@ -50,12 +55,6 @@ const resolvers = {
         user: userId,
       });
       return comment;
-    },
-
-    // Add a new user
-    addUser: async (parent, { username, email, password }) => {
-      const user = await User.create({ username, email, password });
-      return user;
     },
   },
 
