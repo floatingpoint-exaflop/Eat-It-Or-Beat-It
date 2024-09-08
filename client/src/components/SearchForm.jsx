@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Form, Button, Row, Col, Card, Modal } from "react-bootstrap";
-import { fetchSearchResults } from "../utils/recipe-ext-api/fatsecret.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function SearchForm() {
@@ -143,8 +142,13 @@ export default function SearchForm() {
     // Set errors if any need to be set
     if (isValid) {
       try {
-        const results = await fetchSearchResults(formSearchSpecs); // Fetch search results
-        setRecipeSearchResults(results); // Update state with search results
+        const response = await fetch('/api/recipe/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(searchParams)
+        });
       } catch (error) {
         setErrorMessage(error.message);
         setShowErrorModal(true);
