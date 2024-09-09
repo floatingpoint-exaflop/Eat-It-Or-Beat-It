@@ -2,7 +2,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from 'react';
 import { Button, Card } from 'react-bootstrap';
 
-export default function EatItOrBeatIt({ results = [] }) {
+export default function EatItOrBeatIt(props) {
+  const { results } = props
   const [recipes, setRecipes] = useState(results); // Ensure results have a default value of an empty array
   const [currentRecipe, setCurrentRecipe] = useState(null);
 

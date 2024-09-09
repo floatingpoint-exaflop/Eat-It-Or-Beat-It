@@ -25,6 +25,7 @@ export default function Home({ validateUsernameAndPassword }) {
         </div>
 
       </div>
+      {/* IDEALLY searchform component is on a separate search page, could be conditionally loaded here though. */}
       <SearchForm />
       
     </>
