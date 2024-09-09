@@ -1,33 +1,45 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import { Form, Button } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import { Form, Button, Modal } from 'react-bootstrap';
 
-export default function LoginForm({ validateUsernameAndPassword }) {
+export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  if (isAuthenticated) {
-    navigate('/profile/:userId'); 
-  }
 
-  function handleLogin() {
-    // Validate the username and password
-    const validationError = validateUsernameAndPassword(username, password);
-
-    if (validationError) {
-      console.log("Validation Error:", validationError);
-      return;
-    }
-
-    // Proceed with authentication if validation passes
-    if (username === "validUsername" && password === "validPassword") {
-      setIsAuthenticated(true);
-      navigate('/profile/:userId'); // Replace with your desired route
-      console.log("Login successful!");
-    } else {
+//   if (isAuthenticated) {
+//     navigate('/profile/:userId'); 
+//   }
+async function handleLogin() {
+    // Make an API call to authenticate the user
+    try {
+      // Call your authentication API endpoint passing username and password
+      const response = await fetch(`/api/users/login`, {
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      const data = await response.json();
+      console.log(data.user)
+      
+      if (data.user._id) {
+        setIsAuthenticated(true);
+        navigate(`/profile/${data.user._id}`);
+        console.log("Login successful!");
+      } else {
+        console.error("No data");
+        setShowModal(true);
+        console.log("Invalid username or password. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during authentication:", error);
+      setShowModal(true);
       console.log("Invalid username or password. Please try again.");
     }
   }
@@ -54,10 +66,20 @@ export default function LoginForm({ validateUsernameAndPassword }) {
         </Form.Group>
             <Button variant="primary" onClick={handleLogin}>Login</Button>
       </Form>
+
+    {/* Modal for invalid login */}
+    <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Invalid Login</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Invalid username or password. Please try again.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+
     </div>
   );
 }
-
-LoginForm.propTypes = {
-    validateUsernameAndPassword: PropTypes.func,
-  };
