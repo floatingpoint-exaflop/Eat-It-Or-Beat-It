@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client';
 
 import SignupForm from '../components/SignupForm'
 import LoginForm from '../components/LoginForm';
+import SearchForm from '../components/SearchForm';
 
 
 export default function Home({ validateUsernameAndPassword }) {
@@ -24,7 +25,7 @@ export default function Home({ validateUsernameAndPassword }) {
         </div>
 
       </div>
-    
+      <SearchForm />
       
     </>
   );
