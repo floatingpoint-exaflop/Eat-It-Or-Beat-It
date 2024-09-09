@@ -34,24 +34,24 @@ function App() {
 
         <Container>
           <Row>
-            <Col md="10">
+            {/* <Col md="10"> */}
 
               <Routes>
                 <Route path='/' element={<Home />} />
-                <Route
+                {/* <Route
                     path="/profile/:userId"
                     element={
                       <ProtectedRoute loggedInUser={loggedInUser}>
                         <Profile />
                       </ProtectedRoute>
-                    }
-                  /> 
+                    } 
+                  /> */}
                 <Route path='/profile/:userId?' element={<Profile loggedInUser={loggedInUser}/>} />
                 {/* Need to add the element for the page below */}
                 <Route path='/recipe/:recipeId' element={<></>} /> 
               </Routes>
 
-            </Col>
+            {/* </Col> */}
           </Row>
         </Container>
 
