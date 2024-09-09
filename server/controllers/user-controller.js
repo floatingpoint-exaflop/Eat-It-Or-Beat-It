@@ -4,8 +4,8 @@ const { User } = require('../models');
 const { signToken } = require('../utils/auth');
 
 module.exports = {
+  getCurrentUser: async function(req, res){
   // get a single user by either their id or their username
-  async getCurrentUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId }).populate('comments');
       res.json(user);
@@ -14,17 +14,34 @@ module.exports = {
       return res.status(500).json(err);
     }
   },
+
   // create a user, sign a token, and send it back (to client/src/components/SignUpForm.js)
-  async createUser(req, res) {
-    const user = await User.create(req.res);
+  createUser: async function(req, res) {
+    console.log("create")
+
+    let user
+    try {
+      user = await User.create(req.body);
+    } catch(err){
+      console.log(err)
+    }
+
+    console.log(user)
 
     if (!user) {
       return res.status(400).json({ message: 'Something is wrong!' });
     }
-    const token = signToken(user);
-    res.json({ token, user });
+
+    try {
+      const token = signToken(user);
+      res.json({ token, user });
+    } catch(err){
+      console.log(err)
+      res.status(400).json({ message: 'Something is wrong!' });
+    }
   },
-  async updateUser(req, res) {
+
+  updateUser: async function (req, res) {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
@@ -37,10 +54,11 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+
   // login a user, sign a token, and send it back (to client/src/components/LoginForm.js)
   // {body} is destructured req.body
-  async login({ body }, res) {
-    const user = await User.findOne({ $or: [{ username: body.username }, { email: body.email }] });
+  login: async function({ body }, res) {
+    const user = await User.findOne({ username: body.username });
     if (!user) {
       return res.status(400).json({ message: "Can't find this user" });
     }
@@ -53,7 +71,8 @@ module.exports = {
     const token = signToken(user);
     res.json({ token, user });
   },
-  async addRecipeApi (req,res) {
+
+  addRecipeApi: async function (req,res) {
     try {
       const liked = await Recipe.create(req.res);
       res.json(liked);

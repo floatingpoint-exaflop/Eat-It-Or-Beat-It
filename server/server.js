@@ -2,10 +2,12 @@ const express = require("express")
 const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
 const path = require("path");
-const { 
-  searchRecipes, 
-  getMoreRecipeDetails
-} = require("./controllers/recipe-controller")
+// const { 
+//   searchRecipes, 
+//   getMoreRecipeDetails
+// } = require("./controllers/recipe-controller")
+
+const apiRoutes = require("./routes")
 
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
@@ -35,17 +37,21 @@ const startApolloServer = async () => {
   //     logLevel: 'debug',
   //   })
   // );
-  app.use(express.json());
-  app.post("/api/recipe/search", async (req, res) => {
-    console.log('Received searchParams:', req.body)
-    const searchParams = req.body;
-    try {
-      const searchResults = await searchRecipes(searchParams);
-      res.json(searchResults);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch recipes" });
-    }
-  });
+
+  // app.post("/api/user/login", (req, res) => {
+  //   console.log("ok")
+  //   res.json({ result: "ok" })
+  // })
+
+  // app.post("/api/recipe/search", async (req, res) => {
+  //   const searchParams = req.body;
+  //   try {
+  //     const searchResults = await searchRecipes(searchParams);
+  //     res.json(searchResults);
+  //   } catch (error) {
+  //     res.status(500).json({ error: "Failed to fetch recipes" });
+  //   }
+  // });
 
   app.get("/api/recipe/search", async (req, res) => {
     console.log('Received searchParams:', req.body)
@@ -60,6 +66,9 @@ const startApolloServer = async () => {
 
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
+
+  app.use('/api', apiRoutes)
+
   app.use("/graphql", expressMiddleware(server));
 
   if (process.env.NODE_ENV === "production") {

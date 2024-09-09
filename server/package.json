@@ -16,6 +16,7 @@
     "crypto-js": "^4.2.0",
     "express": "^4.17.2",
     "graphql": "^16.6.0",
+    "jsonwebtoken": "^9.0.2",
     "jssha": "^3.3.1",
     "mongoose": "^8.0.0",
     "oauth-1.0a": "^2.2.6"

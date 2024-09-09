@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Alert, FloatingLabel } from 'react-bootstrap';
+import { Form, Button, Alert, Modal } from 'react-bootstrap';
 import LoginForm from './LoginForm';
 
 export default function SignupForm() {
@@ -49,7 +49,17 @@ export default function SignupForm() {
 
     try {
       // Simulate creating a user (replace this with your actual logic)
-      console.log('Creating user:', userFormData);
+      const response = await fetch(`/api/users`, {
+        method: 'POST',
+        body: JSON.stringify( userFormData ),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      const data = await response.json();
+
+      console.log('Creating user:', data);
 
       setUserFormData({
         username: '',
@@ -67,21 +77,6 @@ export default function SignupForm() {
       // Show the modal on successful signup
       setShowModal(true);
 
-      // Validation function to check username and password
-    const validateUsernameAndPassword = (username, password) => {
-      if (username.length < 5) {
-        return "Username must be at least 5 characters long.";
-      }
-      if (password.length < 8) {
-        return "Password must be at least 8 characters long.";
-      }
-      return ""; // Return empty string if validation passes
-    };
-
-    // Pass the validation function to the LoginForm component
-    return (
-      <LoginForm validateUsernameAndPassword={validateUsernameAndPassword} />
-    );
     } catch (err) {
       console.error(err);
       setShowAlert(true);
@@ -145,7 +140,7 @@ export default function SignupForm() {
           Something went wrong with your signup!
         </Alert>
       </Form>
-      {showLoginForm && <LoginForm validateUsernameAndPassword={validateUsernameAndPassword} />}
+
       {showModal && (
         <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
           <div className="modal-dialog" role="document">
@@ -153,13 +148,25 @@ export default function SignupForm() {
               <div className="modal-body">
                 <p>Your signup was successful!</p>
               </div>
-                <button type="button" className="close" onClick={handleCloseModal}>
-                  <span>&times;</span>
+                <button type="button"  className="btn btn-secondary" data-dismiss="modal" onClick={handleCloseModal}>Close
                 </button>
             </div>
           </div>
         </div>
       )}
+      {/* <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Your signup was succesful!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div style={{ whiteSpace: "pre-wrap" }}></div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="warning" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal> */}
     </>
   );
 }
