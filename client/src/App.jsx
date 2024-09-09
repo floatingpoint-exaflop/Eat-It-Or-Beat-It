@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 import { Container, Row, Col } from 'react-bootstrap'
+import UserProvider from './providers/UserProvider'
 
 import RecipePage from './pages/Result';
 import Header from './components/Header';
@@ -28,13 +29,14 @@ function ProtectedRoute({ loggedInUser, children }) {
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(false);
   return (
-    <ApolloProvider client={client}>
-      <BrowserRouter>
-        <Header sitename={sitename} />
+    <UserProvider>
+      <ApolloProvider client={client}>
+        <BrowserRouter>
+          <Header sitename={sitename} />
 
-        <Container>
-          <Row>
-            {/* <Col md="10"> */}
+          <Container>
+            <Row>
+              {/* <Col md="10"> */}
 
               <Routes>
                 <Route path='/' element={<Home />} />
@@ -46,19 +48,20 @@ function App() {
                       </ProtectedRoute>
                     } 
                   /> */}
-                <Route path='/profile/:userId?' element={<Profile loggedInUser={loggedInUser}/>} />
+                <Route path='/profile/:userId?' element={<Profile loggedInUser={loggedInUser} />} />
                 {/* Need to add the element for the page below */}
-                <Route path='/recipe/:recipeId' element={<></>} /> 
+                <Route path='/recipe/:recipeId' element={<></>} />
               </Routes>
 
-            {/* </Col> */}
-          </Row>
-        </Container>
+              {/* </Col> */}
+            </Row>
+          </Container>
 
-        <Footer/>
+          <Footer />
 
-      </BrowserRouter>
-    </ApolloProvider>
+        </BrowserRouter>
+      </ApolloProvider>
+    </UserProvider>
   );
 }
 {/* <RecipePage  />

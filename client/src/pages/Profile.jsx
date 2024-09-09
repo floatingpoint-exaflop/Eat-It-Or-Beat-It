@@ -13,7 +13,7 @@ export default function Profile(props) {
     const comments = []; // Replace with your actual data fetching logic
 
     return (
-        <div className='container col-12'>
+        <div className='container col-12 mt-5'>
             <div className="col-12 row" id="userBody">
                 <div className="row" style={{ width: "100%" }} id="userHeader">
                     <div className="col-lg-3 col-md-3 col-sm-0" id="userAvatar">
