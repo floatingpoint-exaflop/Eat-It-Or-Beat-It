@@ -2,15 +2,10 @@ const express = require("express")
 const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
 const path = require("path");
-const cors = require("cors");
-const { createProxyMiddleware } = require("http-proxy-middleware");
-
-let searchRecipes;
-import("../client/src/utils/recipe-ext-api/exportSearchRecipes.cjs").then(
-  (module) => {
-    searchRecipes = module.searchRecipes;
-  }
-);
+const { 
+  searchRecipes, 
+  // getMoreRecipeDetails
+} = require("./controllers/recipe-controller")
 
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
@@ -21,6 +16,9 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
+
+// const cors = require("cors");
+// const { createProxyMiddleware } = require("http-proxy-middleware");
 
 const startApolloServer = async () => {
   await server.start();

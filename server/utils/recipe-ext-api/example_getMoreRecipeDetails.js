@@ -39,16 +39,13 @@ async function getRecipe(recipe_id) {
         oauth_signature: oauth_params.oauth_signature
     });
 
-    // Construct the URL with the query params
-    const url_with_params = `${request_data.url}?${query_params.toString()}`;
-
-    // Fetch the recipe
     try {
-        const response = await fetch(url_with_params, {
+        const response = await fetch(request_data.url, {
             method: request_data.method,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
-            }
+            },
+            body: new URLSearchParams(request_data.data).toString()
         });
         const data = await response.json();
         return data; // Return the data to be used by the calling function
@@ -59,6 +56,6 @@ async function getRecipe(recipe_id) {
 }
 
 // Export the function
-module.exports = {
-    getRecipe
-};
+// module.exports = {
+//     getMoreRecipeDetails
+// };

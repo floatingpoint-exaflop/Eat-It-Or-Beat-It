@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import OAuth from 'oauth-1.0a';
 import crypto from 'crypto';
 
@@ -15,15 +14,13 @@ const oauth = OAuth({
     }
 });
 
-
-
 // This will be fed into the node fetch call below. Aside from the few items which have hard-coded values, the rest of this needs to come from state on the form where a user first searches for their desired recipe specs.
 const request_data = {
     url: 'https://platform.fatsecret.com/rest/server.api',
     method: 'GET',
     data: {
-        method: 'recipe.get.v2',
-        recipe_id: currentRecipeId,
+        method: 'food.get.v3',
+        food_id: 33770,
         format: 'json',
     },
 }
