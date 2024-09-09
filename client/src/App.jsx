@@ -5,6 +5,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 import { Container, Row, Col } from 'react-bootstrap'
 import UserProvider from './providers/UserProvider'
+import { useUserCtx } from './providers/UserProvider';
 
 import RecipePage from './pages/Result';
 import Header from './components/Header';
@@ -19,12 +20,12 @@ const client = new ApolloClient({
 
 const sitename = "Everyone Eats";
 
-function ProtectedRoute({ loggedInUser, children }) {
-  if (!loggedInUser) {
-    return <Navigate to="/profile" />;
-  }
-  return children;
-}
+// function ProtectedRoute({ loggedInUser, children }) {
+//   if (!loggedInUser) {
+//     return <Navigate to="/profile" />;
+//   }
+//   return children;
+// }
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(false);

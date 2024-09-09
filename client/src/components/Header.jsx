@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import foodLogo from '../icons/logo.png';
+import { useUserCtx } from '../providers/UserProvider';
 
 export default function Header(props) {
+
+    const { userData } = useUserCtx()
+
     const menu = [
         { id: 1, label: "Search", href: "/" },
         { id: 2, label: "Profile", href: "/" },
@@ -21,14 +25,14 @@ export default function Header(props) {
                 </div>
                 <div className="col-7">
                     <ul className="nav">
-                        {props.loggedInUser && props.loggedInUser.length > 1 ? (
+                        { userData.id !== null ? (
                             menu.map(item => (
                                 <li className="nav-item" key={item.id}>
                                     <Link className="nav-link" to={item.href}>{item.label}</Link>
                                 </li>
                             ))
                         ) : (
-                            <></>
+                            <>not logged in</>
                         )}
                     </ul>
                 </div>

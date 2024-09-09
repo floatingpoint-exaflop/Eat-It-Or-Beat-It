@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import { Form, Button, Modal } from 'react-bootstrap';
+import { useUserCtx } from '../providers/UserProvider';
 
 export default function LoginForm() {
+
+  const{ userData, setUserData } = useUserCtx()
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -27,6 +31,8 @@ async function handleLogin() {
       
       const data = await response.json();
       console.log(data.user)
+
+      setUserData(data.user)
       
       if (data.user._id) {
         setIsAuthenticated(true);

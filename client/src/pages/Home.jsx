@@ -4,11 +4,14 @@ import { useQuery } from '@apollo/client';
 import SignupForm from '../components/SignupForm'
 import LoginForm from '../components/LoginForm';
 
+import { useUserCtx } from '../providers/UserProvider';
 
-export default function Home({ validateUsernameAndPassword }) {
-
+export default function Home() {
 
   // logic for which component is showing
+  let { userData } = useUserCtx();
+
+  console.log(userData.id)
 
   return (
     <>
