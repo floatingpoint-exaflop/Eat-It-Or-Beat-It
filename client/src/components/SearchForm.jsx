@@ -156,6 +156,7 @@ export default function SearchForm() {
           throw new Error("Failed to fetch recipes.");
         }
         const data = await response.json();
+        console.log("Received data:", data);
         setRecipeSearchResults(data); // Store results in state
       } catch (error) {
         setErrorMessage(error.message);

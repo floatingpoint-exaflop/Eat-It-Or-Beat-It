@@ -183,7 +183,7 @@ async function searchRecipes(searchParams) {
             body: new URLSearchParams(request_data.data).toString()
         });
         const data = await response.json();
-        console.log(data)
+        console.log('Recipes:', JSON.stringify(data, null, 2));
         return data.recipes.recipe; // Return the recipe search result array
     } catch (error) {
         console.error('Error:', error);
