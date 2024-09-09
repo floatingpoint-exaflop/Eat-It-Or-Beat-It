@@ -6,11 +6,12 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { Container, Row, Col } from 'react-bootstrap'
 import UserProvider from './providers/UserProvider'
 
-import RecipePage from './pages/Result';
+// import RecipePage from './pages/Result';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import SearchResults from "./pages/SearchResults";
 
 const client = new ApolloClient({
   uri: '/graphql',
@@ -51,6 +52,7 @@ function App() {
                 <Route path='/profile/:userId?' element={<Profile loggedInUser={loggedInUser} />} />
                 {/* Need to add the element for the page below */}
                 <Route path='/recipe/:recipeId' element={<></>} />
+                <Route path="/search-results" element={<SearchResults />} />
               </Routes>
 
               {/* </Col> */}

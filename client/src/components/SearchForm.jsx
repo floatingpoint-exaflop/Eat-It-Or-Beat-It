@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col, Card, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -26,6 +27,7 @@ export default function SearchForm() {
   const [searchFormErrors, setSearchFormErrors] = useState({});
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSearchInputChange = (event) => {
     const { name, value } = event.target;
@@ -140,37 +142,53 @@ export default function SearchForm() {
     }
 
     // Set errors if any need to be set
-   //THE CALL
-   async function fetchRecipeSearch(formSearchSpecs) {
-    try {
-      const response = await fetch("/api/recipe/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "accepts":"application/json"
-        },
-        body: JSON.stringify(formSearchSpecs),
-      });
+    //THE CALL
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch recipes.");
+    async function fetchRecipeSearch(formSearchSpecs) {
+      try {
+        const response = await fetch("/api/recipe/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            accepts: "application/json",
+          },
+          body: JSON.stringify(formSearchSpecs),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch recipes.");
+        }
+        const data = await response.json();
+        setRecipeSearchResults(data); // Store results in state
+
+        if (data.length === 0) {
+          setErrorMessage(
+            "No recipes found. Please try different search criteria."
+          );
+          setShowErrorModal(true);
+        }
+      } catch (error) {
+        setErrorMessage(error.message);
+        setShowErrorModal(true);
       }
-      const data = await response.json();
-      setRecipeSearchResults(data); // Store results in state
-    } catch (error) {
-      setErrorMessage(error.message);
-      setShowErrorModal(true);
     }
-  }
-  if (isValid) {
-    // Call the fetch function here, finally, with form data
-    fetchRecipeSearch(formSearchSpecs);
+    if (isValid) {
+      // Call the fetch function here, finally, with form data
+      fetchRecipeSearch(formSearchSpecs);
     } else {
       setSearchFormErrors(errors);
       setErrorMessage(Array.from(errorMessagesSet).join("\n"));
       setShowErrorModal(true);
     }
   };
+
+  useEffect(() => {
+    if (recipeSearchResults.length > 0) {
+      console.log("Search Results:", recipeSearchResults);
+      // Redirect only after logging the data
+      navigate("/search-results", { state: { results: recipeSearchResults } });
+    }
+  }, [recipeSearchResults, navigate]);
 
   const handleCloseModal = () => setShowErrorModal(false);
 
@@ -385,4 +403,3 @@ export default function SearchForm() {
     </>
   );
 }
-
