@@ -1,18 +1,18 @@
-const express = require("express")
+const express = require("express");
 const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
 const path = require("path");
-// const { 
-//   searchRecipes, 
-//   getMoreRecipeDetails
-// } = require("./controllers/recipe-controller")
+const { 
+  searchRecipes, 
+  getMoreRecipeDetails
+} = require("./controllers/recipe-controller")
 
 const apiRoutes = require("./routes")
 
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 
-const PORT = process.env.PORT || 4000;;
+const PORT = process.env.PORT || 4000;
 const app = express();
 const server = new ApolloServer({
   typeDefs,
@@ -43,15 +43,18 @@ const startApolloServer = async () => {
   //   res.json({ result: "ok" })
   // })
 
-  // app.post("/api/recipe/search", async (req, res) => {
-  //   const searchParams = req.body;
-  //   try {
-  //     const searchResults = await searchRecipes(searchParams);
-  //     res.json(searchResults);
-  //   } catch (error) {
-  //     res.status(500).json({ error: "Failed to fetch recipes" });
-  //   }
-  // });
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
+
+  app.post("/api/recipe/search", async (req, res) => {
+    const searchParams = req.body;
+    try {
+      const searchResults = await searchRecipes(searchParams);
+      res.json(searchResults);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch recipes" });
+    }
+  });
 
   app.get("/api/recipe/search", async (req, res) => {
     console.log('Received searchParams:', req.body)
@@ -63,9 +66,6 @@ const startApolloServer = async () => {
       res.status(500).json({ error: "Failed to fetch recipes" });
     }
   });
-
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.json());
 
   app.use('/api', apiRoutes)
 
@@ -85,7 +85,7 @@ const startApolloServer = async () => {
 
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+    // console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
   });
 };
 
