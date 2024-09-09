@@ -158,6 +158,10 @@ export default function SearchForm() {
         const data = await response.json();
         console.log("Received data:", data);
         setRecipeSearchResults(data); // Store results in state
+        const [recipeSearchResults, setRecipeSearchResults] = useState([]);
+        useEffect(() => {
+          console.log("Updated recipeSearchResults:", recipeSearchResults);
+        }, [recipeSearchResults]);
       } catch (error) {
         setErrorMessage(error.message);
         setShowErrorModal(true);
