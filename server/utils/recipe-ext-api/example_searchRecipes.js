@@ -1,7 +1,3 @@
-// import fetch from 'node-fetch';
-// import OAuth from 'oauth-1.0a';
-// import crypto from 'crypto';
-const fetch = require('node-fetch');
 const OAuth = require('oauth-1.0a');
 const crypto = require('crypto');
 
@@ -14,16 +10,12 @@ const oauth = OAuth({
     consumer: { key: consumer_key, secret: consumer_secret },
     signature_method: 'HMAC-SHA1',
     hash_function(base_string, key) {
-        console.log("Base String: ", base_string);
-        console.log("Key: ", key);
         return crypto.createHmac('sha1', key).update(base_string).digest('base64');
     }
 });
 
 // Export this function to be used in the server route
 async function searchRecipes(searchParams) {
-    console.log('Executing searchRecipes with:', searchParams);
-    // Create the request_data object dynamically based on searchParams
     const request_data = {
         url: 'https://platform.fatsecret.com/rest/server.api',
         method: 'POST',
@@ -79,5 +71,5 @@ async function searchRecipes(searchParams) {
 }
 
 // Export the function
-module.exports = 
-    searchRecipes;
+// module.exports = 
+//     searchRecipes;

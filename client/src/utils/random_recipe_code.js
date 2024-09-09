@@ -1,4 +1,4 @@
-
+//this can probably go in react components directly because they'll be working with state
 
     function getRandomRecipe() {
         if (recipeSearchResults.length === 0) {

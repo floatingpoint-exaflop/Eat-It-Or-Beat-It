@@ -19,10 +19,7 @@
     "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
-    "crypto-js": "^4.2.0",
     "http-proxy-middleware": "^3.0.2",
-    "jssha": "^3.3.1",
-    "oauth-1.0a": "^2.2.6",
     "react-bootstrap": "^2.10.4",
     "react-router-dom": "^6.26.1"
   }

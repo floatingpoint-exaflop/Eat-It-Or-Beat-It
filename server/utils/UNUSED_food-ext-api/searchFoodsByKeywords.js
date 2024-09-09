@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import OAuth from 'oauth-1.0a';
 import crypto from 'crypto';
 

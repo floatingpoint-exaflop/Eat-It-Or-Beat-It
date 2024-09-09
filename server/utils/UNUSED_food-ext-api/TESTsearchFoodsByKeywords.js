@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import OAuth from 'oauth-1.0a';
 import crypto from 'crypto';
 
@@ -18,16 +17,18 @@ const oauth = OAuth({
 // This will be fed into the node fetch call below. Aside from the few items which have hard-coded values, the rest of this needs to come from state on the form where a user first searches for their desired recipe specs.
 const request_data = {
     url: 'https://platform.fatsecret.com/rest/server.api',
-    method: 'GET',
+    method: 'POST',
     data: {
-        method: 'food.get.v3',
-        food_id: 33770,
+        method: 'foods.search',
         format: 'json',
+        // page_number: 0, //this is an optional field that is prolly useless for us unless we need to grab the next 50 items...
+        max_results: 50, //this is the max we can grab from one fetch but response will tell us if there were more
+        search_expression: 'corn, chicken' //This is the system or user keywords like chicken; can also do chicken, pork and it will find things with both meats in the same recipe.
     },
 }
 // Add OAuth parameters manually to the request body; why this had to be separately handled is a bit of a mystery to me.
 const oauth_params = oauth.authorize(request_data);
-const query_params = new URLSearchParams({
+request_data.data = {
     ...request_data.data,
     oauth_consumer_key: consumer_key,
     oauth_signature_method: 'HMAC-SHA1',
@@ -35,17 +36,15 @@ const query_params = new URLSearchParams({
     oauth_nonce: oauth_params.oauth_nonce,
     oauth_version: '1.0',
     oauth_signature: oauth_params.oauth_signature
-});
-
-//This one is a GET so it uses URL query params, not body like the POST did.
-const url_with_params = `${request_data.url}?${query_params.toString()}`;
+};
 
 //Finally, we can retrieve the array of recipes now.
-fetch(url_with_params, {
+fetch(request_data.url, {
     method: request_data.method,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
-    }
+    },
+    body: new URLSearchParams(request_data.data).toString()
 })
 .then(response => response.json())
 .then(data => {
