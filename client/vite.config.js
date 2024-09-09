@@ -13,7 +13,7 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
-      '/api': 'http://localhost:4000'
+      // '/api': 'http://localhost:4000'
     }
   }
 })
