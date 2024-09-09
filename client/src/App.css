@@ -48,6 +48,19 @@ main {
   font-size:xx-small;
 }
 
+header{
+  background-color: rgb(207, 54, 54);
+  color: white
+}
+
+.siteName {
+  padding-left: 25px;
+  padding-top: 10px;
+}
+
+
+
+
 /**
  * Correct the font size and margin on `h1` elements within `section` and
  * `article` contexts in Chrome, Firefox, and Safari.

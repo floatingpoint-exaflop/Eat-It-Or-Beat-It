@@ -1,25 +1,16 @@
-import React, { createContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react'
 
-const UserContext = createContext();
+const UserContext = createContext({})
+export const useUserCtx = () => useContext(UserContext)
 
-const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
 
-  const login = (userData) => {
-    // Perform login logic
-    setUser(userData);
-  };
+export default function UserProvider({ children }){
 
-  const logout = () => {
-    // Perform logout logic
-    setUser(null);
-  };
+    const [ userData, setUserData ] = useState({ name: "Nash", role: "admin", title: "Boss"})
 
-  return (
-    <UserContext.Provider value={{ user, login, logout }}>
-      {children}
-    </UserContext.Provider>
-  );
-};
-
-export { UserContext, UserProvider };
+    return (
+        <UserContext.Provider value={{ user: userData }}>
+            { children }
+        </UserContext.Provider>
+    )
+}
