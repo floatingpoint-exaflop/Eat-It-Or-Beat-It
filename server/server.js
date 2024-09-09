@@ -35,11 +35,23 @@ const startApolloServer = async () => {
   //     logLevel: 'debug',
   //   })
   // );
-
+  app.use(express.json());
   app.post("/api/recipe/search", async (req, res) => {
+    console.log('Received searchParams:', req.body)
     const searchParams = req.body;
     try {
       const searchResults = await searchRecipes(searchParams);
+      res.json(searchResults);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch recipes" });
+    }
+  });
+
+  app.get("/api/recipe/search", async (req, res) => {
+    console.log('Received searchParams:', req.body)
+    const searchParams = req.body;
+    try {
+      const searchResults = await getMoreRecipeDetails(searchParams);
       res.json(searchResults);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch recipes" });

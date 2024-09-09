@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Row, Col, Card, Modal } from "react-bootstrap";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function SearchForm() {
   const [formSearchSpecs, setformSearchSpecs] = useState({
@@ -140,20 +140,31 @@ export default function SearchForm() {
     }
 
     // Set errors if any need to be set
-    if (isValid) {
-      async function fetchRecipeSearch(searchParams) {
+    //THE CALL
+    async function fetchRecipeSearch(formSearchSpecs) {
       try {
-        const response = await fetch('/api/recipe/search', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(searchParams)
+        const response = await fetch("/api/recipe/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "accepts":"application/json"
+          },
+          body: JSON.stringify(formSearchSpecs),
         });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch recipes.");
+        }
+        const data = await response.json();
+        setRecipeSearchResults(data); // Store results in state
       } catch (error) {
         setErrorMessage(error.message);
         setShowErrorModal(true);
-      }}
+      }
+    }
+    if (isValid) {
+      // Call the fetch function here, finally, with form data
+      fetchRecipeSearch(formSearchSpecs);
     } else {
       setSearchFormErrors(errors);
       setErrorMessage(Array.from(errorMessagesSet).join("\n"));
@@ -162,7 +173,6 @@ export default function SearchForm() {
   };
 
   const handleCloseModal = () => setShowErrorModal(false);
-
 
   //------begin actual UI rendering----------------
   return (
