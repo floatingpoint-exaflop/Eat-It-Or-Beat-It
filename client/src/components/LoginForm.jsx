@@ -45,7 +45,7 @@ async function handleLogin() {
   }
 
   return (
-    <div className="container-fluid col-6">
+    <div className="container-fluid login">
       <h3>Login</h3>
       <Form>
         <Form.Group className="mb-3">
