@@ -4,7 +4,7 @@ const { expressMiddleware } = require("@apollo/server/express4");
 const path = require("path");
 const { 
   searchRecipes, 
-  // getMoreRecipeDetails
+  getMoreRecipeDetails
 } = require("./controllers/recipe-controller")
 
 const { typeDefs, resolvers } = require("./schemas");
