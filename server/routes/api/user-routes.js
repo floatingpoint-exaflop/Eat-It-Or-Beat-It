@@ -22,9 +22,8 @@ router.route('/:userId/savedrecipes').get(getRecipes);
 
 // Route to update a user (uncomment and implement if needed)
 // router.route('/:userId').put(updateUser);
-
-// Route to get recipes for a specific user by userId
-router.route('/:userId/recipe').get(getRecipes);
+//add a recipe to saved list route will be /user/:userId/savedrecipe
+// router.route('/:userId/recipe/:recipeId').get(getRecipes);
 
 module.exports = router;
 

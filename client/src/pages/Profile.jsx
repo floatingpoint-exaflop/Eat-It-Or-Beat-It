@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import { Card } from 'react-bootstrap'; // Make sure you have Bootstrap installed and imported
 import fred from '../icons/images/fred.png';
 
+import RecipeList from '../components/RecipeList';
+// import {getComments, getSingleComment} from '../../../server/controllers/comment-controllers'
+// import {getRecipes} from '../../../server/controllers/recipe-controller'
+
+
 export default function Profile(props) {
     const [comments, setComments] = useState([]);
     const [savedRecipes, setSavedRecipes] = useState([]);
@@ -48,6 +53,7 @@ export default function Profile(props) {
             console.log('Error fetching recipes:', err);
         }
     }
+
 
     useEffect(() => {
         getUserComments();

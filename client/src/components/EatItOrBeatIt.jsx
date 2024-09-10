@@ -65,7 +65,7 @@ export default function EatItOrBeatIt(props) {
       setErrorMessage(error.message);
       setShowErrorModal(true);
     }
-    handleBeatIt(); // Remove from array and get new recipe to show anyway, tinder style
+    handleBeatIt();//remove from array and get new recipe to show anyway, tinder style
   }
 
   // Load a random recipe on first load of page
@@ -81,7 +81,7 @@ export default function EatItOrBeatIt(props) {
   }
 
   return (
-    <Card>
+    <Card className="col-5">
       <Card.Img
         variant="top"
         src={currentRecipe.recipe_image}
