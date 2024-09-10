@@ -5,13 +5,9 @@ const recipeSchema = new Schema({
     type: String,
     required: true,
   },
-  recipe_types: {
-    recipe_type: [String],
-  },
+  recipe_types: [String],
   cooking_time_min: String,
-  recipe_images: {
-    recipe_image: [String],
-  },
+  recipe_image: String,
   recipe_description: String,
   recipe_ingredients: [
     {

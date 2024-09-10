@@ -45,20 +45,12 @@ const generalRecipes = async (req, res) => {
 // Get a single recipe for a given user
 const getSingleRecipe = async (req, res) => {
   try {
-    const { userId, recipeId } = req.params;
-    const user = await User.findById(userId).populate("recipes");
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Find the specific recipe from the user's recipes array
-    const recipe = user.recipes.find((r) => r.recipe_id === recipeId);
+    const { recipeId } = req.params;
+    const recipe = await Recipe.findById(recipeId);
 
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
     }
-
     res.json(recipe);
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err });
@@ -99,7 +91,7 @@ async function saveRecipeToDatabase(req, res) {
       recipe_name: recipeData.recipe_name,
       recipe_types: recipeData.recipe_types.recipe_type,
       cooking_time_min: recipeData.cooking_time_min,
-      recipe_images: recipeData.recipe_images.recipe_image,
+      recipe_image: recipeData.recipe_images.recipe_image[0],
       recipe_description: recipeData.recipe_description,
       recipe_ingredients: recipeData.ingredients.ingredient.map((ing) => ({
         food_name: ing.food_name,
