@@ -4,14 +4,22 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 import { Container, Row, Col } from 'react-bootstrap'
+
 import UserProvider from './providers/UserProvider'
 import { useUserCtx } from './providers/UserProvider';
 
-import RecipePage from './pages/Result';
+
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import Comment from './components/Comment'
+// import Recipe from './components/Recipe'
+
+// import RecipeList from './components/RecipeList'
+
+import SearchResults from "./pages/SearchResults";
+
 
 const client = new ApolloClient({
   uri: '/graphql',
@@ -52,7 +60,14 @@ function App() {
                 <Route path='/profile/:userId?' element={<Profile loggedInUser={loggedInUser} />} />
                 {/* Need to add the element for the page below */}
                 <Route path='/recipe/:recipeId' element={<></>} />
+
+                <Route path="/search-results" element={<SearchResults />} />
+
               </Routes>
+
+                {/* <UserProvider>
+                  <RecipeList />
+                </UserProvider> */}
 
               {/* </Col> */}
             </Row>

@@ -3,7 +3,9 @@ import { useQuery } from '@apollo/client';
 
 import SignupForm from '../components/SignupForm'
 import LoginForm from '../components/LoginForm';
-import SearchForm from '../components/SearchForm'
+
+import SearchForm from '../components/SearchForm';
+
 
 import { useUserCtx } from '../providers/UserProvider';
 
@@ -16,7 +18,9 @@ export default function Home() {
 
   return (
     <>
+
       <div className="container-fluid">
+
 
         {userData.id !== null ? (
           <SearchForm />
@@ -33,6 +37,7 @@ export default function Home() {
           </div>
         )}
       </div>
+
     </>
   );
 };

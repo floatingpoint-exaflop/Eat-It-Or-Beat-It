@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import fred from '../icons/images/fred.png';
+import {getComments, getSingleComment} from '../../../server/controllers/comment-controllers'
+import {getRecipes} from '../../../server/controllers/recipe-controller'
 
 export default function Profile(props) {
     function handleInputOnChange(event) {
@@ -53,7 +55,10 @@ export default function Profile(props) {
                         <div className="col-5 p-3 mr-3" style={{ border: '1px solid black' }} id="savedRecipes">
                             <h2>Recipes marked "eat it"</h2>
                             {savedRecipes.length === 0 ? (
+                                <div id='noArrayRecipe'>
                                 <p>No saved recipes available.</p>
+                                <button type="click">Take me to some recipes!</button> 
+                                </div>
                             ) : (
                                 savedRecipes.map(item => (
                                     <div key={item.id}>
@@ -67,7 +72,10 @@ export default function Profile(props) {
                         <div className="col-5 p-2" style={{ border: '1px solid black' }} id="commentsContainer">
                             <h2>Recipes I have commented on:</h2>
                             {comments.length === 0 ? (
+                                <div id='noArrayComments'>
                                 <p>No comments available.</p>
+                                <button type='click'>Show me the recipes most commented on!</button>
+                                </div>
                             ) : (
                                 comments.map(comment => (
                                     <div key={comment.commentid}>

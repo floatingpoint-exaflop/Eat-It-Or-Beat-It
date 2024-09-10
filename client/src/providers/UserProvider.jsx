@@ -1,7 +1,9 @@
-import { createContext, useContext, useState } from 'react'
+import React, { createContext, useState, useContext } from 'react';
 
-const UserContext = createContext({})
-export const useUserCtx = () => useContext(UserContext)
+const UserContext = createContext();
+
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(null); // Initialize user state
 
 
 export default function UserProvider({ children }){
@@ -14,3 +16,4 @@ export default function UserProvider({ children }){
         </UserContext.Provider>
     )
 }
+
