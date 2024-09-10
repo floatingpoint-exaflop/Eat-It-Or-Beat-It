@@ -15,7 +15,7 @@ const getRecipes = async (req, res) => {
       recipeId: recipe._id, // Returning the recipe's unique ID
       title: recipe.recipe_name, // Returning the recipe's title (recipe_name)
     }));
-    // Respond with the array of recipes
+    // gets the array of recipes
     res.json(recipes);
   } catch (err) {
     console.error(err);
@@ -92,6 +92,7 @@ async function saveRecipeToDatabase(req, res) {
       recipe_types: recipeData.recipe_types.recipe_type,
       cooking_time_min: recipeData.cooking_time_min,
       recipe_image: recipeData.recipe_images.recipe_image[0],
+      recipe_api_xref: recipeData.recipe_id,
       recipe_description: recipeData.recipe_description,
       recipe_ingredients: recipeData.ingredients.ingredient.map((ing) => ({
         food_name: ing.food_name,
@@ -113,7 +114,6 @@ async function saveRecipeToDatabase(req, res) {
         number_of_units: ing.number_of_units,
         serving_id: ing.serving_id,
       })),
-      grams_per_portion: recipeData.grams_per_portion,
       rating: recipeData.rating,
     };
 
@@ -252,7 +252,7 @@ async function searchRecipes(searchParams) {
     });
     const data = await response.json();
     console.log("Recipes:", JSON.stringify(data, null, 2));
-    return data.recipes.recipe; // Return the recipe search result array
+    return data.recipes.recipe; 
   } catch (error) {
     console.error("Error:", error);
     throw new Error("Failed to fetch the recipes");
