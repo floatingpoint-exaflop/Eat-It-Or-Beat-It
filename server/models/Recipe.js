@@ -62,7 +62,13 @@ const recipeSchema = new Schema({
   },
   recipe_types: {
     recipe_type: [String],
-  }
+  },
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment' //references the Comment model
+      }
+  ]
 });
 
 const Recipe = model('Recipe', recipeSchema);

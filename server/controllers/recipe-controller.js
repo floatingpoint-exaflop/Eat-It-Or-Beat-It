@@ -22,6 +22,14 @@ const getRecipes = async (req, res) => {
     res.status(500).json({ error: "Failed to get recipes" });
   }
 };
+const commentsOnRecipes = async (req,res) => {
+  try {
+    const comment = await Recipe.find({_id: req.params._id}).populate('Comment');
+    res.json(comment);
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 const generalRecipes = async (req,res) => {
 try{
@@ -211,6 +219,7 @@ module.exports = {
   getRecipes,
   getSingleRecipe,
   addRecipe,
-  generalRecipes
+  generalRecipes,
+  commentsOnRecipes
 };
 

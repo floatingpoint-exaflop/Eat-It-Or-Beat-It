@@ -10,7 +10,7 @@ export default function SearchResults(recipeSearchResults) {
     <div>
       {results ? (
         // <EatItOrBeatIt />
-        <EatItOrBeatIt recipes={recipeSearchResults} />
+        <EatItOrBeatIt userId={currentUserId} recipes={recipeSearchResults} />
       ) : (
         <p>No search results available.</p>
       )}

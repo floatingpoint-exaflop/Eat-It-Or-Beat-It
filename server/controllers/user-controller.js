@@ -15,7 +15,26 @@ module.exports = {
       return res.status(500).json(err);
     }
   },
-
+  addSavedRecipe: async function (req, res) {
+    try {
+      // Find the user by ID and add the recipe to the savedRecipes array
+      const updatedUser = await User.findByIdAndUpdate(
+        req.params.userId,
+        { $addToSet: { savedRecipes: req.body.recipeId } }, // Ensure no duplicates are added
+        { new: true, runValidators: true }
+      );
+  
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      res.json(updatedUser);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json(err);
+    }
+  },
+  
   getCurrentUser: async function(req, res){
   // get a single user by either their id or their username
 
@@ -93,5 +112,38 @@ module.exports = {
       console.log(err);
       return res.status(500).json(err);
     }
-  }
+  },
+  getRecipes: async function (req, res){
+    try{
+      const all = await User.find({_id: req.body._id}).populate('Recipe');
+      if(!all){
+        return res.status(404).json({message: 'no recipes found'})
+      }
+      res.json(all);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json(err);
+    }
+  },
+  getComments: async function (req, res) {
+    try {
+        const user = await User.findById(req.params.userId).populate('comments'); // Ensure you're using the correct param
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json(user.comments); // Return only the comments array
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json(err);
+    }
+}
 };
+
+
+//Routes needed from the user profile
+// recipes that they have liked
+// comments that they have made on recipes
+// their user account
+// login
+// create an account
+
