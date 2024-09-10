@@ -55,9 +55,7 @@ function App() {
                 <Route path='/recipe/:recipeId' element={<></>} />
 
               </Routes>
-                <UserProvider>
-                  <RecipeList />
-                </UserProvider>
+                  {/* <RecipeList /> */}
 
               {/* </Col> */}
             </Row>

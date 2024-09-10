@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import fred from '../icons/images/fred.png';
+import RecipeList from '../components/RecipeList';
 // import {getComments, getSingleComment} from '../../../server/controllers/comment-controllers'
 // import {getRecipes} from '../../../server/controllers/recipe-controller'
 
@@ -11,7 +12,7 @@ export default function Profile(props) {
     }
 
     // Assuming savedRecipes and comments are fetched from your MongoDB
-    const savedRecipes = []; // Replace with your actual data fetching logic
+    // const savedRecipes = []; // Replace with your actual data fetching logic
     const comments = []; // Replace with your actual data fetching logic
 
     return (
@@ -53,7 +54,9 @@ export default function Profile(props) {
                     </div>
                     <div className='col-11 row' id="returnDataContainer">
                         <div className="col-5 p-3 mr-3" style={{ border: '2px solid yellow' }} id="savedRecipes">
-                            <h5>Recipes marked "eat it"</h5>
+
+                            <RecipeList />
+                            {/* <h5>Recipes marked "eat it"</h5>
                             {savedRecipes.length === 0 ? (
                                 <div id='noArrayRecipe'>
                                 <p>No saved recipes available.</p>
@@ -67,7 +70,7 @@ export default function Profile(props) {
                                         <img src={item.img} alt={item.title} />
                                     </div>
                                 ))
-                            )}
+                            )} */}
                         </div>
                         <div className="col-6 p-2" style={{ border: '2px solid yellow' }} id="commentsContainer">
                             <h5>Recipes commented on:</h5>

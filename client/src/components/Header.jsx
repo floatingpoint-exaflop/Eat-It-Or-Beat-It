@@ -35,7 +35,7 @@ export default function Header(props) {
                 </div>
 
 
-                <div className="col-4 d-flex justify-content-end">
+                <div className="col-4 d-flex justify-content-end align-items-center">
                     {userData.id !== null ? (
                         <div>
                             {menu.map(item => (
