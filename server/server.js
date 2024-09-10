@@ -56,11 +56,15 @@ const startApolloServer = async () => {
     }
   });
 
-  app.get("/api/recipe/search", async (req, res) => {
-    console.log('Received searchParams:', req.body)
-    const searchParams = req.body;
+  app.get("/api/recipe/search/:recipeId", async (req, res) => {
+    // Retrieve the recipeId from the URL parameters
+    const { recipeId } = req.params;
+  
+    console.log('Received recipeId:', recipeId);
+    
     try {
-      const searchResults = await getMoreRecipeDetails(searchParams);
+      // Pass the recipeId to your function to get more details
+      const searchResults = await getMoreRecipeDetails(recipeId);
       res.json(searchResults);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch recipes" });
