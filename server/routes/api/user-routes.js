@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { addRecipe, getRecipes } = require('../../controllers/recipe-controller');
-const { createUser, getCurrentUser, login } = require('../../controllers/user-controller');
+const { createUser, getCurrentUser, login, getListOfUsers } = require('../../controllers/user-controller');
 
 // // import middleware
 // const { authMiddleware } = require('../../utils/auth');
@@ -10,6 +10,8 @@ const { createUser, getCurrentUser, login } = require('../../controllers/user-co
 //add a user to the list of users route will be api/users/
 router.route('/').post(createUser)
 router.route('/login').post(login)
+router.route('/comments').get(getRecipes);
+router.route('/lothy').get(getListOfUsers);
 
 //udpate a user, route will be /api/users/:userId
 // router.route('/:userId').put(updateUser);
