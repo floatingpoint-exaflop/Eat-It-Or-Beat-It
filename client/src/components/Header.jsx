@@ -35,23 +35,23 @@ export default function Header(props) {
                 </div>
 
 
-                <div className="col-4 d-flex justify-content-end align-items-center">
+
+                <div className="col-4 d-flex align-items-center">
                     {userData.id !== null ? (
-                        <div>
+                        <>
                             {menu.map(item => (
                                 <ul className="nav d-flex justify-content-end row">
-                                    <li className="nav-item" key={item.id}>
-
-                                        <Link className="nav-link" to={item.href}>{item.label}</Link>
+                                    <li className="nav-item" key={item.id} style={{marginLeft: "10px"}}>
+                                        <Link className="nav-link btn btn-primary" to={item.href}>{item.label}</Link>
                                     </li>
                                 </ul>
                             ))}
                             <ul className="nav d-flex justify-content-end row">
-                                <li className='nav-item'>
+                                <li className='nav-item' style={{marginLeft: "10px"}}>
                                     <Button variant="primary" onClick={handleLogout}>Logout</Button>
                                 </li>
                             </ul>
-                        </div>
+                        </>
                     ) : (
                         // Render different menu items for logged-out users
                         <p>Please login or signup to use our service!</p>

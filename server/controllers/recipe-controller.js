@@ -23,6 +23,15 @@ const getRecipes = async (req, res) => {
   }
 };
 
+const generalRecipes = async (req,res) => {
+try{
+  const recipe = await Comment.find({});
+  res.json(recipe)
+}catch(err){
+  console.log(err)
+}
+}
+
 // Get a single recipe for a given user
 const getSingleRecipe = async (req, res) => {
   try {
@@ -202,5 +211,6 @@ module.exports = {
   getRecipes,
   getSingleRecipe,
   addRecipe,
+  generalRecipes
 };
 
