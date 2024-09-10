@@ -15,17 +15,17 @@ export default function Header(props) {
     ]
 
     return (
-        <header className="container-fluid col-12">
+        <header className="container-fluid col-12" id="sitename-container">
             <div className="row">
                 {/* possibly need to change the importing method */}
                 <div className="col-2 logo-container" >
                     <img src={foodLogo} alt="Food logo" style={{ width: 100 }} />
                 </div>
-                <div className="col-3 d-flex justify-content-center align-items-center">
+                <div className="col-6 d-flex justify-content-center align-items-center">
                     <h1 className="siteName">{props.sitename}</h1>
 
                 </div>
-                <div className="col-7 d-flex justify-content-end">
+                <div className="col-4 d-flex justify-content-end">
                         {props.loggedInUser && props.loggedInUser.length > 1 ? (
                             loginNavItems.map(item => (
                          <ul className="nav d-flex justify-content-end row">

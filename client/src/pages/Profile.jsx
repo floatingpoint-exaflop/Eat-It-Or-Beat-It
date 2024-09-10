@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import fred from '../icons/images/fred.png';
-import {getComments, getSingleComment} from '../../../server/controllers/comment-controllers'
-import {getRecipes} from '../../../server/controllers/recipe-controller'
+// import {getComments, getSingleComment} from '../../../server/controllers/comment-controllers'
+// import {getRecipes} from '../../../server/controllers/recipe-controller'
 
 export default function Profile(props) {
     function handleInputOnChange(event) {
@@ -16,7 +16,7 @@ export default function Profile(props) {
 
     return (
         <div className='container col-12 mt-5'>
-            <div className="col-12 row" id="userBody">
+            <div className="row" id="userBody">
                 <div className="row" style={{ width: "100%" }} id="userHeader">
                     <div className="col-lg-3 col-md-3 col-sm-0" id="userAvatar">
                         <img className="img-thumbnail" src={fred} alt="User Avatar" />
@@ -27,8 +27,8 @@ export default function Profile(props) {
                         <h5 className="col-12" id="email">fredflinstone@gmail.com</h5>
                     </div>
                 </div>
-                <div className="col-12 row mt-5" id="fetchContainer">
-                    <div className="col-4 mr-3" style={{ border: '1px solid black' }} id="preferencesForm">
+                <div className="row mt-5" id="fetchContainer">
+                    <div className="col-11 mr-3" style={{ border: '2px solid yellow' }} id="preferencesForm">
                         <form id="userPref">
                             <label htmlFor="whyHere">How can we help?</label>
                             <select id="whyHere" name="whyHere" multiple>
@@ -51,9 +51,9 @@ export default function Profile(props) {
                             </select>
                         </form>
                     </div>
-                    <div className='col-8 row' id="returnDataContainer">
-                        <div className="col-5 p-3 mr-3" style={{ border: '1px solid black' }} id="savedRecipes">
-                            <h2>Recipes marked "eat it"</h2>
+                    <div className='col-11 row' id="returnDataContainer">
+                        <div className="col-5 p-3 mr-3" style={{ border: '2px solid yellow' }} id="savedRecipes">
+                            <h5>Recipes marked "eat it"</h5>
                             {savedRecipes.length === 0 ? (
                                 <div id='noArrayRecipe'>
                                 <p>No saved recipes available.</p>
@@ -69,8 +69,8 @@ export default function Profile(props) {
                                 ))
                             )}
                         </div>
-                        <div className="col-5 p-2" style={{ border: '1px solid black' }} id="commentsContainer">
-                            <h2>Recipes I have commented on:</h2>
+                        <div className="col-6 p-2" style={{ border: '2px solid yellow' }} id="commentsContainer">
+                            <h5>Recipes commented on:</h5>
                             {comments.length === 0 ? (
                                 <div id='noArrayComments'>
                                 <p>No comments available.</p>

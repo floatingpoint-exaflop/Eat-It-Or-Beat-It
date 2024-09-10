@@ -89,7 +89,7 @@ export default function SignupForm() {
 
   return (
     <>
-      <Form onSubmit={handleFormSubmit} className="container-fluid signup">
+      <Form onSubmit={handleFormSubmit} className="container-fluid signup" id="signup">
         <h3>Signup</h3>
         <Form.Group className="mb-3">
             <Form.Control 
