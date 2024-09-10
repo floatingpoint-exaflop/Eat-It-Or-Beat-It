@@ -1,3 +1,5 @@
+//These very well might all work but I honestly forgot about them...--Tim
+
 const { User, Recipe, Comment } = require('../models');
 
 const resolvers = {
@@ -43,12 +45,12 @@ const resolvers = {
     },
   
     addComment: async (parent, { input }) => {
-      const { recipeId, userId, commentBody, rating } = input;
+      const { recipe, user, commentBody, rating } = input;
       const comment = await Comment.create({
         commentBody,
         rating,
-        recipe: recipeId,
-        user: userId,
+        recipe,
+        user,
       });
       return comment;
     },

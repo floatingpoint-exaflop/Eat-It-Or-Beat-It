@@ -1,3 +1,5 @@
+//These very well might all work but I honestly forgot about them...--Tim
+
 const typeDefs = `
 type User {
   _id: ID!
@@ -18,7 +20,8 @@ type Recipe {
   recipe_name: String!
   recipe_types: [String]
   cooking_time_min: String
-  recipe_images: [String]
+  recipe_image: String
+  recipe_api_xref: String
   recipe_description: String
   recipe_ingredients: [RecipeIngredient]
   number_of_servings: String
@@ -126,9 +129,9 @@ input AddCommentInput {
 
 type Query {
   getUser(id: ID!): User
-  getRecipes(userId: ID!): [Recipe] # Add userId argument here
+  getRecipes(userId: ID!): [Recipe] # Fetch all recipes for a specific user
   getSingleRecipe(id: ID!): Recipe
-  getComments: [Comment]
+  getComments(recipeId: ID!): [Comment]
   getSingleComment(id: ID!): Comment
 }
 

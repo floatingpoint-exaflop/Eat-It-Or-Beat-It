@@ -8,6 +8,7 @@ const recipeSchema = new Schema({
   recipe_types: [String],
   cooking_time_min: String,
   recipe_image: String,
+  recipe_api_xref: String,
   recipe_description: String,
   recipe_ingredients: [
     {
@@ -56,7 +57,6 @@ const recipeSchema = new Schema({
       serving_id: String,
     }
   ],
-  grams_per_portion: String,
   rating: String,
   comments: [
     {
