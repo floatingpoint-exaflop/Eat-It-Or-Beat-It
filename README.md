@@ -12,39 +12,38 @@ A collaborative project using the MERN stack and the FatSecret API to create a w
   - [Questions](#questions)
 
   ## Description
-  Everybody Eats! But some of us have a healthier or less healthy relationship with food - perhaps the only addictive substance truly needed to stay alive. This website will allow securely registered users to learn more about the foods they eat and make better decisions on their next grocery run or kitchen adventure. Whether you're a nutrition guru already or just getting back into the swing of things, Everybody Eats offers the tools to succeed nutritionally!
+  Everybody Eats! But some of us have a healthier or less healthy relationship with food - perhaps the only addictive substance truly needed to stay alive. This website will allow securely registered users to learn more about the foods they eat and make better decisions on their next grocery run or kitchen adventure. Whether you're a nutrition guru already or just getting back into the swing of things, Everybody Eats offers the tools to succeed nutritionally! In the future, we have considered the potential for expanding the profile and setting up romantic 'matches' between users who have liked the same food... Why not cook it together? ❤️
 
   ### Homepage/Login
-  ![image](./screenshots/.png)
-  ### User Profile 
-  ![image](./screenshots/.png)
-  ### Search Form 
-  ![image](./screenshots/.png)
+  ![image](./screenshots/login.png)
+  ### User Profile
+  ![image](./screenshots/profile.png)
+  ### Search Form
+  ![image](./screenshots/search.png)
   ### Eat it or Beat it!
-  ![image](./screenshots/.png)
+  ![image](./screenshots/eatitorbeatit.png)
 
 
   ## Installation
-  To install this project after copying down the repo, you will first need to run `npm install` (-y for default settings) on the project root, which should grant you access to the necessary libraries listed in the package.json file(s).
+  To install this project after copying down the repo, you will first need to run `npm install` (-y for default settings) on the project root, which should grant you access to the necessary libraries listed in the package.json files for the root, client, and server.
 
   ## Usage
-  1. To use this project, ensure you have [Postgres](https://www.postgresql.org/download/) and the node packages installed as specified in the Installation section above.
-  2. Open a terminal on the db folder and run psql postgres.
-  3. Rename the `.env` file and fill in the appropriate info, keeping the db as dungeon_db.
-  3. In Postgres, run `\i schema.db` to build the db.
-  4. Open a separate terminal on the project root and run `node ./seed/seedData.js` to seed the db.
-  5. On that same node terminal, run `npm run dev` - the server will boot and the site can be explored locally!
+  1. To use this project, you'll want to be familiar with MongoDB; Technically GraphQL is enabled, but we did not use it much in our design and implementation.
+  2. You will also need to make a FatSecret account so you have the two necessary API keys. To deploy online, you'll need a server hosting service like MongoDB Atlas to get your MONGODB_URI environment variable.
+  3. Rename the `.env` file and fill in the appropriate info - the CONSUMER_KEY and CONSUMER_SECRET are your personal FatSecret API keys; both are needed. The calls in this project rely on OAuth1.0, meaning you can't get around making an account with them.
+  5. On that same node terminal, run `npm run develop` - the server will boot and the site can be explored locally!
 
-  [You can also run from our deployed application on Render!](url)
+  [You can also run from our deployed application on Render - at least while it's spun up!](https://project-03-yel1.onrender.com)
 
   ## Contributing
-  If you want to contribute to this project - particularly if you want to work with us on expanding our database, normalizing it more, or getting our equipment setup more game-accurate for interface with a future game engine, see our contact info in the Questions section below (Nash owns the repo, but all five of the devs have essentially admin access to it). Don’t hesitate to reach out!
+  If you want to contribute to this project - particularly if you want to work with us on expanding our database into more of a social network type vibe, see our contact info in the Questions section below (Nash owns the repo, but all five of the devs have essentially admin access to it). Don’t hesitate to reach out!
 
   ## Tests
-  This project can and should be tested using localhost and nodemon for the simplest way to both work with and visualize the data and its relationships. Pgadmin4 would also work well to see the tabluation, but it cannot call routes - only can use sql. The site itself also works and can be used from the link above.
+  This project can and should be tested using localhost and `npm run develop`. You will need to run a build if you wish to deploy your version.
   
   ## Credits
-
+  Big shoutouts to our teacher Gary and our TA, Katy!
+  External Recipe API owned and operated by FatSecret; used with permission and - by the end of the project - some resentment.
 
   ## Questions
   ### For Lothy:
