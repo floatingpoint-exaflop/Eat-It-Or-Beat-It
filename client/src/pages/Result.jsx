@@ -1,5 +1,5 @@
 import React from 'react';
-import Recipe from '../components/Recipe';
+import Recipe from '../components/RecipeList';
 import { Container } from 'react-bootstrap';
 import recipe_list from '../../../server/seeds/recipeData.json'
 

@@ -21,8 +21,9 @@ export default function Header(props) {
                 <div className="col-2 logo-container" >
                     <img src={foodLogo} alt="Food logo" style={{ width: 100 }} />
                 </div>
-                <div className="col-3">
-                    <h1 className="siteName text-center">{props.sitename}</h1>
+                <div className="col-3 d-flex justify-content-center align-items-center">
+                    <h1 className="siteName">{props.sitename}</h1>
+
                 </div>
                 <div className="col-7 d-flex justify-content-end">
                         {props.loggedInUser && props.loggedInUser.length > 1 ? (
