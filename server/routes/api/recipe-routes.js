@@ -14,7 +14,7 @@ router.route('/').post(async (req, res) => {
     }
   });
 
-
+router.route('/:recipeId').get(getSingleRecipe)
 
 //add a recipe to saved list route will be /
 router.route('/').get(getRecipes);
