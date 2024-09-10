@@ -62,6 +62,12 @@ const recipeSchema = new Schema({
   ],
   grams_per_portion: String,
   rating: String,
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment' //references the Comment model
+      }
+  ]
 });
 
 const Recipe = model('Recipe', recipeSchema);

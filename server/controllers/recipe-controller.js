@@ -22,6 +22,23 @@ const getRecipes = async (req, res) => {
     res.status(500).json({ error: "Failed to get recipes" });
   }
 };
+const commentsOnRecipes = async (req,res) => {
+  try {
+    const comment = await Recipe.find({_id: req.params._id}).populate('Comment');
+    res.json(comment);
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const generalRecipes = async (req,res) => {
+try{
+  const recipe = await Comment.find({});
+  res.json(recipe)
+}catch(err){
+  console.log(err)
+}
+}
 
 // Get a single recipe for a given user
 const getSingleRecipe = async (req, res) => {
@@ -251,5 +268,7 @@ module.exports = {
   getRecipes,
   getSingleRecipe,
   addRecipe,
-  saveRecipeToDatabase
+  saveRecipeToDatabase,
+  generalRecipes,
+  commentsOnRecipes
 };

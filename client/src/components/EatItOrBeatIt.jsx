@@ -8,7 +8,11 @@ export default function EatItOrBeatIt(props) {
   const [recipes, setRecipes] = useState(results); // Ensure results have a default value of an empty array
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [extraDetails, setExtraDetails] = useState(null);
+
   const {userData, setUserData} = useUserContext();
+
+  const [savedRecipes, setSavedRecipes] = useState([]); // State for saved recipes
+
 
   // Function to pick a random recipe
   const getRandomRecipe = () => {
@@ -82,11 +86,22 @@ export default function EatItOrBeatIt(props) {
       // Remove from array and get new recipe to show
       handleBeatIt();
   
+
+      
+      // Save the current recipe to the savedRecipes array
+      setSavedRecipes((prevSaved) => [...prevSaved, currentRecipe]);
+
+
     } catch (error) {
       setErrorMessage(error.message);
       setShowErrorModal(true);
     }
+
   }  
+
+    handleBeatIt();//remove from array and get new recipe to show anyway, tinder style
+  }
+
 
   // Load a random recipe on first load of page
   useEffect(() => {
@@ -101,7 +116,7 @@ export default function EatItOrBeatIt(props) {
   }
 
   return (
-    <Card>
+    <Card className="col-5">
       <Card.Img
         variant="top"
         src={currentRecipe.recipe_image}

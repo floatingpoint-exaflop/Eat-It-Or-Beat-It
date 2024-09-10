@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const { addRecipe, getRecipes, getSingleRecipe, saveRecipeData } = require('../../controllers/recipe-controller');
-
+const { addRecipe, getRecipes, getSingleRecipe, generalRecipes, commentsOnRecipes } = require('../../controllers/recipe-controller');
 const { getComments, getSingleComment, addComment  } = require('../../controllers/comment-controllers');
+const { addSavedRecipe } = require('../../controllers/user-controller')
 
 
 // router.route('/').post(async (req, res) => {
@@ -19,8 +19,8 @@ const { getComments, getSingleComment, addComment  } = require('../../controller
 //add a recipe to saved list route will be /
 router.route('/').get(getRecipes);
 
-router.route('/:recipeId/').post(addComment).get(getComments);
+router.route('/:recipeId/').post(addComment).get(commentsOnRecipes);
+router.route('/users/:userId/addSavedRecipe').post(addSavedRecipe);
 
-router.route('/:recipeId/commentId').get(getSingleComment);
 
 module.exports = router;
