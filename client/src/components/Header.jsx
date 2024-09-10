@@ -40,7 +40,7 @@ export default function Header(props) {
                     {userData.id !== null ? (
                         <>
                             {menu.map(item => (
-                                <ul className="nav d-flex justify-content-end row">
+                                <ul key={item.id} className="nav d-flex justify-content-end row">
                                     <li className="nav-item" key={item.id} style={{marginLeft: "10px"}}>
                                         <Link className="nav-link btn btn-primary" to={item.href}>{item.label}</Link>
                                     </li>
