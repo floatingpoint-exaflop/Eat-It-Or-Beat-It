@@ -4,9 +4,6 @@ import { Card } from 'react-bootstrap'; // Make sure you have Bootstrap installe
 import fred from '../icons/images/fred.png';
 
 import RecipeList from '../components/RecipeList';
-// import {getComments, getSingleComment} from '../../../server/controllers/comment-controllers'
-// import {getRecipes} from '../../../server/controllers/recipe-controller'
-
 
 export default function Profile(props) {
     const [comments, setComments] = useState([]);
@@ -60,6 +57,8 @@ export default function Profile(props) {
         getSavedRecipes();
     }, [props.userId]);
 
+    
+
     return (
         <div className='container col-12 mt-5'>
             <div className="row" id="userBody">
@@ -77,26 +76,21 @@ export default function Profile(props) {
             <div className="col-12 row text-center d-flex justify-content-center mt-5">
                 {/* Saved Recipes Section */}
                 <div className="col-12 p-3 mr-3" style={{ border: '2px solid yellow' }} id="savedRecipes">
+                    <Link to="/" className="btn btn-primary">Take me to the search page</Link>
                     <h2>Recipes marked "eat it"</h2>
                     {savedRecipes.length === 0 ? (
                         <div id='noArrayRecipe'>
                             <p>No saved recipes available.</p>
-                            <Link to="/" className="btn btn-primary">Take me to the search page</Link>
                         </div>
                     ) : (
                         <div>
                             <h2>Saved Recipes</h2>
-                            {savedRecipes.map((recipe, index) => (
-                                <Card key={index} className="mb-2">
-                                    <Card.Img variant="top" src={recipe.recipe_image} alt={recipe.recipe_name} />
-                                    <Card.Body>
-                                        <Card.Title>{recipe.recipe_name}</Card.Title>
-                                        <Card.Text>{recipe.recipe_description}</Card.Text>
-                                    </Card.Body>
-                                </Card>
+                            {savedRecipes.map((recipe) => (
+                                <RecipeList recipe={recipe}/>
                             ))}
                         </div>
                     )}
+                    
                 </div>
 
                 {/* Uncomment and complete Comments Section */}
