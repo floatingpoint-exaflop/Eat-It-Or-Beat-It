@@ -8,9 +8,7 @@ import {
 } from 'react-bootstrap';
 // import Recipe from "../../../server/models/Recipe";
 // import User from "../../../server/models/User";
-
-import UserProvider from '../providers/UserProvider';
-
+import { UserProvider } from '../providers/UserProvider';
 
 export default function RecipeList() {
   const { user } = UserProvider();
