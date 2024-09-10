@@ -40,18 +40,56 @@ html, body {
   margin: 0; /* Removes default margin */
 }
 
-@media screen and (max-width: 445px) {
-  .login, .signup {
+/* @media screen and (max-width: 445px) {
+  #fetchContainer, #preferenceForm, #returnDataContainer {
     display: block;
     width: 98.5%;
     align-items: center;
     margin: 10px;
     margin-right: 5px;
   }
+} */
+@media screen and (max-width: 445px) {
+  .login, .signup {
+    display: block;
+    width: 175%;
+    align-items: center;
+    margin: 10px;
+    margin-right: 5px;
+  }
+}
+
+#userBody{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .form-control {
-  width: 25vh;
+  width: 89%;
+}
+
+#returnDataContainer{
+  display: flex;
+  justify-content: space-between;
+  margin-left: 3px;
+  margin-top: 10px;
+}
+
+#login, #signup {
+  border-radius: 10px;
+  background-color: rgba(128, 128, 128, 0.718);
+  border: 2px solid yellow;
+  padding: 10px;
+}
+
+.mb-3{
+  width: auto;
+}
+
+#savedRecipes, #commentsContainer, #preferencesForm{
+  border-radius: 10px;
+  background-color: rgba(128, 128, 128, 0.553);
 }
 
 #valid-username,#valid-email,#valid-password {
@@ -92,9 +130,8 @@ header {
   color: yellow;
 }
 
-*{
+h5, h2, h3, #userPref label, #savedRecipes p, #commentsContainer p {
   color: white;
-  text-shadow:#000000;
 }
 
 body {
@@ -457,6 +494,7 @@ h5,
 h6 {
   margin: 0 0 0.5rem;
   line-height: 1.25;
+  text-shadow: 1px 1px 2px black;
 }
 
 h1 {

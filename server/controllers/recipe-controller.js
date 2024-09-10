@@ -125,20 +125,22 @@ async function getMoreRecipeDetails(recipe_id) {
       oauth_version: '1.0',
       oauth_signature: oauth_params.oauth_signature
   });
-
   try {
-      const response = await fetch(request_data.url, {
-          method: request_data.method,
-          headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          body: new URLSearchParams(request_data.data).toString()
-      });
-      const data = await response.json();
-      return data; // Return the data to be used by the calling function
+    // Make the API request using fetch
+    const response = await fetch(`${request_data.url}?${query_params.toString()}`, {
+      method: request_data.method,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Error fetching recipe details: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data; // Return the data to be used by the calling function
   } catch (error) {
-      console.error('Error:', error);
-      throw new Error('Failed to fetch the recipe');
+    console.error('Error:', error.message);
+    throw new Error('Failed to fetch the recipe details');
   }
 }
 

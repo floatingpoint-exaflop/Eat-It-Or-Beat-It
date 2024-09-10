@@ -2,11 +2,6 @@ const express = require("express");
 const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
 const path = require("path");
-const { 
-  searchRecipes, 
-  getMoreRecipeDetails
-} = require("./controllers/recipe-controller")
-
 const apiRoutes = require("./routes")
 
 const { typeDefs, resolvers } = require("./schemas");
@@ -19,57 +14,11 @@ const server = new ApolloServer({
   resolvers,
 });
 
-// const cors = require("cors");
-// const { createProxyMiddleware } = require("http-proxy-middleware");
-
 const startApolloServer = async () => {
   await server.start();
 
-  // app.use(cors());
-  // // Proxy configuration
-  // app.use(
-  //   '/api',
-  //   createProxyMiddleware({
-  //     target: 'https://platform.fatsecret.com',
-  //     changeOrigin: true,
-  //     // pathRewrite: { '^/api': '/rest/server.api' }, //this is an old one, keeping just in case
-  //     pathRewrite: { '^/api': '' },
-  //     logLevel: 'debug',
-  //   })
-  // );
-
-  // app.post("/api/user/login", (req, res) => {
-  //   console.log("ok")
-  //   res.json({ result: "ok" })
-  // })
-
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
-
-  app.post("/api/recipe/search", async (req, res) => {
-    const searchParams = req.body;
-    try {
-      const searchResults = await searchRecipes(searchParams);
-      res.json(searchResults);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch recipes" });
-    }
-  });
-
-  app.get("/api/recipe/search/:recipeId", async (req, res) => {
-    // Retrieve the recipeId from the URL parameters
-    const { recipeId } = req.params;
-  
-    console.log('Received recipeId:', recipeId);
-    
-    try {
-      // Pass the recipeId to your function to get more details
-      const searchResults = await getMoreRecipeDetails(recipeId);
-      res.json(searchResults);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch recipes" });
-    }
-  });
 
   app.use('/api', apiRoutes)
 

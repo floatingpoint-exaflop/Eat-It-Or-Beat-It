@@ -5,19 +5,22 @@ const { User } = require('../models');
 const { signToken } = require('../utils/auth');
 
 module.exports = {
-  async getListOfUsers(req, res) {
+
+  getUsers: async function (req,res){
     try {
-      console.log(req.body)
-      const users = await User.find({}).populate('Comment');
-      res.json(users)
-    } catch (err) {
-      console.log(err);
+      const result =  await User.find({})
+      res.json(result)
+    } catch(err){
+      console.log(err)
+      return res.status(500).json(err);
     }
   },
-  getCurrentUser: async function (req, res) {
-    // get a single user by either their id or their username
+
+  getCurrentUser: async function(req, res){
+  // get a single user by either their id or their username
+
     try {
-      const user = await User.findOne({ _id: req.params.userId }).populate('comments');
+      const user = await User.findOne({ _id: req.params.userId })
       res.json(user);
     } catch (err) {
       console.log(err);

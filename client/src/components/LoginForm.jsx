@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import { Form, Button, Modal } from 'react-bootstrap';
+import { useUserContext } from '../providers/UserProvider';
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");
@@ -9,7 +10,7 @@ export default function LoginForm() {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-
+  const { userData, setUserData } = useUserContext();
 //   if (isAuthenticated) {
 //     navigate('/profile/:userId'); 
 //   }
@@ -27,6 +28,8 @@ async function handleLogin() {
       
       const data = await response.json();
       console.log(data.user)
+
+      setUserData({id: data.user._id})
       
       if (data.user._id) {
         setIsAuthenticated(true);
@@ -45,7 +48,7 @@ async function handleLogin() {
   }
 
   return (
-    <div className="container-fluid login">
+    <div className="container-fluid login" id="login">
       <h3>Login</h3>
       <Form>
         <Form.Group className="mb-3">
