@@ -8,16 +8,18 @@ const { getUsers, getComments, createUser, getCurrentUser, login } = require('..
 // Route to get all users
 router.route('/').get(getUsers);
 
+// Route for user login
+router.route('/login').post(login);
 
 // router.route('/').get(getUsers)
-router.route('/:userId/:recipeId').post(saveRecipeToDatabase);
+router.route('/:userId').post(saveRecipeToDatabase);
 
 // Route to add a new user
 router.route('/').post(createUser);
 
 
-// Route for user login
-router.route('/login').post(login);
+
+
 
 // Route to get comments for a specific user by userId
 router.route('/:userId/comments').get(getComments); // Changed to use dynamic userId

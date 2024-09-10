@@ -69,7 +69,7 @@ export default function EatItOrBeatIt(props) {
       // POST request to add the recipe to the database and user's list
       const userId = userData.id; // Replace with actual user ID
       const recipeId = data.id
-      const postResponse = await fetch(`/api/recipes/${userId}/${recipeId}`, {
+      const postResponse = await fetch(`/api/users/${userId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export default function EatItOrBeatIt(props) {
       }
   
       const postData = await postResponse.json();
-      console.log(postData); // Optional: Log the response for debugging
+      console.log(postData);
       
       // Save the current recipe to the savedRecipes array
       setSavedRecipes((prevSaved) => [...prevSaved, currentRecipe]);
@@ -95,9 +95,6 @@ export default function EatItOrBeatIt(props) {
     }
     handleBeatIt();//remove from array and get new recipe to show anyway, tinder style
   }  
-
-
-
 
 
   // Load a random recipe on first load of page

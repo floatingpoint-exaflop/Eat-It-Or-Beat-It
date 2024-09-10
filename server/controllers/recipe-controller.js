@@ -22,23 +22,25 @@ const getRecipes = async (req, res) => {
     res.status(500).json({ error: "Failed to get recipes" });
   }
 };
-const commentsOnRecipes = async (req,res) => {
+const commentsOnRecipes = async (req, res) => {
   try {
-    const comment = await Recipe.find({_id: req.params._id}).populate('Comment');
+    const comment = await Recipe.find({ _id: req.params._id }).populate(
+      "Comment"
+    );
     res.json(comment);
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-}
+};
 
-const generalRecipes = async (req,res) => {
-try{
-  const recipe = await Comment.find({});
-  res.json(recipe)
-}catch(err){
-  console.log(err)
-}
-}
+const generalRecipes = async (req, res) => {
+  try {
+    const recipe = await Comment.find({});
+    res.json(recipe);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 // Get a single recipe for a given user
 const getSingleRecipe = async (req, res) => {
@@ -89,53 +91,56 @@ const addRecipe = async (req, res) => {
 };
 
 //POST NEW RECIPE TO DB
-async function saveRecipeToDatabase(recipeData) {
-  const extractedData = {
-    recipe_name: recipeData.recipe_name,
-    recipe_types: recipeData.recipe_types.recipe_type,
-    cooking_time_min: recipeData.cooking_time_min,
-    recipe_images: recipeData.recipe_images.recipe_image,
-    recipe_description: recipeData.recipe_description,
-    recipe_ingredients: recipeData.ingredients.ingredient.map((ing) => ({
-      food_name: ing.food_name,
-      ingredient_description: ing.ingredient_description,
-    })),
-    number_of_servings: recipeData.number_of_servings,
-    grams_per_portion: recipeData.grams_per_portion,
-    serving_sizes: recipeData.serving_sizes.serving,
-    directions: recipeData.directions.direction.map((dir) => ({
-      direction_description: dir.direction_description,
-      direction_number: dir.direction_number,
-    })),
-    ingredients: recipeData.ingredients.ingredient.map((ing) => ({
-      food_id: ing.food_id,
-      food_name: ing.food_name,
-      ingredient_description: ing.ingredient_description,
-      ingredient_url: ing.ingredient_url,
-      measurement_description: ing.measurement_description,
-      number_of_units: ing.number_of_units,
-      serving_id: ing.serving_id,
-    })),
-    grams_per_portion: recipeData.grams_per_portion,
-    rating: recipeData.rating,
-  };
-
+async function saveRecipeToDatabase(req, res) {
   try {
-    const response = await fetch("/api/recipes", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(extractedData), // Convert the data to a JSON string
-    });
-    if (!response.ok) {
-      throw new Error("Failed to save the recipe.");
+    const recipeData = req.body.recipe
+    console.log(recipeData)
+    const extractedData = {
+      recipe_name: recipeData.recipe_name,
+      recipe_types: recipeData.recipe_types.recipe_type,
+      cooking_time_min: recipeData.cooking_time_min,
+      recipe_images: recipeData.recipe_images.recipe_image,
+      recipe_description: recipeData.recipe_description,
+      recipe_ingredients: recipeData.ingredients.ingredient.map((ing) => ({
+        food_name: ing.food_name,
+        ingredient_description: ing.ingredient_description,
+      })),
+      number_of_servings: recipeData.number_of_servings,
+      grams_per_portion: recipeData.grams_per_portion,
+      serving_sizes: recipeData.serving_sizes.serving,
+      directions: recipeData.directions.direction.map((dir) => ({
+        direction_description: dir.direction_description,
+        direction_number: dir.direction_number,
+      })),
+      ingredients: recipeData.ingredients.ingredient.map((ing) => ({
+        food_id: ing.food_id,
+        food_name: ing.food_name,
+        ingredient_description: ing.ingredient_description,
+        ingredient_url: ing.ingredient_url,
+        measurement_description: ing.measurement_description,
+        number_of_units: ing.number_of_units,
+        serving_id: ing.serving_id,
+      })),
+      grams_per_portion: recipeData.grams_per_portion,
+      rating: recipeData.rating,
+    };
+
+    const newRecipe = await Recipe.create(extractedData);
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      { $addToSet: { recipes: newRecipe._id } }, // Ensure no duplicates are added
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
     }
-    const result = await response.json();
-    console.log("Recipe saved successfully:", result);
-    addRecipe()
-  } catch (error) {
-    console.error("Error saving recipe:", error);
+
+    res.json(updatedUser);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json(err);
   }
 }
 
@@ -270,5 +275,5 @@ module.exports = {
   addRecipe,
   saveRecipeToDatabase,
   generalRecipes,
-  commentsOnRecipes
+  commentsOnRecipes,
 };
