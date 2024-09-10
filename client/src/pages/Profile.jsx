@@ -4,11 +4,15 @@ import { Card } from 'react-bootstrap'; // Make sure you have Bootstrap installe
 import fred from '../icons/images/fred.png';
 
 import RecipeList from '../components/RecipeList';
+import { useUserContext } from "../providers/UserProvider";
+// import {getComments, getSingleComment} from '../../../server/controllers/comment-controllers'
+// import {getRecipes} from '../../../server/controllers/recipe-controller'
+
 
 export default function Profile(props) {
     const [comments, setComments] = useState([]);
     const [savedRecipes, setSavedRecipes] = useState([]);
-
+    const { userData, setUserData } = useUserContext();
     // Fetch user comments from MongoDB
     async function getUserComments() {
         try {
@@ -29,11 +33,14 @@ export default function Profile(props) {
             console.log('Error fetching comments:', err);
         }
     }
+    //need a get user by ID
 
     // Fetch user saved recipes
     async function getSavedRecipes() {
         try {
-            const response = await fetch(`/api/users/${props.userId}/savedrecipes`, {
+            //assume props.userId is a placeholder. 
+            console.log(userData)
+            const response = await fetch(`/api/users/${userData.id}/savedrecipes`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -41,6 +48,7 @@ export default function Profile(props) {
                 },
             });
             const data = await response.json();
+            console.log(data)
             if (!response.ok) {
                 console.error('Error fetching recipes:', data.message);
             } else {
@@ -55,9 +63,7 @@ export default function Profile(props) {
     useEffect(() => {
         getUserComments();
         getSavedRecipes();
-    }, [props.userId]);
-
-    
+    }, [userData.id]);
 
     return (
         <div className='container col-12 mt-5'>
@@ -72,29 +78,27 @@ export default function Profile(props) {
                     </div>
                 </div>
             </div>
+            
 
-            <div className="col-12 row text-center d-flex justify-content-center mt-5">
+            {/* <div className="col-12 row text-center d-flex justify-content-center mt-5">
                 {/* Saved Recipes Section */}
-                <div className="col-12 p-3 mr-3" style={{ border: '2px solid yellow' }} id="savedRecipes">
-                    <Link to="/" className="btn btn-primary">Take me to the search page</Link>
-                    <h2>Recipes marked "eat it"</h2>
-                    {savedRecipes.length === 0 ? (
-                        <div id='noArrayRecipe'>
-                            <p>No saved recipes available.</p>
-                        </div>
-                    ) : (
-                        <div>
-                            <h2>Saved Recipes</h2>
-                            {savedRecipes.map((recipe) => (
-                                <RecipeList recipe={recipe}/>
-                            ))}
-                        </div>
-                    )}
-                    
-                </div>
+            <div className="col-12 p-3 mr-3" style={{ border: '2px solid yellow' }} id="savedRecipes">
+                <h2>Recipes marked "eat it"</h2>
+                {savedRecipes.length === 0 ? (
+                    <div id='noArrayRecipe'>
+                        <p>No saved recipes available.</p>
+                        <Link to="/" className="btn btn-primary">Take me to the search page</Link>
+                    </div>
+                ) : (
+                    <div>
+                        <h2>Saved Recipes</h2>
+                        <RecipeList recipes={savedRecipes} />
+                    </div>
+                )}
+            </div>
 
-                {/* Uncomment and complete Comments Section */}
-                {/* 
+            {/* Uncomment and complete Comments Section */}
+            {/* 
                 <div className="col-5 p-3" style={{ border: '2px solid yellow' }} id="commentsContainer">
                     <h2>Recipes I have commented on:</h2>
                     {comments.length === 0 ? (
@@ -113,8 +117,8 @@ export default function Profile(props) {
                     )}
                 </div>
                 */}
-            </div>
         </div>
+
     );
 }
 

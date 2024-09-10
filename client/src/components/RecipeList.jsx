@@ -9,8 +9,10 @@ import Comment from '../components/Comment';
 
 export default function RecipeList(props) {
 
-const {recipe} = props
+const {recipes} = props
+console.log(recipes)
 const [showModal, setShowModal] = useState(false)
+const [selectedRecipe, setSelectedRecipe] = useState(null)
 
 //modal logic
 //modal logic
@@ -29,13 +31,15 @@ const handleClose = () => {
     <>
       <Container>
         <Row>
-              <Col md="4" key={recipe.recipe_id}>
+          {recipes.length && recipes.map(recipe => (
+              <Col md="4" key={recipe.recipeId}>
                 <Card border='dark' onClick={() => handleShow(recipe)}>
                   <Card.Body>
-                    <Card.Title>{recipe.recipe_name}</Card.Title>
+                    <Card.Title>{recipe.title}</Card.Title>
                   </Card.Body>
                 </Card>
               </Col>
+              ))}
         </Row>
       </Container>
       <Modal show={showModal} onHide={handleClose}>
@@ -46,7 +50,7 @@ const handleClose = () => {
           <p className='ingredients'>Ingredients: {selectedRecipe?.recipe_ingredients.ingredient.join(', ')}</p>
           <p className="description">{selectedRecipe?.recipe_description}</p>
           <p className='nutrition'>Nutrition: Calories: {selectedRecipe?.recipe_nutrition.calories}, Carbohydrates: {selectedRecipe?.recipe_nutrition.carbohydrate}, Fat: {selectedRecipe?.recipe_nutrition.fat}, Protein: {selectedRecipe?.recipe_nutrition.protein}</p>
-          <p className="types">{selectedRecipe?.recipe_types.recipe_type.join(', ')}</p>
+          <p className="types">{selectedRecipe?.recipe_types.join(', ')}</p>
           <Comment />
         </Modal.Body>
       </Modal> 
