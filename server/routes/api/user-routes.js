@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { addRecipe, getRecipes } = require('../../controllers/recipe-controller');
+const { addRecipe, getRecipes, saveRecipeToDatabase } = require('../../controllers/recipe-controller');
 const { getUsers, createUser, getCurrentUser, login } = require('../../controllers/user-controller');
 
 // // import middleware
@@ -7,7 +7,8 @@ const { getUsers, createUser, getCurrentUser, login } = require('../../controlle
 
 // put authMiddleware anywhere we need to send a token for verification of user
 
-router.route('/').get(getUsers)
+// router.route('/').get(getUsers)
+router.route('/:userId/:recipeId').post(saveRecipeToDatabase);
 
 //add a user to the list of users route will be api/users/
 router.route('/').post(createUser)

@@ -1,12 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from "react";
 import { Button, Card } from "react-bootstrap";
+import { useUserContext } from "../providers/UserProvider";
 
 export default function EatItOrBeatIt(props) {
   const { results } = props;
   const [recipes, setRecipes] = useState(results); // Ensure results have a default value of an empty array
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [extraDetails, setExtraDetails] = useState(null);
+  const {userData, setUserData} = useUserContext();
 
   // Function to pick a random recipe
   const getRandomRecipe = () => {
@@ -30,11 +32,10 @@ export default function EatItOrBeatIt(props) {
   };
 
   async function handleEatIt() {
-    //!!! NEED TO GET THIS API CALL WORKING
     console.log("Eat It clicked");
     try {
       const response = await fetch(
-        `/api/recipe/search/${currentRecipe.recipe_id}`, // Ensure `recipe_id` is being accessed correctly
+        `/api/recipe/search/${currentRecipe.recipe_id}`, // Ensure `recipe_id` is correct
         {
           method: "GET",
           headers: {
@@ -43,27 +44,49 @@ export default function EatItOrBeatIt(props) {
           },
         }
       );
-
+  
       if (!response.ok) {
         throw new Error("Failed to fetch extra details.");
       }
-
+  
       const data = await response.json();
       setExtraDetails(data); // Store results in state
-
+  
       if (!data || Object.keys(data).length === 0) {
-        // Check if the data object is empty
         setErrorMessage(
           "No more details found for this recipe. Did you send the ID correctly?"
         );
         setShowErrorModal(true);
+        return;
       }
+  
+      // POST request to add the recipe to the database and user's list
+      const userId = userData.id; // Replace with actual user ID
+      const recipeId = data.id
+      const postResponse = await fetch(`/api/recipes/${userId}/${recipeId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+  
+      if (!postResponse.ok) {
+        throw new Error("Failed to save recipe.");
+      }
+  
+      const postData = await postResponse.json();
+      console.log(postData); // Optional: Log the response for debugging
+  
+      // Remove from array and get new recipe to show
+      handleBeatIt();
+  
     } catch (error) {
       setErrorMessage(error.message);
       setShowErrorModal(true);
     }
-    handleBeatIt;//remove from array and get new recipe to show anyway, tinder style
-  }
+  }  
 
   // Load a random recipe on first load of page
   useEffect(() => {
