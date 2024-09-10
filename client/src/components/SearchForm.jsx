@@ -198,8 +198,10 @@ export default function SearchForm() {
   return (
     <>
       {recipeSearchResults.length && (
-        <div>
+        <div className="row">
+          <div className="col-3"/>
           <EatItOrBeatIt results={recipeSearchResults}/>
+          <div className="col-4"/>
         </div>
       )}
 
