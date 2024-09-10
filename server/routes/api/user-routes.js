@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { addRecipe, getRecipes } = require('../../controllers/recipe-controller');
+const { addRecipe, getRecipes, saveRecipeToDatabase } = require('../../controllers/recipe-controller');
 const { getUsers, getComments, createUser, getCurrentUser, login } = require('../../controllers/user-controller');
 
 // Import middleware
@@ -8,8 +8,13 @@ const { getUsers, getComments, createUser, getCurrentUser, login } = require('..
 // Route to get all users
 router.route('/').get(getUsers);
 
+
+// router.route('/').get(getUsers)
+router.route('/:userId/:recipeId').post(saveRecipeToDatabase);
+
 // Route to add a new user
 router.route('/').post(createUser);
+
 
 // Route for user login
 router.route('/login').post(login);

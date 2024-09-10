@@ -88,138 +88,187 @@ const addRecipe = async (req, res) => {
   }
 };
 
+//POST NEW RECIPE TO DB
+async function saveRecipeToDatabase(recipeData) {
+  const extractedData = {
+    recipe_name: recipeData.recipe_name,
+    recipe_types: recipeData.recipe_types.recipe_type,
+    cooking_time_min: recipeData.cooking_time_min,
+    recipe_images: recipeData.recipe_images.recipe_image,
+    recipe_description: recipeData.recipe_description,
+    recipe_ingredients: recipeData.ingredients.ingredient.map((ing) => ({
+      food_name: ing.food_name,
+      ingredient_description: ing.ingredient_description,
+    })),
+    number_of_servings: recipeData.number_of_servings,
+    grams_per_portion: recipeData.grams_per_portion,
+    serving_sizes: recipeData.serving_sizes.serving,
+    directions: recipeData.directions.direction.map((dir) => ({
+      direction_description: dir.direction_description,
+      direction_number: dir.direction_number,
+    })),
+    ingredients: recipeData.ingredients.ingredient.map((ing) => ({
+      food_id: ing.food_id,
+      food_name: ing.food_name,
+      ingredient_description: ing.ingredient_description,
+      ingredient_url: ing.ingredient_url,
+      measurement_description: ing.measurement_description,
+      number_of_units: ing.number_of_units,
+      serving_id: ing.serving_id,
+    })),
+    grams_per_portion: recipeData.grams_per_portion,
+    rating: recipeData.rating,
+  };
+
+  try {
+    const response = await fetch("/api/recipes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(extractedData), // Convert the data to a JSON string
+    });
+    if (!response.ok) {
+      throw new Error("Failed to save the recipe.");
+    }
+    const result = await response.json();
+    console.log("Recipe saved successfully:", result);
+    addRecipe()
+  } catch (error) {
+    console.error("Error saving recipe:", error);
+  }
+}
+
 // ---------------- EXTERNAL API CALL -------------------- //
-const OAuth = require('oauth-1.0a');
-const crypto = require('crypto');
+const OAuth = require("oauth-1.0a");
+const crypto = require("crypto");
 
 // Our API keys
-const consumer_key = 'd63563bb75c641f783ada0171b5eb024';
-const consumer_secret = '322b9d574ed14573b656c85bf1234c32';
+const consumer_key = "d63563bb75c641f783ada0171b5eb024";
+const consumer_secret = "322b9d574ed14573b656c85bf1234c32";
 
 // This is the OAuth instance. It gets the oauth_params needed below.
 const oauth = OAuth({
-    consumer: { key: consumer_key, secret: consumer_secret },
-    signature_method: 'HMAC-SHA1',
-    hash_function(base_string, key) {
-        console.log("Base String: ", base_string);
-        console.log("Key: ", key);
-        return crypto.createHmac('sha1', key).update(base_string).digest('base64');
-    }
+  consumer: { key: consumer_key, secret: consumer_secret },
+  signature_method: "HMAC-SHA1",
+  hash_function(base_string, key) {
+    console.log("Base String: ", base_string);
+    console.log("Key: ", key);
+    return crypto.createHmac("sha1", key).update(base_string).digest("base64");
+  },
 });
 
 // Export these two functions to also be used in the server route
 
-
 // -----Get Recipe By id from API- SYSTEM WILL USE TO GET BETTER RECIPE DATA UPON SAVE---
 async function getMoreRecipeDetails(recipe_id) {
   const request_data = {
-      url: 'https://platform.fatsecret.com/rest/server.api',
-      method: 'GET',
-      data: {
-          method: 'recipe.get.v2',
-          recipe_id: recipe_id, // Recipe ID passed as a parameter
-          format: 'json',
-      },
+    url: "https://platform.fatsecret.com/rest/server.api",
+    method: "GET",
+    data: {
+      method: "recipe.get.v2",
+      recipe_id: recipe_id, // Recipe ID passed as a parameter
+      format: "json",
+    },
   };
 
   // Add OAuth parameters manually to the request body
   const oauth_params = oauth.authorize(request_data);
   const query_params = new URLSearchParams({
-      ...request_data.data,
-      oauth_consumer_key: consumer_key,
-      oauth_signature_method: 'HMAC-SHA1',
-      oauth_timestamp: oauth_params.oauth_timestamp,
-      oauth_nonce: oauth_params.oauth_nonce,
-      oauth_version: '1.0',
-      oauth_signature: oauth_params.oauth_signature
+    ...request_data.data,
+    oauth_consumer_key: consumer_key,
+    oauth_signature_method: "HMAC-SHA1",
+    oauth_timestamp: oauth_params.oauth_timestamp,
+    oauth_nonce: oauth_params.oauth_nonce,
+    oauth_version: "1.0",
+    oauth_signature: oauth_params.oauth_signature,
   });
   try {
     // Make the API request using fetch
-    const response = await fetch(`${request_data.url}?${query_params.toString()}`, {
-      method: request_data.method,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
+    const response = await fetch(
+      `${request_data.url}?${query_params.toString()}`,
+      {
+        method: request_data.method,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
     if (!response.ok) {
       throw new Error(`Error fetching recipe details: ${response.statusText}`);
     }
     const data = await response.json();
     return data; // Return the data to be used by the calling function
   } catch (error) {
-    console.error('Error:', error.message);
-    throw new Error('Failed to fetch the recipe details');
+    console.error("Error:", error.message);
+    throw new Error("Failed to fetch the recipe details");
   }
 }
 
-
 async function searchRecipes(searchParams) {
-    console.log('Executing searchRecipes with:', searchParams);
-    // Create the request_data object dynamically based on searchParams
-    const request_data = {
-        url: 'https://platform.fatsecret.com/rest/server.api',
-        method: 'POST',
-        data: {
-            method: 'recipes.search.v3',
-            format: 'json',
-            max_results: searchParams.max_results || '',
-            search_expression: searchParams.search_expression || '',
-            recipe_types: searchParams.recipe_types || '',
-            recipe_types_matchall: searchParams.recipe_types_matchall || '',
-            must_have_images: searchParams.must_have_images || '',
-            'calories.from': searchParams['calories.from'] || '',
-            'calories.to': searchParams['calories.to'] || '',
-            'carb_percentage.from': searchParams['carb_percentage.from'] || '',
-            'carb_percentage.to': searchParams['carb_percentage.to'] || '',
-            'protein_percentage.from': searchParams['protein_percentage.from'] || '',
-            'protein_percentage.to': searchParams['protein_percentage.to'] || '',
-            'fat_percentage.from': searchParams['fat_percentage.from'] || '',
-            'fat_percentage.to': searchParams['fat_percentage.to'] || '',
-            'prep_time.from': searchParams['prep_time.from'] || '',
-            'prep_time.to': searchParams['prep_time.to'] || '',
-        }
-    };
+  console.log("Executing searchRecipes with:", searchParams);
+  // Create the request_data object dynamically based on searchParams
+  const request_data = {
+    url: "https://platform.fatsecret.com/rest/server.api",
+    method: "POST",
+    data: {
+      method: "recipes.search.v3",
+      format: "json",
+      max_results: searchParams.max_results || "",
+      search_expression: searchParams.search_expression || "",
+      recipe_types: searchParams.recipe_types || "",
+      recipe_types_matchall: searchParams.recipe_types_matchall || "",
+      must_have_images: searchParams.must_have_images || "",
+      "calories.from": searchParams["calories.from"] || "",
+      "calories.to": searchParams["calories.to"] || "",
+      "carb_percentage.from": searchParams["carb_percentage.from"] || "",
+      "carb_percentage.to": searchParams["carb_percentage.to"] || "",
+      "protein_percentage.from": searchParams["protein_percentage.from"] || "",
+      "protein_percentage.to": searchParams["protein_percentage.to"] || "",
+      "fat_percentage.from": searchParams["fat_percentage.from"] || "",
+      "fat_percentage.to": searchParams["fat_percentage.to"] || "",
+      "prep_time.from": searchParams["prep_time.from"] || "",
+      "prep_time.to": searchParams["prep_time.to"] || "",
+    },
+  };
 
-    // Add OAuth parameters manually to the request body
-    const oauth_params = oauth.authorize(request_data);
-    request_data.data = {
-        ...request_data.data,
-        oauth_consumer_key: consumer_key,
-        oauth_signature_method: 'HMAC-SHA1',
-        oauth_timestamp: oauth_params.oauth_timestamp,
-        oauth_nonce: oauth_params.oauth_nonce,
-        oauth_version: '1.0',
-        oauth_signature: oauth_params.oauth_signature
-    };
+  // Add OAuth parameters manually to the request body
+  const oauth_params = oauth.authorize(request_data);
+  request_data.data = {
+    ...request_data.data,
+    oauth_consumer_key: consumer_key,
+    oauth_signature_method: "HMAC-SHA1",
+    oauth_timestamp: oauth_params.oauth_timestamp,
+    oauth_nonce: oauth_params.oauth_nonce,
+    oauth_version: "1.0",
+    oauth_signature: oauth_params.oauth_signature,
+  };
 
-    // Fetch the recipe search results
-    try {
-        const response = await fetch(request_data.url, {
-            method: request_data.method,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams(request_data.data).toString()
-        });
-        const data = await response.json();
-        console.log('Recipes:', JSON.stringify(data, null, 2));
-        return data.recipes.recipe; // Return the recipe search result array
-    } catch (error) {
-        console.error('Error:', error);
-        throw new Error('Failed to fetch the recipes');
-    }
+  // Fetch the recipe search results
+  try {
+    const response = await fetch(request_data.url, {
+      method: request_data.method,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams(request_data.data).toString(),
+    });
+    const data = await response.json();
+    console.log("Recipes:", JSON.stringify(data, null, 2));
+    return data.recipes.recipe; // Return the recipe search result array
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Failed to fetch the recipes");
+  }
 }
-
-
-
 
 module.exports = {
   searchRecipes,
-  getMoreRecipeDetails,//these two are for the external API
+  getMoreRecipeDetails, //these two are for the external API
   getRecipes,
   getSingleRecipe,
   addRecipe,
+  saveRecipeToDatabase,
   generalRecipes,
   commentsOnRecipes
 };
-

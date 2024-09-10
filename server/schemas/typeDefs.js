@@ -7,90 +7,103 @@ type User {
   recipes: [Recipe] # User's saved recipes
 }
 
-  input CreateUserInput {
-    username: String!
-    email: String!
-    password: String!
-  }
-
+input CreateUserInput {
+  username: String!
+  email: String!
+  password: String!
+}
 
 type Recipe {
   _id: ID!
-  api_recipe_id: Int!
   recipe_name: String!
+  recipe_types: [String]
+  cooking_time_min: String
+  recipe_images: [String]
   recipe_description: String
-  recipe_image: String
-  recipe_ingredients: RecipeIngredients
-  recipe_nutrition: RecipeNutrition
+  recipe_ingredients: [RecipeIngredient]
+  number_of_servings: String
+  grams_per_portion: String
+  serving_sizes: ServingSizes
   directions: [Direction]
   ingredients: [Ingredient]
-  grams_per_portion: String
-  number_of_servings: String
   rating: String
-  serving_sizes: ServingSizes
-  recipe_types: [String]
   comments: [Comment]
 }
-  type RecipeIngredients {
-    ingredient: [String] # List of ingredient names
-  }
-  type RecipeNutrition {
-    calories: String
-    carbohydrate: String
-    fat: String
-    protein: String
-  }
-  type Direction {
-    direction_description: String
-    direction_number: Int
-  }
-  type Ingredient {
-    food_id: String
-    food_name: String
-    ingredient_description: String
-    ingredient_url: String
-    measurement_description: String
-    number_of_units: String
-    serving_id: String
-  }
-  type ServingSizes {
-    serving_size: String
-    calories: String
-    carbohydrate: String
-    cholesterol: String
-    fat: String
-    fiber: String
-    iron: String
-    monounsaturated_fat: String
-    polyunsaturated_fat: String
-    potassium: String
-    protein: String
-    saturated_fat: String
-    sodium: String
-    sugar: String
-    trans_fat: String
-    vitamin_a: String
-    vitamin_c: String
-  }
 
-    input AddRecipeInput {
-      api_recipe_id: Int!
-      recipe_name: String!
-      recipe_description: String
-      recipe_image: String
-      recipe_ingredients: RecipeIngredientsInput
-      recipe_nutrition: RecipeNutritionInput
-    }
-    input RecipeIngredientsInput {
-      ingredient: [String]
-    }
-    input RecipeNutritionInput {
-      calories: String
-      carbohydrate: String
-      fat: String
-      protein: String
-    }
+type RecipeIngredient {
+  food_name: String
+  ingredient_description: String
+}
 
+type ServingSizes {
+  calcium: String
+  calories: String
+  carbohydrates: String
+  cholesterol: String
+  fat: String
+  fiber: String
+  iron: String
+  monounsaturated_fat: String
+  polyunsaturated_fat: String
+  potassium: String
+  protein: String
+  saturated_fat: String
+  serving_size: String
+  sodium: String
+  sugar: String
+  trans_fat: String
+  vitamin_a: String
+  vitamin_c: String
+}
+
+type Direction {
+  direction_description: String
+  direction_number: Int
+}
+
+type Ingredient {
+  food_id: String
+  food_name: String
+  ingredient_description: String
+  ingredient_url: String
+  measurement_description: String
+  number_of_units: String
+  serving_id: String
+}
+
+input AddRecipeInput {
+  recipe_name: String!
+  recipe_types: [String]
+  cooking_time_min: String
+  recipe_images: [String]
+  recipe_description: String
+  recipe_ingredients: [RecipeIngredientInput]
+  number_of_servings: String
+  grams_per_portion: String
+  directions: [DirectionInput]
+  ingredients: [IngredientInput]
+  rating: String
+}
+
+input RecipeIngredientInput {
+  food_name: String
+  ingredient_description: String
+}
+
+input DirectionInput {
+  direction_description: String
+  direction_number: Int
+}
+
+input IngredientInput {
+  food_id: String
+  food_name: String
+  ingredient_description: String
+  ingredient_url: String
+  measurement_description: String
+  number_of_units: String
+  serving_id: String
+}
 
 type Comment {
   _id: ID!
@@ -102,6 +115,7 @@ type Comment {
   createdAt: String!
   updatedAt: String!
 }
+
 input AddCommentInput {
   commentBody: String!
   rating: Int!
@@ -117,6 +131,7 @@ type Query {
   getComments: [Comment]
   getSingleComment(id: ID!): Comment
 }
+
 type Mutation {
   addUser(input: CreateUserInput): User
   addRecipe(userId: ID!, input: AddRecipeInput): Recipe

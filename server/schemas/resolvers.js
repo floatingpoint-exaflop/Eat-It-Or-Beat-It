@@ -8,13 +8,9 @@ const resolvers = {
       return user.recipes;
     },
 
-    // Fetch a single recipe by ID for a user
-    getSingleRecipe: async (parent, { recipeId, userId }) => {
-      const user = await User.findById(userId).populate({
-        path: 'recipes',
-        match: { _id: recipeId },
-      });
-      return user.recipes[0];
+    // Fetch a single recipe by ID
+    getSingleRecipe: async (parent, { id }) => {
+      return Recipe.findById(id);
     },
 
     // Fetch all comments for a specific recipe
@@ -23,13 +19,13 @@ const resolvers = {
     },
 
     // Fetch a single comment by ID
-    getSingleComment: async (parent, { commentId }) => {
-      return Comment.findById(commentId);
+    getSingleComment: async (parent, { id }) => {
+      return Comment.findById(id);
     },
 
     // Fetch a single user by ID
-    getUser: async (parent, { userId }) => {
-      return User.findById(userId).populate('recipes');
+    getUser: async (parent, { id }) => {
+      return User.findById(id).populate('recipes');
     },
   },
 
@@ -58,7 +54,7 @@ const resolvers = {
     },
   },
 
-  //Resolvers for fields that need to reference other models
+  // Resolvers for fields that need to reference other models
   Recipe: {
     comments: async (parent) => {
       return Comment.find({ recipe: parent._id });
