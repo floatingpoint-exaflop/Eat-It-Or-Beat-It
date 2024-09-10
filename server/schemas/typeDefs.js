@@ -28,7 +28,6 @@ type Recipe {
   grams_per_portion: String
   serving_sizes: ServingSizes
   directions: [Direction]
-  ingredients: [Ingredient]
   rating: String
   comments: [Comment]
 }

@@ -104,15 +104,6 @@ module.exports = {
     res.json({ token, user });
   },
 
-  addRecipeApi: async function (req, res) {
-    try {
-      const liked = await Recipe.create(req.res);
-      res.json(liked);
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json(err);
-    }
-  },
   getRecipes: async function (req, res){
     try{
       const all = await User.find({_id: req.body._id}).populate('Recipe');

@@ -96,8 +96,10 @@ async function saveRecipeToDatabase(req, res) {
       recipe_api_xref: recipeData.recipe_id,
       recipe_description: recipeData.recipe_description,
       recipe_ingredients: recipeData.ingredients.ingredient.map((ing) => ({
+        food_id: ing.food_id,
         food_name: ing.food_name,
         ingredient_description: ing.ingredient_description,
+        measurement_description: ing.measurement_description,
       })),
       number_of_servings: recipeData.number_of_servings,
       grams_per_portion: recipeData.grams_per_portion,
@@ -105,15 +107,6 @@ async function saveRecipeToDatabase(req, res) {
       directions: recipeData.directions.direction.map((dir) => ({
         direction_description: dir.direction_description,
         direction_number: dir.direction_number,
-      })),
-      ingredients: recipeData.ingredients.ingredient.map((ing) => ({
-        food_id: ing.food_id,
-        food_name: ing.food_name,
-        ingredient_description: ing.ingredient_description,
-        ingredient_url: ing.ingredient_url,
-        measurement_description: ing.measurement_description,
-        number_of_units: ing.number_of_units,
-        serving_id: ing.serving_id,
       })),
       rating: recipeData.rating,
     };

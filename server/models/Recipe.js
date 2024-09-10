@@ -12,8 +12,10 @@ const recipeSchema = new Schema({
   recipe_description: String,
   recipe_ingredients: [
     {
+      food_id: String,
       food_name: String,
       ingredient_description: String,
+      measurement_description: String,
     }
   ],
   number_of_servings: String,
@@ -44,17 +46,6 @@ const recipeSchema = new Schema({
     {
       direction_description: String,
       direction_number: Number,
-    }
-  ],
-  ingredients: [
-    {
-      food_id: String,
-      food_name: String,
-      ingredient_description: String,
-      ingredient_url: String,
-      measurement_description: String,
-      number_of_units: String,
-      serving_id: String,
     }
   ],
   rating: String,
