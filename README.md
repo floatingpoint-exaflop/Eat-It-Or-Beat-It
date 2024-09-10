@@ -14,15 +14,13 @@ A collaborative project using the MERN stack and the FatSecret API to create a w
   ## Description
   Everybody Eats! But some of us have a healthier or less healthy relationship with food - perhaps the only addictive substance truly needed to stay alive. This website will allow securely registered users to learn more about the foods they eat and make better decisions on their next grocery run or kitchen adventure. Whether you're a nutrition guru already or just getting back into the swing of things, Everybody Eats offers the tools to succeed nutritionally!
 
-  ### Homepage/Landing
+  ### Homepage/Login
   ![image](./screenshots/.png)
-  ### User 
+  ### User Profile 
   ![image](./screenshots/.png)
-  ### User 
+  ### Search Form 
   ![image](./screenshots/.png)
-  ### User
-  ![image](./screenshots/.png)
-  ### User 
+  ### Eat it or Beat it!
   ![image](./screenshots/.png)
 
 

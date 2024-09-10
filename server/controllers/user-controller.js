@@ -20,7 +20,7 @@ module.exports = {
       // Find the user by ID and add the recipe to the savedRecipes array
       const updatedUser = await User.findByIdAndUpdate(
         req.params.userId,
-        { $addToSet: { savedRecipes: req.body.recipeId } }, // Ensure no duplicates are added
+        { $addToSet: { recipes: req.params.recipeId } }, // Ensure no duplicates are added
         { new: true, runValidators: true }
       );
   
