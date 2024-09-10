@@ -2,23 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import foodLogo from '../icons/logo.png';
 
-import { useUserCtx } from '../providers/UserProvider';
-
 export default function Header(props) {
-
-
-    const { userData, setUserData } = useUserCtx()
-
-    const menu = [
+    const loginNavItems = [
         { id: 1, label: "Search", href: "/" },
-        { id: 2, label: "Profile", href: `/profile/${userData.id}` }
+        { id: 2, label: "Profile", href: "/profile" },
+        { id: 3, label: "Logout", href: "/" },
+
     ];
 
-    function handleLogout() {
-        setUserData({ id: null });
-        window.location.assign("/")
-    }
-
+    const logoutNavItems = [
+        { id: 4, label: "Login", href: '/login' }
+    ]
 
     return (
         <header className="container-fluid col-12">
@@ -31,23 +25,24 @@ export default function Header(props) {
                     <h1 className="siteName">{props.sitename}</h1>
 
                 </div>
-
-                <div className="col-7">
-                    <ul className="nav">
-                        {userData.id !== null ? (
-                            <>
-                                {menu.map(item => (
-                                    <li className="nav-item" key={item.id}>
+                <div className="col-7 d-flex justify-content-end">
+                        {props.loggedInUser && props.loggedInUser.length > 1 ? (
+                            loginNavItems.map(item => (
+                         <ul className="nav d-flex justify-content-end row">
+                                <li className="nav-item" key={item.id}>
+                                    <Link className="nav-link" to={item.href}>{item.label}</Link>
+                                </li>
+                            </ul>
+                            ))
+                        ) : (
+                            // Render different menu items for logged-out users
+                            logoutNavItems.map(item => (
+                                <ul className="nav" key={item.id}>
+                                    <li className="nav-item">
                                         <Link className="nav-link" to={item.href}>{item.label}</Link>
                                     </li>
-                                ))}
-                                <li className='nav-item'>
-                                    <button className="nav-link" onClick={handleLogout}>Logout</button>
-                                </li>
-                            </>
-                        ) : (
-                            <>not logged in</>
-
+                                </ul>
+                            ))
                         )}
                 </div>
             </div>
