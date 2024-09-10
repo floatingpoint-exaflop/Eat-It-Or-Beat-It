@@ -29,7 +29,18 @@ main {
 }
 
 
-@media screen and (max-width: 414px) {
+
+
+
+/* ========================================================================================================= */
+html, body {
+  width: 100%; /* Ensures the body takes the full width of the viewport */
+  height: 100%; /* Ensures the body takes the full height of the viewport */
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+  margin: 0; /* Removes default margin */
+}
+
+@media screen and (max-width: 445px) {
   .login, .signup {
     display: block;
     width: 98.5%;
@@ -48,15 +59,58 @@ main {
   font-size:xx-small;
 }
 
-header{
+header {
   background-color: rgb(207, 54, 54);
-  color: white
+  color: white;
+  margin-bottom: 15px;
+  text-align: center; /* Centers the text inside the header */
+  width: 80%; /* Set a specific width for the header */
+  margin: 0 auto; /* Centers the header itself within the container */
+  opacity: 90%;
+  border-radius: 3px;
+}
+
+.footer-img{
+  width: 210px;
+  height: 30px;
+  margin-top: 15px;
+  margin-bottom: 20px;
 }
 
 .siteName {
   padding-left: 25px;
   padding-top: 10px;
 }
+
+.site-bio {
+  padding: 15px;
+  margin-top: 15px;
+  color: yellow;
+}
+
+.site-text{
+  color: yellow;
+}
+
+*{
+  color: white;
+  text-shadow:#000000;
+}
+
+body {
+  background-image: url("../src/icons/images/background.jpg");
+  background-size: cover;
+    background-repeat: no-repeat; 
+    background-size: 107%;
+    background-size: 287vh;  
+    background-position-x: 65%;
+    background-position-y: 47%;
+}
+
+/* =========================================================================================================== */
+
+
+
 
 
 

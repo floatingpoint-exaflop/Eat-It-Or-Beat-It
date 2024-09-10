@@ -16,7 +16,3 @@
             console.log("Randomly selected recipe:", randomRecipe);
         }
     };
-
-    return (
-        console.log("oink")
-    );
