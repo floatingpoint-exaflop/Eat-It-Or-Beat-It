@@ -14,16 +14,18 @@ router.route('/search').post(async (req, res) => {
 
 //This get route is used to get more detailed information on a given recipe (as defined by Fatsecret's ID, not any ID we're giving it in the DB; understanding this is crucial).
 //We call it when the user hits Eat It, so we have better data on hand to send into the DB as a row for the user's recipe list.
-router.route('/search/recipe_id').get(async (req, res) => {
-    const { recipeId } = req.params;
-    console.log('Received recipeId:', recipeId);
-    try {
-      const searchResults = await getMoreRecipeDetails(recipeId);
-      res.json(searchResults);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch recipes" });
-    }
+router.route('/search/:recipeId').get(async (req, res) => {
+  const { recipeId } = req.params; // Extract recipeId from route parameters
+  console.log('Received recipeId:', recipeId);
+
+  try {
+    const searchResults = await getMoreRecipeDetails(recipeId); // Call external API with the recipeId
+    res.json(searchResults);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch recipe details" });
+  }
 });
+
 
 module.exports = router;
 
