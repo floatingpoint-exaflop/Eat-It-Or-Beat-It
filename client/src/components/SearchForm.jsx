@@ -183,16 +183,8 @@ export default function SearchForm() {
     }
   };
 
-  // useEffect(() => {
-  //   if (recipeSearchResults.length > 0) {
-  //     console.log("Search Results:", recipeSearchResults);
-  //     // Redirect only after logging the data
-  //     navigate("/search-results", { state: { results: recipeSearchResults } });
-  //   }
-  // }, [recipeSearchResults, navigate]);
-
   const handleCloseModal = () => setShowErrorModal(false);
-  console.log(recipeSearchResults)
+  // console.log(recipeSearchResults)
 
   //------begin actual UI rendering----------------
   return (
