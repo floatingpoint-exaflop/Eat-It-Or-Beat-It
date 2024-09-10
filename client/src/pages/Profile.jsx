@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import fred from '../icons/images/fred.png';
-import {getComments, getSingleComment} from '../../../server/controllers/comment-controllers'
-import {getRecipes} from '../../../server/controllers/recipe-controller'
+// import {getComments, getSingleComment} from '../../../server/controllers/comment-controllers'
+// import {getRecipes} from '../../../server/controllers/recipe-controller'
 
 export default function Profile(props) {
     function handleInputOnChange(event) {
