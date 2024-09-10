@@ -4,8 +4,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 import { Container, Row, Col } from 'react-bootstrap'
-import { UserProvider } from './providers/UserProvider'
-import RecipeList from './path/to/RecipeList'
+import UserProvider from './providers/UserProvider'
+// import RecipeList from './path/to/RecipeList'
 
 import Result from './pages/Result';
 import Header from './components/Header';

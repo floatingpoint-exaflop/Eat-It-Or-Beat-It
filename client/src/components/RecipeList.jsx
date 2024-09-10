@@ -8,10 +8,10 @@ import {
 } from 'react-bootstrap';
 // import Recipe from "../../../server/models/Recipe";
 // import User from "../../../server/models/User";
-import { UserProvider } from '../providers/UserProvider';
+import { useUserContext } from '../providers/UserProvider';
 
 export default function RecipeList() {
-  const { user } = UserProvider();
+  const { userData } = useUserContext();
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   const [recipes, setRecipes] = useState([]);
@@ -23,7 +23,7 @@ export default function RecipeList() {
 
   const getRecipes = async () => {
     try {
-      const response = await fetch(`/api/users/${user._id}/recipes/${recipes._id}`, {
+      const response = await fetch(`/api/users/${userData._id}/recipes/${recipes._id}`, {
         method: 'GET' // Explicitly stating that this is a GET request
       });
       const data = await response.json(response);
@@ -34,7 +34,9 @@ export default function RecipeList() {
 };
 
   useEffect(() => {
-    getRecipes();
+    if( userData._id ){
+      getRecipes();
+    }
   }, []);
 
   return (
