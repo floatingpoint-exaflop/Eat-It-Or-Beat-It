@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col, Card, Modal } from "react-bootstrap";
+import EatItOrBeatIt from './EatItOrBeatIt'
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function SearchForm() {
@@ -26,6 +28,7 @@ export default function SearchForm() {
   const [searchFormErrors, setSearchFormErrors] = useState({});
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSearchInputChange = (event) => {
     const { name, value } = event.target;
@@ -140,31 +143,39 @@ export default function SearchForm() {
     }
 
     // Set errors if any need to be set
-   //THE CALL
-   async function fetchRecipeSearch(formSearchSpecs) {
-    try {
-      const response = await fetch("/api/recipe/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "accepts":"application/json"
-        },
-        body: JSON.stringify(formSearchSpecs),
-      });
+    //THE CALL
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch recipes.");
+    async function fetchRecipeSearch(formSearchSpecs) {
+      try {
+        const response = await fetch("/api/recipe/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            accepts: "application/json",
+          },
+          body: JSON.stringify(formSearchSpecs),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch recipes.");
+        }
+        const data = await response.json();
+        setRecipeSearchResults(data); // Store results in state
+
+        if (data.length === 0) {
+          setErrorMessage(
+            "No recipes found. Please try different search criteria."
+          );
+          setShowErrorModal(true);
+        }
+      } catch (error) {
+        setErrorMessage(error.message);
+        setShowErrorModal(true);
       }
-      const data = await response.json();
-      setRecipeSearchResults(data); // Store results in state
-    } catch (error) {
-      setErrorMessage(error.message);
-      setShowErrorModal(true);
     }
-  }
-  if (isValid) {
-    // Call the fetch function here, finally, with form data
-    fetchRecipeSearch(formSearchSpecs);
+    if (isValid) {
+      // Call the fetch function here, finally, with form data
+      fetchRecipeSearch(formSearchSpecs);
     } else {
       setSearchFormErrors(errors);
       setErrorMessage(Array.from(errorMessagesSet).join("\n"));
@@ -172,201 +183,219 @@ export default function SearchForm() {
     }
   };
 
+  // useEffect(() => {
+  //   if (recipeSearchResults.length > 0) {
+  //     console.log("Search Results:", recipeSearchResults);
+  //     // Redirect only after logging the data
+  //     navigate("/search-results", { state: { results: recipeSearchResults } });
+  //   }
+  // }, [recipeSearchResults, navigate]);
+
   const handleCloseModal = () => setShowErrorModal(false);
+  console.log(recipeSearchResults)
 
   //------begin actual UI rendering----------------
   return (
     <>
-      <Card className="p-4 my-3">
-        <Card.Body>
-          <Card.Title>Recipe Search</Card.Title>
-          <Form onSubmit={handleSearchSubmit}>
-            {/* onSubmit={console.log(formSearchSpecs)}> */}
-            <Form.Group controlId="searchExpression" className="mb-3">
-              <Form.Label>
-                Enter any keywords for desired ingredients, separated by commas.
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="search_expression"
-                placeholder="chicken"
-                value={formSearchSpecs.search_expression}
-                onChange={handleSearchInputChange}
-              />
-            </Form.Group>
+      {recipeSearchResults.length && (
+        <div>
+          <EatItOrBeatIt results={recipeSearchResults}/>
+        </div>
+      )}
 
-            <Form.Group controlId="recipeTypes" className="mb-3">
-              <Form.Label>Choose a recipe type:</Form.Label>
-              <Form.Select
-                name="recipe_types"
-                value={formSearchSpecs.recipe_types}
-                onChange={handleSearchInputChange}
-              >
-                <option value="">--Please choose an option--</option>
-                <option value="Breakfast">Breakfast</option>
-                <option value="Lunch">Lunch</option>
-                <option value="Appetizer">Appetizer</option>
-                <option value="Soup">Soup</option>
-                <option value="Main Dish">Main Dish</option>
-                <option value="Side Dish">Side Dish</option>
-                <option value="Dessert">Dessert</option>
-                <option value="Snack">Snack</option>
-                <option value="Baked">Baked</option>
-                <option value="Salad and Salad Dressing">
-                  Salad and Salad Dressing
-                </option>
-                <option value="Sauce and Condiment">Sauce and Condiment</option>
-                <option value="Beverage">Beverage</option>
-                <option value="Other">Other</option>
-              </Form.Select>
-            </Form.Group>
+      {!recipeSearchResults.length && (
 
-            {/* Calories */}
-            <Row>
-              <Col xs={12} md={6}>
-                <Form.Group controlId="caloriesFrom" className="mb-3">
-                  <Form.Label>Minimum Calories</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="calories.from"
-                    placeholder="0"
-                    value={formSearchSpecs["calories.from"]}
-                    onChange={handleSearchInputChange}
-                  />
-                </Form.Group>
-              </Col>
-              <Col xs={12} md={6}>
-                <Form.Group controlId="caloriesTo" className="mb-3">
-                  <Form.Label>Maximum Calories</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="calories.to"
-                    placeholder="2000"
-                    value={formSearchSpecs["calories.to"]}
-                    onChange={handleSearchInputChange}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
+        <Card className="p-4 my-3">
+          <Card.Body>
+            <Card.Title>Recipe Search</Card.Title>
+            <Form onSubmit={handleSearchSubmit}>
+              {/* onSubmit={console.log(formSearchSpecs)}> */}
+              <Form.Group controlId="searchExpression" className="mb-3">
+                <Form.Label>
+                  Enter any keywords for desired ingredients, separated by commas.
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="search_expression"
+                  placeholder="chicken"
+                  value={formSearchSpecs.search_expression}
+                  onChange={handleSearchInputChange}
+                />
+              </Form.Group>
 
-            {/* Carb Percentage */}
-            <Row>
-              <Col xs={12} md={6}>
-                <Form.Group controlId="carbPercentageFrom" className="mb-3">
-                  <Form.Label>Minimum Carb Percentage</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="carb_percentage.from"
-                    placeholder="0"
-                    value={formSearchSpecs["carb_percentage.from"]}
-                    onChange={handleSearchInputChange}
-                  />
-                </Form.Group>
-              </Col>
-              <Col xs={12} md={6}>
-                <Form.Group controlId="carbPercentageTo" className="mb-3">
-                  <Form.Label>Maximum Carb Percentage</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="carb_percentage.to"
-                    placeholder="100"
-                    value={formSearchSpecs["carb_percentage.to"]}
-                    onChange={handleSearchInputChange}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
+              <Form.Group controlId="recipeTypes" className="mb-3">
+                <Form.Label>Choose a recipe type:</Form.Label>
+                <Form.Select
+                  name="recipe_types"
+                  value={formSearchSpecs.recipe_types}
+                  onChange={handleSearchInputChange}
+                >
+                  <option value="">--Please choose an option--</option>
+                  <option value="Breakfast">Breakfast</option>
+                  <option value="Lunch">Lunch</option>
+                  <option value="Appetizer">Appetizer</option>
+                  <option value="Soup">Soup</option>
+                  <option value="Main Dish">Main Dish</option>
+                  <option value="Side Dish">Side Dish</option>
+                  <option value="Dessert">Dessert</option>
+                  <option value="Snack">Snack</option>
+                  <option value="Baked">Baked</option>
+                  <option value="Salad and Salad Dressing">
+                    Salad and Salad Dressing
+                  </option>
+                  <option value="Sauce and Condiment">Sauce and Condiment</option>
+                  <option value="Beverage">Beverage</option>
+                  <option value="Other">Other</option>
+                </Form.Select>
+              </Form.Group>
 
-            {/* Protein Percentage */}
-            <Row>
-              <Col xs={12} md={6}>
-                <Form.Group controlId="proteinPercentageFrom" className="mb-3">
-                  <Form.Label>Minimum Protein Percentage</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="protein_percentage.from"
-                    placeholder="0"
-                    value={formSearchSpecs["protein_percentage.from"]}
-                    onChange={handleSearchInputChange}
-                  />
-                </Form.Group>
-              </Col>
-              <Col xs={12} md={6}>
-                <Form.Group controlId="proteinPercentageTo" className="mb-3">
-                  <Form.Label>Maximum Protein Percentage</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="protein_percentage.to"
-                    placeholder="100"
-                    value={formSearchSpecs["protein_percentage.to"]}
-                    onChange={handleSearchInputChange}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
+              {/* Calories */}
+              <Row>
+                <Col xs={12} md={6}>
+                  <Form.Group controlId="caloriesFrom" className="mb-3">
+                    <Form.Label>Minimum Calories</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="calories.from"
+                      placeholder="0"
+                      value={formSearchSpecs["calories.from"]}
+                      onChange={handleSearchInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col xs={12} md={6}>
+                  <Form.Group controlId="caloriesTo" className="mb-3">
+                    <Form.Label>Maximum Calories</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="calories.to"
+                      placeholder="2000"
+                      value={formSearchSpecs["calories.to"]}
+                      onChange={handleSearchInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-            {/* Fat Percentage */}
-            <Row>
-              <Col xs={12} md={6}>
-                <Form.Group controlId="fatPercentageFrom" className="mb-3">
-                  <Form.Label>Minimum Fat Percentage</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="fat_percentage.from"
-                    placeholder="0"
-                    value={formSearchSpecs["fat_percentage.from"]}
-                    onChange={handleSearchInputChange}
-                  />
-                </Form.Group>
-              </Col>
-              <Col xs={12} md={6}>
-                <Form.Group controlId="fatPercentageTo" className="mb-3">
-                  <Form.Label>Maximum Fat Percentage</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="fat_percentage.to"
-                    placeholder="100"
-                    value={formSearchSpecs["fat_percentage.to"]}
-                    onChange={handleSearchInputChange}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
+              {/* Carb Percentage */}
+              <Row>
+                <Col xs={12} md={6}>
+                  <Form.Group controlId="carbPercentageFrom" className="mb-3">
+                    <Form.Label>Minimum Carb Percentage</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="carb_percentage.from"
+                      placeholder="0"
+                      value={formSearchSpecs["carb_percentage.from"]}
+                      onChange={handleSearchInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col xs={12} md={6}>
+                  <Form.Group controlId="carbPercentageTo" className="mb-3">
+                    <Form.Label>Maximum Carb Percentage</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="carb_percentage.to"
+                      placeholder="100"
+                      value={formSearchSpecs["carb_percentage.to"]}
+                      onChange={handleSearchInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-            {/* Prep Time */}
-            <Row>
-              <Col xs={12} md={6}>
-                <Form.Group controlId="prepTimeFrom" className="mb-3">
-                  <Form.Label>Minimum Prep Time (minutes)</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="prep_time.from"
-                    placeholder="0"
-                    value={formSearchSpecs["prep_time.from"]}
-                    onChange={handleSearchInputChange}
-                  />
-                </Form.Group>
-              </Col>
-              <Col xs={12} md={6}>
-                <Form.Group controlId="prepTimeTo" className="mb-3">
-                  <Form.Label>Maximum Prep Time (minutes)</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="prep_time.to"
-                    placeholder="1000"
-                    value={formSearchSpecs["prep_time.to"]}
-                    onChange={handleSearchInputChange}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
+              {/* Protein Percentage */}
+              <Row>
+                <Col xs={12} md={6}>
+                  <Form.Group controlId="proteinPercentageFrom" className="mb-3">
+                    <Form.Label>Minimum Protein Percentage</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="protein_percentage.from"
+                      placeholder="0"
+                      value={formSearchSpecs["protein_percentage.from"]}
+                      onChange={handleSearchInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col xs={12} md={6}>
+                  <Form.Group controlId="proteinPercentageTo" className="mb-3">
+                    <Form.Label>Maximum Protein Percentage</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="protein_percentage.to"
+                      placeholder="100"
+                      value={formSearchSpecs["protein_percentage.to"]}
+                      onChange={handleSearchInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-            <Button variant="primary" type="submit" className="mt-3">
-              I'm Hungry!
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
+              {/* Fat Percentage */}
+              <Row>
+                <Col xs={12} md={6}>
+                  <Form.Group controlId="fatPercentageFrom" className="mb-3">
+                    <Form.Label>Minimum Fat Percentage</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="fat_percentage.from"
+                      placeholder="0"
+                      value={formSearchSpecs["fat_percentage.from"]}
+                      onChange={handleSearchInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col xs={12} md={6}>
+                  <Form.Group controlId="fatPercentageTo" className="mb-3">
+                    <Form.Label>Maximum Fat Percentage</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="fat_percentage.to"
+                      placeholder="100"
+                      value={formSearchSpecs["fat_percentage.to"]}
+                      onChange={handleSearchInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              {/* Prep Time */}
+              <Row>
+                <Col xs={12} md={6}>
+                  <Form.Group controlId="prepTimeFrom" className="mb-3">
+                    <Form.Label>Minimum Prep Time (minutes)</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="prep_time.from"
+                      placeholder="0"
+                      value={formSearchSpecs["prep_time.from"]}
+                      onChange={handleSearchInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col xs={12} md={6}>
+                  <Form.Group controlId="prepTimeTo" className="mb-3">
+                    <Form.Label>Maximum Prep Time (minutes)</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="prep_time.to"
+                      placeholder="1000"
+                      value={formSearchSpecs["prep_time.to"]}
+                      onChange={handleSearchInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Button variant="primary" type="submit" className="mt-3">
+                I'm Hungry!
+              </Button>
+            </Form>
+          </Card.Body>
+        </Card>
+      )}
 
       {/*this modal is only for search form error popups */}
       <Modal show={showErrorModal} onHide={handleCloseModal}>
@@ -385,4 +414,3 @@ export default function SearchForm() {
     </>
   );
 }
-
