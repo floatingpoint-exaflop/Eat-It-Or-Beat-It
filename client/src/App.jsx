@@ -4,13 +4,15 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 import { Container, Row, Col } from 'react-bootstrap'
-import UserProvider from './providers/UserProvider'
+import  UserProvider from './providers/UserProvider'
 
 import RecipePage from './pages/Result';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import Comment from './components/Comment'
+// import Recipe from './components/Recipe'
 
 const client = new ApolloClient({
   uri: '/graphql',
@@ -52,7 +54,8 @@ function App() {
                 {/* Need to add the element for the page below */}
                 <Route path='/recipe/:recipeId' element={<></>} />
               </Routes>
-
+              {/* <Recipe /> */}
+              <Comment />
               {/* </Col> */}
             </Row>
           </Container>
