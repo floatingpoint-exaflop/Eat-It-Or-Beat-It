@@ -35,6 +35,7 @@ export default function Header(props) {
                 </div>
 
 
+
                 <div className="col-4 d-flex align-items-center">
                     {userData.id !== null ? (
                         <>

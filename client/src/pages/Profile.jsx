@@ -2,6 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import fred from '../icons/images/fred.png';
 
+import RecipeList from '../components/RecipeList';
+// import {getComments, getSingleComment} from '../../../server/controllers/comment-controllers'
+// import {getRecipes} from '../../../server/controllers/recipe-controller'
+
+
 export default function Profile(props) {
     const [comments, setComments] = useState([]);
     const [savedRecipes, setSavedRecipes] = useState([]);
@@ -48,6 +53,7 @@ export default function Profile(props) {
         }
     }
 
+
     useEffect(() => {
         getUserComments();
         getSavedRecipes();
@@ -75,6 +81,7 @@ export default function Profile(props) {
                         <div id='noArrayRecipe'>
                             <p>No saved recipes available.</p>
                             <button type="button">Take me to some recipes!</button>
+
                         </div>
                     ) : (
                         savedRecipes.map(item => (

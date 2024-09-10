@@ -19,6 +19,6 @@ router.route('/comments').get(getRecipes);
 // router.route('/:userId').put(updateUser);
 
 //add a recipe to saved list route will be /user/:userId/savedrecipe
-router.route('/:userId/recipe').get(getRecipes);
+// router.route('/:userId/recipe/:recipeId').get(getRecipes);
 
 module.exports = router;
