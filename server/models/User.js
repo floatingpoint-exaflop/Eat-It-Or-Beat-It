@@ -23,6 +23,12 @@ const userSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: 'Recipe' // References the Recipe model
       }
+    ],
+    comments: [
+      {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment' //references the Comment model
+      }
     ]
   });
 
