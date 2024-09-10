@@ -8,6 +8,8 @@ export default function EatItOrBeatIt(props) {
   const [recipes, setRecipes] = useState(results); // Ensure results have a default value of an empty array
   const [currentRecipe, setCurrentRecipe] = useState(null);
   const [extraDetails, setExtraDetails] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
 
   const {userData, setUserData} = useUserContext();
 
@@ -82,11 +84,6 @@ export default function EatItOrBeatIt(props) {
   
       const postData = await postResponse.json();
       console.log(postData); // Optional: Log the response for debugging
-  
-      // Remove from array and get new recipe to show
-      handleBeatIt();
-  
-
       
       // Save the current recipe to the savedRecipes array
       setSavedRecipes((prevSaved) => [...prevSaved, currentRecipe]);
@@ -96,11 +93,11 @@ export default function EatItOrBeatIt(props) {
       setErrorMessage(error.message);
       setShowErrorModal(true);
     }
-
+    handleBeatIt();//remove from array and get new recipe to show anyway, tinder style
   }  
 
-    handleBeatIt();//remove from array and get new recipe to show anyway, tinder style
-  }
+
+
 
 
   // Load a random recipe on first load of page
