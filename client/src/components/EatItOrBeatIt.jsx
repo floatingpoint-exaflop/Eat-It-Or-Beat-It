@@ -26,12 +26,30 @@ export default function EatItOrBeatIt(props) {
     }
   };
 
-  // Load a random recipe on first load of page
-  useEffect(() => {
-    if (recipes.length > 0) {
-      getRandomRecipe();
+  async function handleEatIt(){
+  //!!! NEED TO GET THIS API CALL WORKING
+    console.log("Eat It clicked")
+    try {
+      const response = await fetch(`/api/recipe/search/${currentRecipe.recipe_id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+      });
+      } catch {
+        setErrorMessage(error.message);
+        setShowErrorModal(true);
+      }
+      handleBeatIt
     }
-  }, [recipes]);
+    
+    // Load a random recipe on first load of page
+    useEffect(() => {
+      if (recipes.length > 0) {
+        getRandomRecipe();
+      }
+    }, [recipes]);
 
   // If no current recipe, return a message
   if (!currentRecipe) {
@@ -51,7 +69,7 @@ export default function EatItOrBeatIt(props) {
         </ul>
         <div className="d-flex justify-content-between">
           <Button variant="danger" onClick={handleBeatIt}>Beat It</Button>
-          <Button variant="success" onClick={() => console.log("Eat It clicked")}>Eat It</Button>
+          <Button variant="success" onClick={handleEatIt}>Eat It</Button>
         </div>
       </Card.Body>
     </Card>
