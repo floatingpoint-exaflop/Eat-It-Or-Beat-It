@@ -92,8 +92,10 @@ header {
   color: yellow;
 }
 
+
 h5, h2, h3, #userPref label, #savedRecipes p, #commentsContainer p {
   color: white;
+
 
 }
 
