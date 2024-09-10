@@ -32,7 +32,7 @@ async function handleLogin() {
       const data = await response.json();
       console.log(data.user)
 
-      setUserData(data.user)
+      setUserData({id: data.user._id})
       
       if (data.user._id) {
         setIsAuthenticated(true);
