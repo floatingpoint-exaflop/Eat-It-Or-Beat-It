@@ -12,27 +12,31 @@ import { useUserContext } from "../providers/UserProvider";
 export default function Profile(props) {
     const [comments, setComments] = useState([]);
     const [savedRecipes, setSavedRecipes] = useState([]);
+
+    const [currentUser, setCurrentUser] = useState([]);
     const { userData, setUserData } = useUserContext();
     // Fetch user comments from MongoDB
-    // async function getUserComments() {
-    //     try {
-    //         const response = await fetch(`/api/recipe/`, {
-    //             method: "GET",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 "Accept": "application/json",
-    //             },
-    //         });
-    //         const data = await response.json();
-    //         if (!response.ok) {
-    //             console.error('Error fetching comments:', data.message);
-    //         } else {
-    //             setComments(data);
-    //         }
-    //     } catch (err) {
-    //         console.log('Error fetching comments:', err);
-    //     }
-    // }
+
+    async function getUserComments() {
+        try {
+            const response = await fetch(`/api/comments/${userData.id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                },
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                console.error('Error fetching comments:', data.message);
+            } else {
+                setComments(data);
+            }
+        } catch (err) {
+            console.log('Error fetching comments:', err);
+        }
+    }
+
     //need a get user by ID
 
     // Fetch user saved recipes
@@ -59,9 +63,34 @@ export default function Profile(props) {
         }
     }
 
+    async function getCurrentUser() {
+        console.log(userData.id)
+        try{
+            const response = await fetch(`/api/users/${userData.id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                },
+            });
+            const data = await response.json();
+            console.log(data)
+        if(!response.ok){
+            console.error('Error fetching current user:', data.message)
+        } else {
+            setCurrentUser(data);
+        }
+        } catch(err){
+            console.log('Error fetching current user:', err)
+        }
+    }
+
 
     useEffect(() => {
-        // getUserComments();
+
+//         getCurrentUser();
+        getUserComments();
+
         getSavedRecipes();
     }, [userData.id]);
 
@@ -73,8 +102,8 @@ export default function Profile(props) {
                         <img className="img-thumbnail" src={fred} alt="User Avatar" />
                     </div>
                     <div className="col-lg-9 col-md-9 col-sm-12" id="userDetails">
-                        <h3 className="col-12" id="username">Username: {props.username}</h3>
-                        <h5 className="col-12" id="email">{props.email}</h5>
+                        <h3 className="col-12" id="username">Username: {currentUser.username}</h3>
+                        <h5 className="col-12" id="email">{currentUser.email}</h5>
                     </div>
                 </div>
             </div>
