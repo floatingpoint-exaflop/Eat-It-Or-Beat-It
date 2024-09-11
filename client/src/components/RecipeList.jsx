@@ -12,7 +12,7 @@ export default function RecipeList(props) {
 const {recipes} = props
 console.log(recipes)
 const [showModal, setShowModal] = useState(false)
-const [selectedRecipe, setSelectedRecipe] = useState(null)
+const [selectedRecipe, setSelectedRecipe] = useState()
 
 //modal logic
 //modal logic
@@ -23,7 +23,7 @@ const handleShow = (recipe) => {
 
 const handleClose = () => {
   setShowModal(false);
-  setSelectedRecipe(null);
+  setSelectedRecipe();
 };
 
 
@@ -47,13 +47,21 @@ const handleClose = () => {
           <Modal.Title>{selectedRecipe?.recipe_name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p className='ingredients'>Ingredients: {selectedRecipe?.recipe_ingredients.ingredient.join(', ')}</p>
+          <p className='ingredients'>
+            Ingredients: {selectedRecipe?.recipe_ingredients}
+          </p>
           <p className="description">{selectedRecipe?.recipe_description}</p>
-          <p className='nutrition'>Nutrition: Calories: {selectedRecipe?.recipe_nutrition.calories}, Carbohydrates: {selectedRecipe?.recipe_nutrition.carbohydrate}, Fat: {selectedRecipe?.recipe_nutrition.fat}, Protein: {selectedRecipe?.recipe_nutrition.protein}</p>
-          <p className="types">{selectedRecipe?.recipe_types.join(', ')}</p>
-          <Comment />
+          <p className='nutrition'>
+            Nutrition: <br/>
+            Calories: {selectedRecipe?.serving_sizes?.serving?.calories} <br/>
+            Carbohydrates: {selectedRecipe?.serving_sizes?.serving?.carbohydrates} <br/>
+            Fat: {selectedRecipe?.serving_sizes?.serving?.fat} <br/>
+            Protein: {selectedRecipe?.serving_sizes?.serving?.protein}<br/>
+          </p>
+          <p className="types">{selectedRecipe?.recipe_types}</p>
+          <Comment recipeId={selectedRecipe?.recipeId}/>
         </Modal.Body>
-      </Modal> 
+      </Modal>
     </>
 
 

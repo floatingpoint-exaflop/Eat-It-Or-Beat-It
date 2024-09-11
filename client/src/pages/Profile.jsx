@@ -16,6 +16,7 @@ export default function Profile(props) {
     const [currentUser, setCurrentUser] = useState([]);
     const { userData, setUserData } = useUserContext();
     // Fetch user comments from MongoDB
+
     async function getUserComments() {
         try {
             const response = await fetch(`/api/comments/${userData.id}`, {
@@ -35,6 +36,7 @@ export default function Profile(props) {
             console.log('Error fetching comments:', err);
         }
     }
+
     //need a get user by ID
 
     // Fetch user saved recipes
@@ -85,8 +87,10 @@ export default function Profile(props) {
 
 
     useEffect(() => {
-        getCurrentUser();
+
+//         getCurrentUser();
         getUserComments();
+
         getSavedRecipes();
     }, [userData.id]);
 
