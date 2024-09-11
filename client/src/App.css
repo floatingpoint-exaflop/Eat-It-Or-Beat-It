@@ -97,16 +97,29 @@ html, body {
   margin-top: 15px;
 }
 
-.card-img-top{
+.card-img-top, .modalImg{
   border: 1px solid black;
   border-radius: 10px;
+}
+
+@font-face {
+  font-family: 'EveryoneEats';
+  src: 
+  url("./icons/fonts/Crispy-Food-DEMO.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+h1, h2, h4 {
+  font-family: 'EveryoneEats';
 }
 
 .mb-3{
   width: auto;
 }
 
-#savedRecipes, #commentsContainer, #preferencesForm{
+#savedRecipes{
+  margin-top: 10px;
   border-radius: 10px;
   background-color: rgba(128, 128, 128, 0.553);
 }

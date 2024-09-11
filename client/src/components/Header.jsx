@@ -54,7 +54,8 @@ export default function Header(props) {
                         </>
                     ) : (
                         // Render different menu items for logged-out users
-                        <p>Please login or signup to use our service!</p>
+                        // <p>Please login or signup to use our service!</p>
+                        <Button variant="primary" onClick={handleLogout} id="logBackIn">Login</Button>
                     )}
                 </div>
             </div>

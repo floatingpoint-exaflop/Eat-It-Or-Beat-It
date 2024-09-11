@@ -39,26 +39,14 @@ function App() {
 
           <Container>
             <Row>
-              {/* <Col md="10"> */}
-
               <Routes>
+                
                 <Route path='/' element={<Home />} />
-                {/* <Route
-                    path="/profile/:userId"
-                    element={
-                      <ProtectedRoute loggedInUser={loggedInUser}>
-                        <Profile />
-                      </ProtectedRoute>
-                    } 
-                  /> */}
                 <Route path='/profile/:userId?' element={<Profile loggedInUser={loggedInUser} />} />
                 {/* Need to add the element for the page below */}
                 <Route path='/search' element={<SearchResults/>} />
 
               </Routes>
-                  {/* <RecipeList /> */}
-
-              {/* </Col> */}
             </Row>
           </Container>
 
@@ -69,8 +57,6 @@ function App() {
     </UserProvider>
   );
 }
-{/* <RecipePage  />
-<Footer /> */}
 
 export default App;
 //Nothing else needed here aside from css updates/file imports.
