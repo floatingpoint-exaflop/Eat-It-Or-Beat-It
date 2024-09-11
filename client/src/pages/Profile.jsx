@@ -93,6 +93,7 @@ export default function Profile(props) {
 
           {/* <div className="col-12 row text-center d-flex justify-content-center mt-5">
                 {/* Saved Recipes Section */}
+
           <div
             className="col-12 p-3 mr-3"
             style={{ border: "2px solid yellow" }}
@@ -122,6 +123,7 @@ export default function Profile(props) {
     </>
   );
 }
+
 
 {
   /* Uncomment and complete Comments Section */
