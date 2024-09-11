@@ -91,7 +91,7 @@ const handleClose = () => {
           <p>Number of Servings: {selectedRecipe?.number_of_servings}</p>
           <p>Grams per Portion: {selectedRecipe?.grams_per_portion}</p>
           {/* <p>Rating: {selectedRecipe?.rating}</p> */}
-          <Comment comments={selectedRecipe?.comments} />
+          <Comment recipeId={selectedRecipe?.recipeId} />
         </Modal.Body>
 
       </Modal>

@@ -1,4 +1,4 @@
-const { Comment } = require('../models');
+const { Comment, Recipe } = require('../models');
 
 
 module.exports = {
@@ -37,7 +37,7 @@ module.exports = {
     },
     async getAllCommentsByRecipe (req,res){
         try{
-            const comment = await Comment.findAll( {_id: req.params.recipeId} )
+            const comment = await Comment.find( {recipe: req.params.recipeId} )
             if(!comment){
                 return res.status(400).json({ message: 'No comment found!!' });
             }
@@ -49,8 +49,12 @@ module.exports = {
     },
     async addComment (req, res) {
         try{
-            const comment = await Comment.create(req.res);
-            res.json(comment);
+            const comment = await Comment.create(req.body)
+            console.log(comment)
+            const recipe = await Recipe.findByIdAndUpdate({_id: req.body.recipe},
+                {$addToSet: { comments: comment}}
+            );
+            res.json(recipe);
         } catch (err) {
             console.log(err);
             return res.status(500).json(err);

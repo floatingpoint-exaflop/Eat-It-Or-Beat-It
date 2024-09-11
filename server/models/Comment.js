@@ -10,18 +10,21 @@ const commentSchema = new Schema({
         min: 1,
         max: 5,
     },
-    // Reference to the user who made the comment
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-    },
-    // Reference to the recipe being commented on
     recipe: {
-        type: Schema.Types.ObjectId,
-        ref: 'Recipe',
-        required: true,
-    },
+        type: String
+    }
+    // // Reference to the user who made the comment
+    // user: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'User',
+    //     required: true,
+    // },
+    // // Reference to the recipe being commented on
+    // recipe: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'Recipe',
+    //     required: true,
+    // },
 }, {
     timestamps: true, // createdAt and updatedAt
 });
