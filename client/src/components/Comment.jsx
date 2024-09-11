@@ -37,15 +37,18 @@ export default function Comment({recipeId}) {
 
         // Send the comment to the backend
         try {
-            await fetch(`/api/recipes/${recipeId}`, {
+            await fetch(`/api/comment`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ text: comment }), 
+                body: JSON.stringify({ 
+                    commentBody: comment,
+                    recipe: recipeId
+                 }), 
             });
             // Update the reviews state to include the new review
-            setComments([...comments, { text: comment }]);
+            setComments([...comments, { commentBody: comment }]);
             setComment(''); // Clear the textarea
         } catch (error) {
             console.error('Error submitting review:', error);
@@ -69,7 +72,7 @@ export default function Comment({recipeId}) {
                 <h5>Comments:</h5>
                 <ul>
                     {comments.map((r, index) => (
-                        <li key={index}>{r.text}</li>
+                        <li key={index}>{r.commentBody}</li>
                     ))}
                 </ul>
             </div>
