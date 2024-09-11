@@ -22,6 +22,10 @@ A collaborative project using the MERN stack and the FatSecret API to create a w
   ![image](./screenshots/search.png)
   ### Eat it or Beat it!
   ![image](./screenshots/eatitorbeatit.png)
+  ### Recipe Card on Profile
+  ![image](./screenshots/recipeonfile.png)
+  ### Mobile View
+  ![image](./screenshots/mobileview.png)
 
 
   ## Installation
@@ -42,8 +46,8 @@ A collaborative project using the MERN stack and the FatSecret API to create a w
   This project can and should be tested using localhost and `npm run develop`. You will need to run a build if you wish to deploy your version.
   
   ## Credits
-  Big shoutouts to our teacher Gary and our TA, Katy!
-  External Recipe API owned and operated by FatSecret; used with permission and - by the end of the project - some resentment.
+  - Big shoutouts to our teacher Gary and our TA, Katy!
+  - External Recipe API owned and operated by FatSecret; used with permission and - by the end of the project - some resentment.
 
   ## Questions
   ### For Lothy:
