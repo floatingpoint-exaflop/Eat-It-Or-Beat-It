@@ -5,19 +5,28 @@ export default function Comment({recipeId}) {
     const [comments, setComments] = useState([]);
 
     // Fetch reviews from MongoDB when the component mounts
-    useEffect(() => {
-        const fetchComments = async () => {
-            try {
-                const response = await fetch(`/api/recipes/${recipeId}`); 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+
+    const fetchComments = async () => {
+        try {
+            const response = await fetch(`/api/comment/${recipeId}`,{
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json"
                 }
-                const data = await response.json(); // Parse the JSON from the response
-                setComments(data);
-            } catch (error) {
-                console.error('Error fetching comments:', error);
+            }); 
+            const data = await response.json(); // Parse the JSON from the response
+            console.log(data)
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        };
+            setComments(data);
+        } catch (error) {
+            console.error('Error fetching comments:', error);
+        }
+    };
+
+    useEffect(() => {
         fetchComments();
     }, []);
 
