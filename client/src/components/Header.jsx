@@ -50,7 +50,7 @@ export default function Header(props) {
                                 </Button>
                             </>
                         ) : (
-                            <p className="text-white">Please login or signup to use our service!</p>
+                            <p className="headerp">Please login or signup to use our service!</p>
                           // <Button variant="primary" onClick={handleLogout} id="logBackIn">Login</Button>
                         )}
                     </Nav>
