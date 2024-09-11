@@ -48,10 +48,10 @@ const handleClose = () => {
         </Modal.Header>
         <Modal.Body>
           <h2>{selectedRecipe?.recipe_name}</h2>
-          <img
+          <img className="modalImg"
             src={selectedRecipe?.recipe_image}
             alt={selectedRecipe?.recipe_name}
-            style={{ width: "100%" }}
+            style={{ width: "90%" }}
           />
           <h3>Types:</h3>
           <p className="types">{selectedRecipe?.recipe_types.join(", ")}</p>
