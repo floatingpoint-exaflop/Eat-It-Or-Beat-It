@@ -10,10 +10,6 @@ const commentSchema = new Schema({
         min: 1,
         max: 5,
     },
-    api_recipe_id: {
-        type: Number,
-        required: true,
-    },
     // Reference to the user who made the comment
     user: {
         type: Schema.Types.ObjectId,

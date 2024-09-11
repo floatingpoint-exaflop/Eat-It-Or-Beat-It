@@ -111,7 +111,6 @@ type Comment {
   _id: ID!
   commentBody: String!
   rating: Int!
-  api_recipe_id: Int!
   user: User!
   recipe: Recipe!
   createdAt: String!
@@ -121,7 +120,6 @@ type Comment {
 input AddCommentInput {
   commentBody: String!
   rating: Int!
-  api_recipe_id: Int!
   user: ID!
   recipe: ID!
 }
