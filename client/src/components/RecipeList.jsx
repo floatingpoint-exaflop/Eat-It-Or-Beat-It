@@ -42,7 +42,7 @@ const handleClose = () => {
               ))}
         </Row>
       </Container>
-      <Modal show={showModal} onHide={handleClose}>
+      <Modal show={showModal} onHide={handleClose} id="savedRecipeModal">
         <Modal.Header closeButton>
           <Modal.Title>{selectedRecipe?.recipe_name}</Modal.Title>
         </Modal.Header>

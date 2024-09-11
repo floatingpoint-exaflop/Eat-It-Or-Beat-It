@@ -110,11 +110,12 @@ export default function EatItOrBeatIt(props) {
   }
 
   return (
-    <Card className="col-5">
+    <Card className="col-6" id="eatOrBeatCard">
       <Card.Img
         variant="top"
         src={currentRecipe.recipe_image}
         alt={currentRecipe.recipe_name}
+        id="eatOrBeatImg"
       />
       <Card.Body>
         <Card.Title>{currentRecipe.recipe_name}</Card.Title>
