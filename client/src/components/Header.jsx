@@ -1,27 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import foodLogo from '../icons/logo.png';
 import { useUserContext } from '../providers/UserProvider';
 import { Navbar, Nav, Button, Container } from 'react-bootstrap';
 
 export default function Header(props) {
-
-    const { userData, setUserData } = useUserContext()
-
+    const { userData, setUserData } = useUserContext();
 
     const menu = [
         { id: 1, label: "Search", href: "/search" },
         { id: 2, label: "Profile", href: `/profile/${userData.id}` }
-    ]
-
+    ];
 
     function handleLogout() {
-        setUserData({ id: null })
-        window.location.assign('/')
+        setUserData({ id: null });
+        window.location.assign('/');
     }
 
- return (
-        <Navbar expand="md" bg="light" variant="light" className="p-3">
+    return (
+        <Navbar expand="md" style={{ backgroundColor: 'crimson' }} variant="dark" className="p-3">
             <Container>
                 {/* Logo */}
                 <Navbar.Brand href="/" className="d-flex align-items-center">
@@ -36,24 +33,25 @@ export default function Header(props) {
                     </Nav>
 
                     {/* User Menu */}
-                    <Nav className="ms-auto d-flex flex-column flex-md-row align-items-center">
+                    <Nav className="ms-auto d-flex align-items-center">
                         {userData.id !== null ? (
                             <>
                                 {menu.map(item => (
                                     <Link
                                         key={item.id}
                                         to={item.href}
-                                        className="nav-link btn btn-primary mx-md-2 mb-2 mb-md-0"
+                                        className="nav-link btn btn-primary mx-md-2"
                                     >
                                         {item.label}
                                     </Link>
                                 ))}
-                                <Button variant="primary" onClick={handleLogout} className="mx-md-2 mb-2 mb-md-0">
+                                <Button variant="primary" onClick={handleLogout} className="mx-md-2">
                                     Logout
                                 </Button>
                             </>
                         ) : (
-                            <p className="text-muted">Please login or signup to use our service!</p>
+                            <p className="text-white">Please login or signup to use our service!</p>
+                          // <Button variant="primary" onClick={handleLogout} id="logBackIn">Login</Button>
                         )}
                     </Nav>
                 </Navbar.Collapse>

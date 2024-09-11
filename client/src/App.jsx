@@ -39,6 +39,7 @@ function App() {
             <Row>
 
               <Routes>
+                
                 <Route path='/' element={<Home />} />
 
                 <Route path='/profile/:userId?' element={<Profile loggedInUser={loggedInUser} />} />
