@@ -116,7 +116,7 @@ export default function Profile(props) {
                 {savedRecipes.length === 0 ? (
                     <div id='noArrayRecipe'>
                         <p>No saved recipes available.</p>
-                        <Link to="/" className="btn btn-primary">Take me to the search page</Link>
+                        <Link to="/search" className="btn btn-primary">Take me to the search page</Link>
                     </div>
                 ) : (
                     <div>

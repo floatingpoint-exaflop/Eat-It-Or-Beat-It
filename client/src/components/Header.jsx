@@ -10,7 +10,7 @@ export default function Header(props) {
 
 
     const menu = [
-        { id: 1, label: "Search", href: "/" },
+        { id: 1, label: "Search", href: "/search" },
         { id: 2, label: "Profile", href: `/profile/${userData.id}` }
     ]
 
