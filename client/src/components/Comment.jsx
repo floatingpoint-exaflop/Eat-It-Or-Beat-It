@@ -57,7 +57,7 @@ export default function Comment({recipeId}) {
             </button>
 
             <div>
-                <h5>Comments:</h5>
+                <h5 className='recipelist'>Comments:</h5>
                 <ul>
                     {comments.map((r, index) => (
                         <li key={index}>{r.text}</li>

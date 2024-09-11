@@ -82,7 +82,7 @@ export default function Profile(props) {
               </div>
               <div className="col-lg-9 col-md-9 col-sm-12" id="userDetails">
                 <h3 className="col-12" id="username">
-                  Username: {currentUser.username}
+                  <span className="username">Username:</span> {currentUser.username}
                 </h3>
                 <h5 className="col-12" id="email">
                   {currentUser.email}

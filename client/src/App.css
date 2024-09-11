@@ -110,7 +110,7 @@ html, body {
   font-style: normal;
 }
 
-h1, h2, h4 {
+h1, h2, h4, .headerp, .username, .recipelist {
   font-family: 'EveryoneEats';
 }
 
@@ -147,9 +147,10 @@ header {
   margin-bottom: 20px;
 }
 
-.siteName {
+.siteName, .headerp {
   padding-left: 25px;
   padding-top: 10px;
+  color: white;
 }
 
 .site-bio {
