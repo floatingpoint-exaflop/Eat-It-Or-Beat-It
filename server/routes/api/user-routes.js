@@ -12,7 +12,7 @@ router.route('/').get(getUsers);
 router.route('/login').post(login);
 
 // router.route('/').get(getUsers)
-router.route('/:userId').post(saveRecipeToDatabase);
+router.route('/:userId').post(saveRecipeToDatabase).get(getCurrentUser);
 
 // Route to add a new user
 router.route('/').post(createUser);
