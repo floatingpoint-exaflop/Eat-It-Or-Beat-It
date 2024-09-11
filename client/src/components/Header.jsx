@@ -1,64 +1,61 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import foodLogo from '../icons/logo.png';
 import { useUserContext } from '../providers/UserProvider';
-import { Button } from 'react-bootstrap';
+import { Navbar, Nav, Button, Container } from 'react-bootstrap';
 
 export default function Header(props) {
-
-    const { userData, setUserData } = useUserContext()
-
+    const { userData, setUserData } = useUserContext();
 
     const menu = [
         { id: 1, label: "Search", href: "/search" },
         { id: 2, label: "Profile", href: `/profile/${userData.id}` }
-    ]
-
+    ];
 
     function handleLogout() {
-        setUserData({ id: null })
-        window.location.assign('/')
+        setUserData({ id: null });
+        window.location.assign('/');
     }
 
     return (
-        <header className="container-fluid col-12" id="sitename-container">
-            <div className="row">
-                {/* possibly need to change the importing method */}
-                <div className="col-2 logo-container" >
+        <Navbar expand="md" style={{ backgroundColor: 'crimson' }} variant="dark" className="p-3">
+            <Container>
+                {/* Logo */}
+                <Navbar.Brand href="/" className="d-flex align-items-center">
                     <img src={foodLogo} alt="Food logo" style={{ width: 100 }} />
-                </div>
+                </Navbar.Brand>
 
+                {/* Site Name */}
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    <Nav className="me-auto d-flex justify-content-center align-items-center">
+                        <h1 className="siteName">{props.sitename}</h1>
+                    </Nav>
 
-                <div className="col-6 d-flex justify-content-center align-items-center">
-                    <h1 className="siteName">{props.sitename}</h1>
-
-                </div>
-
-
-
-                <div className="col-4 d-flex align-items-center">
-                    {userData.id !== null ? (
-                        <>
-                            {menu.map(item => (
-                                <ul key={item.id} className="nav d-flex justify-content-end row">
-                                    <li className="nav-item" key={item.id} style={{marginLeft: "10px"}}>
-                                        <Link className="nav-link btn btn-primary" to={item.href}>{item.label}</Link>
-                                    </li>
-                                </ul>
-                            ))}
-                            <ul className="nav d-flex justify-content-end row">
-                                <li className='nav-item' style={{marginLeft: "10px"}}>
-                                    <Button variant="primary" onClick={handleLogout}>Logout</Button>
-                                </li>
-                            </ul>
-                        </>
-                    ) : (
-                        // Render different menu items for logged-out users
-                        // <p>Please login or signup to use our service!</p>
-                        <Button variant="primary" onClick={handleLogout} id="logBackIn">Login</Button>
-                    )}
-                </div>
-            </div>
-        </header >
+                    {/* User Menu */}
+                    <Nav className="ms-auto d-flex align-items-center">
+                        {userData.id !== null ? (
+                            <>
+                                {menu.map(item => (
+                                    <Link
+                                        key={item.id}
+                                        to={item.href}
+                                        className="nav-link btn btn-primary mx-md-2"
+                                    >
+                                        {item.label}
+                                    </Link>
+                                ))}
+                                <Button variant="primary" onClick={handleLogout} className="mx-md-2">
+                                    Logout
+                                </Button>
+                            </>
+                        ) : (
+                            <p className="text-white">Please login or signup to use our service!</p>
+                          // <Button variant="primary" onClick={handleLogout} id="logBackIn">Login</Button>
+                        )}
+                    </Nav>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
     );
 }

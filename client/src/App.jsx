@@ -33,15 +33,17 @@ function App() {
     <UserProvider>
       <ApolloProvider client={client}>
         <BrowserRouter>
-          <Header sitename={sitename} />
+          <Header sitename={sitename} style={{ backgroundColor: 'red' }} />
 
           <Container>
             <Row>
+
               <Routes>
                 
                 <Route path='/' element={<Home />} />
+
                 <Route path='/profile/:userId?' element={<Profile loggedInUser={loggedInUser} />} />
-                {/* Need to add the element for the page below */}
+
                 <Route path='/search' element={<SearchResults/>} />
 
               </Routes>
