@@ -14,25 +14,25 @@ export default function Profile(props) {
     const [savedRecipes, setSavedRecipes] = useState([]);
     const { userData, setUserData } = useUserContext();
     // Fetch user comments from MongoDB
-    async function getUserComments() {
-        try {
-            const response = await fetch(`/api/comments/${props.userId}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                },
-            });
-            const data = await response.json();
-            if (!response.ok) {
-                console.error('Error fetching comments:', data.message);
-            } else {
-                setComments(data);
-            }
-        } catch (err) {
-            console.log('Error fetching comments:', err);
-        }
-    }
+    // async function getUserComments() {
+    //     try {
+    //         const response = await fetch(`/api/recipe/`, {
+    //             method: "GET",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "Accept": "application/json",
+    //             },
+    //         });
+    //         const data = await response.json();
+    //         if (!response.ok) {
+    //             console.error('Error fetching comments:', data.message);
+    //         } else {
+    //             setComments(data);
+    //         }
+    //     } catch (err) {
+    //         console.log('Error fetching comments:', err);
+    //     }
+    // }
     //need a get user by ID
 
     // Fetch user saved recipes
@@ -61,7 +61,7 @@ export default function Profile(props) {
 
 
     useEffect(() => {
-        getUserComments();
+        // getUserComments();
         getSavedRecipes();
     }, [userData.id]);
 
