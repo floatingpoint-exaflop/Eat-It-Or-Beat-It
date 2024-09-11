@@ -1,133 +1,135 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Card } from 'react-bootstrap'; // Make sure you have Bootstrap installed and imported
-import fred from '../icons/images/fred.png';
+import { useState, useEffect } from "react";
+import { Link, Navigate } from "react-router-dom";
+import { Card } from "react-bootstrap"; // Make sure you have Bootstrap installed and imported
+import fred from "../icons/images/fred.png";
 
-import RecipeList from '../components/RecipeList';
+import RecipeList from "../components/RecipeList";
 import { useUserContext } from "../providers/UserProvider";
 // import {getComments, getSingleComment} from '../../../server/controllers/comment-controllers'
 // import {getRecipes} from '../../../server/controllers/recipe-controller'
 
-
 export default function Profile(props) {
-    const [comments, setComments] = useState([]);
-    const [savedRecipes, setSavedRecipes] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [savedRecipes, setSavedRecipes] = useState([]);
 
-    const [currentUser, setCurrentUser] = useState([]);
-    const { userData, setUserData } = useUserContext();
-    // Fetch user comments from MongoDB
+  const [currentUser, setCurrentUser] = useState([]);
+  const { userData, setUserData } = useUserContext();
+  // Fetch user comments from MongoDB
 
-    async function getUserComments() {
-        try {
-            const response = await fetch(`/api/comments/${userData.id}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                },
-            });
-            const data = await response.json();
-            if (!response.ok) {
-                console.error('Error fetching comments:', data.message);
-            } else {
-                setComments(data);
-            }
-        } catch (err) {
-            console.log('Error fetching comments:', err);
-        }
+  //need a get user by ID
+
+  // Fetch user saved recipes
+  async function getSavedRecipes() {
+    try {
+      //assume props.userId is a placeholder.
+      console.log(userData);
+      const response = await fetch(`/api/users/${userData.id}/savedrecipes`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        console.error("Error fetching recipes:", data.message);
+      } else {
+        setSavedRecipes(data);
+      }
+    } catch (err) {
+      console.log("Error fetching recipes:", err);
     }
+  }
 
-    //need a get user by ID
-
-    // Fetch user saved recipes
-    async function getSavedRecipes() {
-        try {
-            //assume props.userId is a placeholder. 
-            console.log(userData)
-            const response = await fetch(`/api/users/${userData.id}/savedrecipes`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                },
-            });
-            const data = await response.json();
-            console.log(data)
-            if (!response.ok) {
-                console.error('Error fetching recipes:', data.message);
-            } else {
-                setSavedRecipes(data);
-            }
-        } catch (err) {
-            console.log('Error fetching recipes:', err);
-        }
+  async function getCurrentUser() {
+    console.log(userData.id);
+    try {
+      const response = await fetch(`/api/users/${userData.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        console.error("Error fetching current user:", data.message);
+      } else {
+        setCurrentUser(data);
+      }
+    } catch (err) {
+      console.log("Error fetching current user:", err);
     }
+  }
 
-    async function getCurrentUser() {
-        console.log(userData.id)
-        try{
-            const response = await fetch(`/api/users/${userData.id}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                },
-            });
-            const data = await response.json();
-            console.log(data)
-        if(!response.ok){
-            console.error('Error fetching current user:', data.message)
-        } else {
-            setCurrentUser(data);
-        }
-        } catch(err){
-            console.log('Error fetching current user:', err)
-        }
-    }
+  useEffect(() => {
+    getCurrentUser();
+    // getUserComments();
 
+    getSavedRecipes();
+  }, [userData.id]);
 
-    useEffect(() => {
-
-        getCurrentUser();
-        getUserComments();
-
-        getSavedRecipes();
-    }, [userData.id]);
-
-    return (
-        <div className='container col-12 mt-5'>
-            <div className="row" id="userBody">
-                <div className="row" style={{ width: "100%" }} id="userHeader">
-                    <div className="col-lg-3 col-md-3 col-sm-0" id="userAvatar">
-                        <img className="img-thumbnail" src={fred} alt="User Avatar" />
-                    </div>
-                    <div className="col-lg-9 col-md-9 col-sm-12" id="userDetails">
-                        <h3 className="col-12" id="username">Username: {currentUser.username}</h3>
-                        <h5 className="col-12" id="email">{currentUser.email}</h5>
-                    </div>
-                </div>
+  return (
+    <>
+      {userData.id !== null ? (
+        <div className="container col-12 mt-5">
+          <div className="row" id="userBody">
+            <div className="row" style={{ width: "100%" }} id="userHeader">
+              <div className="col-lg-3 col-md-3 col-sm-0" id="userAvatar">
+                <img className="img-thumbnail" src={fred} alt="User Avatar" />
+              </div>
+              <div className="col-lg-9 col-md-9 col-sm-12" id="userDetails">
+                <h3 className="col-12" id="username">
+                  Username: {currentUser.username}
+                </h3>
+                <h5 className="col-12" id="email">
+                  {currentUser.email}
+                </h5>
+              </div>
             </div>
-            
+          </div>
 
-            {/* <div className="col-12 row text-center d-flex justify-content-center mt-5">
+          {/* <div className="col-12 row text-center d-flex justify-content-center mt-5">
                 {/* Saved Recipes Section */}
-            <div className="col-12 p-3 mr-3" style={{ border: '2px solid yellow' }} id="savedRecipes">
-                <h2>Recipes marked "eat it"</h2>
-                {savedRecipes.length === 0 ? (
-                    <div id='noArrayRecipe'>
-                        <p>No saved recipes available.</p>
-                        <Link to="/search" className="btn btn-primary">Take me to the search page</Link>
-                    </div>
-                ) : (
-                    <div>
-                        <h2>Saved Recipes</h2>
-                        <RecipeList recipes={savedRecipes} />
-                    </div>
-                )}
-            </div>
 
-            {/* Uncomment and complete Comments Section */}
-            {/* 
+          <div
+            className="col-12 p-3 mr-3"
+            style={{ border: "2px solid yellow" }}
+            id="savedRecipes"
+          >
+            <h2>Recipes marked "eat it"</h2>
+            {savedRecipes.length === 0 ? (
+              <div id="noArrayRecipe">
+                <p>No saved recipes available.</p>
+                <Link to="/" className="btn btn-primary">
+                  Take me to the search page
+                </Link>
+              </div>
+            ) : (
+              <div>
+                <h2>Saved Recipes</h2>
+                <RecipeList recipes={savedRecipes} />
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <>
+          <Navigate to='/' />
+        </>
+      )}
+    </>
+  );
+}
+
+
+{
+  /* Uncomment and complete Comments Section */
+}
+{
+  /* 
                 <div className="col-5 p-3" style={{ border: '2px solid yellow' }} id="commentsContainer">
                     <h2>Recipes I have commented on:</h2>
                     {comments.length === 0 ? (
@@ -145,66 +147,30 @@ export default function Profile(props) {
                         ))
                     )}
                 </div>
-                */}
-        </div>
-
-    );
+                */
 }
 
-// import { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom';
-// import fred from '../icons/images/fred.png';
+//OTHER for later
 
-// export default function Profile(props) {
-//     const [comments, setComments] = useState([]);
-//     const [savedRecipes, setSavedRecipes] = useState([]);
-
-//     const SavedRecipes = ({ savedRecipes }) => {
-//         if (savedRecipes.length === 0) {
-//             return <div>No saved recipes yet.</div>;
+// async function getUserComments() {
+//     try {
+//         const response = await fetch(`/api/${userData.id}/comments`, {
+//             method: "GET",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 "Accept": "application/json",
+//             },
+//         });
+//         const data = await response.json();
+//         if (!response.ok) {
+//             console.error('Error fetching comments:', data.message);
+//         } else {
+//             setComments(data);
 //         }
-
-//         // Fetch user comments from MongoDB
-//         async function getUserComments() {
-//             try {
-//                 const response = await fetch(`/api/comments/66e06e72786572a2c8148203`, {
-//                     method: "GET",
-//                     headers: {
-//                         "Content-Type": "application/json",
-//                         "Accept": "application/json",
-//                     },
-//                 });
-//                 const data = await response.json();
-//                 if (!response.ok) {
-//                     console.error('Error fetching comments:', data.message);
-//                 } else {
-//                     setComments(data);
-//                 }
-//             } catch (err) {
-//                 console.log('Error fetching comments:', err);
-//             }
-//         }
-
-//         // Fetch user saved recipes
-//         async function getSavedRecipes() {
-//             try {
-//                 const response = await fetch(`/api/users/66e06e72786572a2c8148203/savedrecipes`, {
-//                     method: "GET",
-//                     headers: {
-//                         "Content-Type": "application/json",
-//                         "Accept": "application/json",
-//                     },
-//                 });
-//                 const data = await response.json();
-//                 if (!response.ok) {
-//                     console.error('Error fetching recipes:', data.message);
-//                 } else {
-//                     setSavedRecipes(data);
-//                 }
-//             } catch (err) {
-//                 console.log('Error fetching recipes:', err);
-//             }
-//         }
+//     } catch (err) {
+//         console.log('Error fetching comments:', err);
+//     }
+// }
 
 //         useEffect(() => {
 //             getUserComments();

@@ -1,14 +1,12 @@
 const router = require('express').Router();
-const { addRecipe, getRecipes, saveRecipeToDatabase } = require('../../controllers/recipe-controller');
+const { getRecipes, saveRecipeToDatabase } = require('../../controllers/recipe-controller');
 const { getUsers, getComments, createUser, getCurrentUser, login } = require('../../controllers/user-controller');
 
-// Import middleware
-// const { authMiddleware } = require('../../utils/auth');
 
-// Route to get all users
+// Route to get all users; site isn't using this one but Pm can
 router.route('/').get(getUsers);
 
-// Route for user login
+// Route for user login - do NOT touch this unless it's to enhance session.
 router.route('/login').post(login);
 
 // router.route('/').get(getUsers)
@@ -16,9 +14,6 @@ router.route('/:userId').post(saveRecipeToDatabase).get(getCurrentUser);
 
 // Route to add a new user
 router.route('/').post(createUser);
-
-
-
 
 
 // Route to get comments for a specific user by userId
@@ -33,34 +28,3 @@ router.route('/:userId/savedrecipes').get(getRecipes);
 // router.route('/:userId/recipe/:recipeId').get(getRecipes);
 
 module.exports = router;
-
-
-
-
-
-
-// const router = require('express').Router();
-// const { addRecipe, getRecipes } = require('../../controllers/recipe-controller');
-
-// const { getUsers,getComments, createUser, getCurrentUser, login } = require('../../controllers/user-controller');
-
-// // // import middleware
-// // const { authMiddleware } = require('../../utils/auth');
-
-// // put authMiddleware anywhere we need to send a token for verification of user
-
-// router.route('/').get(getUsers)
-
-// //add a user to the list of users route will be api/users/
-// router.route('/').post(createUser)
-// router.route('/login').post(login)
-// router.route('/userId/comments').get(getComments);
-// router.route('/userId/savedrecipes').get(getRecipes)
-
-// //udpate a user, route will be /api/users/:userId
-// // router.route('/:userId').put(updateUser);
-
-// //add a recipe to saved list route will be /user/:userId/savedrecipe
-// router.route('/:userId/recipe').get(getRecipes);
-
-// module.exports = router;
