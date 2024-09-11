@@ -15,6 +15,15 @@ const getRecipes = async (req, res) => {
     const recipes = user.recipes.map((recipe) => ({
       recipeId: recipe._id, // Returning the recipe's unique ID
       title: recipe.recipe_name, // Returning the recipe's title (recipe_name)
+      recipe_types: recipe.recipe_types,
+      cooking_time_min: recipe.cooking_time_min,
+      recipe_image: recipe.recipe_image,
+      recipe_description: recipe.recipe_description,
+      recipe_ingredients: recipe.recipe_ingredients,
+      number_of_servings: recipe.number_of_servings,
+      grams_per_portion: recipe.grams_per_portion,
+      serving_sizes: recipe.serving_sizes.serving,
+      directions: recipe.directions,
     }));
     // gets the array of recipes
     res.json(recipes);

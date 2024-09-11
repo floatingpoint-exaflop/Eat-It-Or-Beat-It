@@ -47,20 +47,53 @@ const handleClose = () => {
           <Modal.Title>{selectedRecipe?.recipe_name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p className='ingredients'>
-            Ingredients: {selectedRecipe?.recipe_ingredients}
-          </p>
+          <h2>{selectedRecipe?.recipe_name}</h2>
+          <img
+            src={selectedRecipe?.recipe_image}
+            alt={selectedRecipe?.recipe_name}
+            style={{ width: "100%" }}
+          />
+          <h3>Types:</h3>
+          <p className="types">{selectedRecipe?.recipe_types.join(", ")}</p>
+          <h3>Description:</h3>
           <p className="description">{selectedRecipe?.recipe_description}</p>
-          <p className='nutrition'>
-            Nutrition: <br/>
-            Calories: {selectedRecipe?.serving_sizes?.serving?.calories} <br/>
-            Carbohydrates: {selectedRecipe?.serving_sizes?.serving?.carbohydrates} <br/>
-            Fat: {selectedRecipe?.serving_sizes?.serving?.fat} <br/>
-            Protein: {selectedRecipe?.serving_sizes?.serving?.protein}<br/>
-          </p>
-          <p className="types">{selectedRecipe?.recipe_types}</p>
-          <Comment recipeId={selectedRecipe?.recipeId}/>
+          <h3>Ingredients:</h3>
+          {selectedRecipe?.recipe_ingredients.map((ingredient, index) => (
+            <div key={index} className="ingredient">
+              <p>Name: {ingredient.food_name}</p>
+              <p>Description: {ingredient.ingredient_description}</p>
+              <p>Measurement: {ingredient.measurement_description}</p>
+            </div>
+          ))}
+          <h3>Nutrition Information per Serving:</h3>
+          {selectedRecipe?.serving_sizes?.serving && (
+            <div className="nutrition">
+              {Object.entries(selectedRecipe.serving_sizes.serving).map(
+                ([key, value]) => (
+                  <p key={key}>
+                    {key.replace(/_/g, " ")}: {value}
+                  </p>
+                )
+              )}
+            </div>
+          )}
+          <h3>Directions:</h3>
+          {selectedRecipe?.directions.map((direction, index) => (
+            <div key={index} className="direction">
+              <p>
+                Step {direction.direction_number}:{" "}
+                {direction.direction_description}
+              </p>
+            </div>
+          ))}
+          <h3>Additional Details:</h3>
+          <p>Cooking Time: {selectedRecipe?.cooking_time_min} minutes</p>
+          <p>Number of Servings: {selectedRecipe?.number_of_servings}</p>
+          <p>Grams per Portion: {selectedRecipe?.grams_per_portion}</p>
+          {/* <p>Rating: {selectedRecipe?.rating}</p> */}
+          <Comment comments={selectedRecipe?.comments} />
         </Modal.Body>
+
       </Modal>
     </>
 

@@ -88,7 +88,7 @@ export default function Profile(props) {
 
     useEffect(() => {
 
-//         getCurrentUser();
+        getCurrentUser();
         getUserComments();
 
         getSavedRecipes();
