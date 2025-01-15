@@ -7,8 +7,8 @@ WORKDIR /usr/src/app
 # Copy the root-level package.json files
 COPY package*.json ./
 
-# Install dependencies (both client and server)
-RUN npm install
+# Install only the production dependencies (skip dev dependencies)
+RUN npm install --production --legacy-peer-deps
 
 # Copy client and server directories
 COPY client ./client
