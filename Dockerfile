@@ -34,7 +34,7 @@ WORKDIR /usr/src/app/server
 RUN npm install --production
 
 # Set production environment
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 # Expose the server port
 EXPOSE 4000

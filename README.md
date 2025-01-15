@@ -1,4 +1,4 @@
-# Group Project Three: Everybody Eats!
+# Eat It, Or Beat It!
 A Containerized fork of a collaborative project: a website (using the MERN stack and the FatSecret API) where users can create a secure account and login to search for and build meal and recipe plans, ready to use in the kitchen! This work was completed by Lothy Gresser, Jonathan Grommesh, Tanner Johnson, Nash Peterson, &amp; Tim Scallon. Tim handled this containerization fork.
 
   ## Table of Contents
