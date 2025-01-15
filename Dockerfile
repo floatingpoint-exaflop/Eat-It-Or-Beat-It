@@ -1,13 +1,13 @@
-# Stage 1: Build frontend and install dependencies
+# Stage 1: Build frontend
 FROM node:18 AS build-frontend
 
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Copy root-level package.json and package-lock.json
+# Copy the root-level package.json files
 COPY package*.json ./
 
-# Install both server and client dependencies
+# Install dependencies (both client and server)
 RUN npm install
 
 # Copy client and server directories
@@ -18,18 +18,17 @@ COPY server ./server
 RUN cd client && npm run build
 
 # Stage 2: Setup backend and serve frontend
-FROM node:18-slim
+FROM node:18
 
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Copy server files and built frontend assets
+# Copy server files and built frontend assets from the build-frontend stage
 COPY --from=build-frontend /usr/src/app/server ./server
 COPY --from=build-frontend /usr/src/app/client/dist ./client/dist
 
-# Install only production dependencies for the server
+# Install only production server dependencies
 WORKDIR /usr/src/app/server
-COPY --from=build-frontend /usr/src/app/package*.json ./
 RUN npm install --production
 
 # Set production environment
