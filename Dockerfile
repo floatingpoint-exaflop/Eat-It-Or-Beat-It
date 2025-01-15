@@ -1,20 +1,19 @@
-# Stage 1: Build frontend
 FROM node:18 AS build-frontend
 
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Copy the root-level package.json files
+# Copy the root-level files
 COPY package*.json ./
-
-# Install only the production dependencies (skip dev dependencies)
-RUN npm install --production --legacy-peer-deps
 
 # Copy client and server directories
 COPY client ./client
 COPY server ./server
 
-# Build the client application
+# Run root-level npm install (installs both client and server dependencies)
+RUN npm install
+
+# Navigate to the client directory and build the frontend
 RUN cd client && npm run build
 
 # Stage 2: Setup backend and serve frontend
@@ -23,12 +22,14 @@ FROM node:18
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Copy server files and built frontend assets from the build-frontend stage
+# Copy server files and built frontend assets
 COPY --from=build-frontend /usr/src/app/server ./server
 COPY --from=build-frontend /usr/src/app/client/dist ./client/dist
 
-# Install only production server dependencies
+# Navigate to the server directory for server dependencies
 WORKDIR /usr/src/app/server
+
+# Install server dependencies (in case root install missed anything)
 RUN npm install --production
 
 # Set production environment
